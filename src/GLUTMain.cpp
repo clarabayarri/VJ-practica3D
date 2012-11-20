@@ -27,6 +27,10 @@ void AppSpecialKeysUp(int key, int x, int y)
 {
 	Game.ReadKeyboard(key,x,y,false);
 }
+void AppMouseNoButton(int x, int y)
+{
+	Game.ReadMouse(0,0,x,y);
+}
 void AppMouse(int button, int state, int x, int y)
 {
 	Game.ReadMouse(button,state,x,y);
@@ -72,7 +76,8 @@ void main(int argc, char** argv)
 	glutKeyboardUpFunc(AppKeyboardUp);	
 	glutSpecialFunc(AppSpecialKeys);	
 	glutSpecialUpFunc(AppSpecialKeysUp);
-	glutMouseFunc(AppMouse);
+	//glutMouseFunc(AppMouse);
+	glutPassiveMotionFunc(AppMouseNoButton);
 	glutIdleFunc(AppIdle);
 
 	//Game initializations

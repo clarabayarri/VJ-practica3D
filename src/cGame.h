@@ -28,4 +28,12 @@ private:
 	unsigned char keys[256];
 	cScene Scene;
 	cData Data;
+	
+	int rendermode;
+	float ballX;
+	float ballZ;
+	float ballAngle;
+
+	int mouseX;
+	int mouseY;
 };
