@@ -1,8 +1,7 @@
 #ifndef CUSTOMSHADERMANAGER_H
 #define CUSTOMSHADERMANAGER_H
 
-#include "GL/glew.h"
-#include <QtOpenGL/qgl.h>
+#include "Globals.h"
 #include <vector>
 
 class CustomShaderManager
@@ -25,6 +24,8 @@ private:
     std::vector<char *> sourceVertexShaders;
     std::vector<char *> sourceFragmentShaders;
     std::vector<char *> sourceGeometryShaders;
+
+	void addShaderSource(std::string sourceFile);
 };
 
 #endif // CUSTOMSHADERMANAGER_H

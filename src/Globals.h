@@ -1,8 +1,9 @@
-
+#include <GL/glew.h>
 #include <windows.h>
 #include <stdlib.h>
 #include <stdio.h>
 #include <math.h>
+
 #include <gl/glut.h>
 #include <utility>
 #include <vector>

@@ -2,8 +2,7 @@
 #include <iostream>
 #include <fstream>
 #include <sstream>
-#include <stdlib.h>
-#include <QFileDialog>
+//#include <stdlib.h>
 using namespace std;
 
 #define glError() { \
@@ -22,11 +21,11 @@ CustomShaderManager::CustomShaderManager(): vertexShaderID(0),
     addShaderSource("nomShader1");
 }
 
-void addShaderSource(char* sourceFile)
+void CustomShaderManager::addShaderSource(std::string sourceFile)
 {
-	char *vertex = (char *)"shaders/"+ sourceFile +".vert";
+	char *vertex = (char *)("shaders/"+ sourceFile +".vert").c_str();
 	sourceVertexShaders.push_back(vertex);
-	char *fragment = (char *)"shaders/"+ sourceFile +".frag";
+	char *fragment = (char *)("shaders/"+ sourceFile +".frag").c_str();
 	sourceFragmentShaders.push_back(fragment);
 }
 
@@ -144,7 +143,7 @@ void CustomShaderManager::selectShader(int selection)
 
         if(selection == 4) {
             //demanar textura a fer servir pel sphere mapping
-            QString fileName = QFileDialog::getOpenFileName(NULL, "Open image File", "", "Models (*.jpg)");
+            /*QString fileName = QFileDialog::getOpenFileName(NULL, "Open image File", "", "Models (*.jpg)");
             if (fileName.length()) {
                 glEnable(GL_TEXTURE_2D);
                 QImage image(fileName);
@@ -156,7 +155,7 @@ void CustomShaderManager::selectShader(int selection)
                 glTexImage2D(GL_TEXTURE_2D,0,GL_RGBA,data.width(),data.height(),0,GL_RGBA,GL_UNSIGNED_BYTE,data.bits());
                 glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
                 glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-            }
+            }*/
         }
 
         glLinkProgram(programID);
