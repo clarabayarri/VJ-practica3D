@@ -14,18 +14,13 @@ public:
     void selectShader(int);
 
 private:
-    GLuint vertexShaderID;
-    GLuint geometryShaderID;
-    GLuint fragmentShaderID;
+    std::vector<GLuint> vertexShaderIDs;
+    std::vector<GLuint> fragmentShaderIDs;
     GLuint programID;
 
     unsigned int selectedShaders;
 
-    std::vector<char *> sourceVertexShaders;
-    std::vector<char *> sourceFragmentShaders;
-    std::vector<char *> sourceGeometryShaders;
-
-	void addShaderSource(std::string sourceFile);
+	void compileShader(std::string sourceFile);
 };
 
 #endif // CUSTOMSHADERMANAGER_H
