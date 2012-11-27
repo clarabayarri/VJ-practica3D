@@ -1,5 +1,6 @@
 #include "cScene.h"
 #include "Globals.h"
+#include "customshadermanager.h"
 
 cScene::cScene(void):windangle(180.0),wind(false),x(0),z(0) {}
 cScene::~cScene(void){}
@@ -44,10 +45,10 @@ bool cScene::LoadLevel(int level)
 	return true;
 }
 
-void cScene::Draw(cData *Data) {
+void cScene::Draw(cData *Data, CustomShaderManager *shaderManager) {
 	//int i,j,x,z;
 	//float w,d,tw,td;
-	
+	shaderManager->selectShader(0);
 	DrawGrass(Data);
 
 	/**

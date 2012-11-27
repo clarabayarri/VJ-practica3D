@@ -4,26 +4,22 @@
 #include <sstream>
 using namespace std;
 
-#define glError() { \
-    GLenum err = glGetError(); \
-    while (err != GL_NO_ERROR) { \
-        printf("glError: %s caught at %s:%u\n", (char *)gluErrorString(err), __FILE__, __LINE__); \
-        err = glGetError(); \
-    } \
-}
 
-CustomShaderManager::CustomShaderManager(): programID(0), selectedShaders(0)
+CustomShaderManager::CustomShaderManager(): selectedShaders(-1)
 {
-	// Init existing shaders according to defined constants
-	// Atention: make sure you add them in the same order as constants!!
-    compileShader("nomShader1");
+	
 }
 
 CustomShaderManager::~CustomShaderManager()
 {
-    glDeleteShader(vertexShaderIDs[selectedShaders]);
-    glDeleteShader(fragmentShaderIDs[selectedShaders]);
-    glDeleteProgram(programID);
+    
+}
+
+void CustomShaderManager::initShaders() 
+{
+	// Init existing shaders according to defined constants
+	// Atention: make sure you add them in the same order as constants!!
+    compileShader("crt_display");
 }
 
 void printShaderInfoLog(GLint shader) {
@@ -40,14 +36,9 @@ void printShaderInfoLog(GLint shader) {
     }
 }
 
-GLuint CustomShaderManager::getProgramId()
-{
-    return programID;
-}
-
-void readFile(const char* filename, string& shaderSource) {
+void readFile(std::string filename, string& shaderSource) {
     ifstream infile(filename);
-
+	bool good = infile.good();
     if(!infile) {
         //error
         cout << "error" << endl;
@@ -60,15 +51,24 @@ void readFile(const char* filename, string& shaderSource) {
     shaderSource = stream.str();
 }
 
+void glError() { 
+    GLenum err = glGetError(); 
+    while (err != GL_NO_ERROR) { 
+        printf("glError: %s caught at %s:%u\n", (char *)gluErrorString(err), __FILE__, __LINE__); 
+        err = glGetError(); 
+    }
+}
+
 void CustomShaderManager::compileShader(std::string sourceFile)
 {
 	GLint compiled = 0;
-	char *vertex = (char *)("shaders/"+ sourceFile +".vert").c_str();
-	char *fragment = (char *)("shaders/"+ sourceFile +".frag").c_str();
+	std::string vertex = ("shaders\\" + sourceFile + SHADER_VERT_EXT);
+	std::string fragment = ("shaders\\" + sourceFile + SHADER_FRAG_EXT);
 
     string shader;
     readFile(vertex, shader);
     const char* shader2 = shader.c_str();
+
     GLuint vertexShaderID = glCreateShader(GL_VERTEX_SHADER);
     glShaderSource(vertexShaderID,1,(const GLchar **)&shader2,0);
     glCompileShader(vertexShaderID);
@@ -77,7 +77,6 @@ void CustomShaderManager::compileShader(std::string sourceFile)
         cout << "Vertex shader not compiled." << endl;
         printShaderInfoLog(vertexShaderID);
     }
-	vertexShaderIDs.push_back(vertexShaderID);
 
     string shader3;
     readFile(fragment, shader3);
@@ -90,44 +89,36 @@ void CustomShaderManager::compileShader(std::string sourceFile)
         cout << "Fragment shader not compiled." << endl;
         printShaderInfoLog(fragmentShaderID);
     }
-	fragmentShaderIDs.push_back(fragmentShaderID);
+
+	GLuint programID = glCreateProgram();
+
+	glAttachShader(programID,vertexShaderID);
+	glError();
+    glAttachShader(programID,fragmentShaderID);
+	glError();
+    glLinkProgram(programID);
+	glError();
+    GLint IsLinked;
+    glGetProgramiv(programID, GL_LINK_STATUS, (GLint *)&IsLinked);
+    if(IsLinked==0) {
+        cout << "Failed to link shader." << endl;
+        GLint maxLength;
+        glGetProgramiv(programID, GL_INFO_LOG_LENGTH, &maxLength);
+        if(maxLength>0) {
+                char *pLinkInfoLog = new char[maxLength];
+                glGetProgramInfoLog(programID, maxLength, &maxLength, pLinkInfoLog);
+                cout << pLinkInfoLog << endl;
+                delete [] pLinkInfoLog;
+        }
+    }
+	programIDs.push_back(programID);
 }
 
 void CustomShaderManager::selectShader(int selection)
 {
-    if(programID != 0) {
-        glDeleteShader(vertexShaderIDs[selectedShaders]);
-        glDeleteShader(fragmentShaderIDs[selectedShaders]);
-        glDeleteProgram(programID);
-    }
 	selectedShaders = (unsigned int)selection;
-    if(selection == -1) programID = 0;
-    else {
-        GLint compiled = 0;
-
-        programID = glCreateProgram();
-        glAttachShader(programID,vertexShaderIDs[selection]);
-		glError()
-
-        glAttachShader(programID,fragmentShaderIDs[selection]);
-
-        glLinkProgram(programID);
-
-        GLint IsLinked;
-        glGetProgramiv(programID, GL_LINK_STATUS, (GLint *)&IsLinked);
-        if(IsLinked==0) {
-            cout << "Failed to link shader." << endl;
-            GLint maxLength;
-            glGetProgramiv(programID, GL_INFO_LOG_LENGTH, &maxLength);
-            if(maxLength>0) {
-                    char *pLinkInfoLog = new char[maxLength];
-                    glGetProgramInfoLog(programID, maxLength, &maxLength, pLinkInfoLog);
-                    cout << pLinkInfoLog << endl;
-                    delete [] pLinkInfoLog;
-            }
-        }
-    }
-
+    if(selection == -1) glUseProgram(0);
+    else glUseProgram(programIDs[selection]);
 }
 
 

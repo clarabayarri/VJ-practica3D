@@ -2,6 +2,7 @@
 
 #include "cScene.h"
 #include "cData.h"
+#include "customshadermanager.h"
 
 #define SCREEN_WIDTH	800
 #define SCREEN_HEIGHT	600
@@ -36,4 +37,6 @@ private:
 
 	int mouseX;
 	int mouseY;
+
+	CustomShaderManager shaderManager;
 };

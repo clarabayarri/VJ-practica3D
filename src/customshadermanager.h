@@ -4,19 +4,25 @@
 #include "Globals.h"
 #include <vector>
 
+// Define the indices for shaders
+#define SHADER_CRT_DISPLAY 0
+
+
+#define SHADER_VERT_EXT	".vert"
+#define SHADER_FRAG_EXT	".frag"
+
 class CustomShaderManager
 {
 public:
     CustomShaderManager();
     ~CustomShaderManager();
 
-    GLuint getProgramId();
+	void initShaders();
+
     void selectShader(int);
 
 private:
-    std::vector<GLuint> vertexShaderIDs;
-    std::vector<GLuint> fragmentShaderIDs;
-    GLuint programID;
+	std::vector<GLuint> programIDs;
 
     unsigned int selectedShaders;
 

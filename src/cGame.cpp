@@ -8,6 +8,7 @@ cGame::~cGame(void){}
 
 bool cGame::Init()
 {
+	glewInit();
 	bool res=true;
 	
 	//Positions initialization
@@ -28,6 +29,9 @@ bool cGame::Init()
 	glEnable(GL_DEPTH_TEST);
 	glAlphaFunc(GL_GREATER, 0.05f);
 	glEnable(GL_ALPHA_TEST);
+
+	// Shader initialization
+	shaderManager.initShaders();
 
 	//Scene initialization
 	res = Data.Init();
@@ -129,7 +133,7 @@ void cGame::Render()
 		gluLookAt(-30,20,0,0,0,0,0,1,0);
 	}
 
-	Scene.Draw(&Data);
+	Scene.Draw(&Data, &shaderManager);
 
 	if (rendermode > 1) {
 		glTranslatef(-ballX,0,-ballZ);

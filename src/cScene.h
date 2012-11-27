@@ -1,6 +1,7 @@
 #pragma once
 
 #include "cData.h"
+#include "customshadermanager.h"
 using namespace std;
 
 #define SCENE_WIDTH		8	//#tiles
@@ -23,7 +24,7 @@ public:
 
 	void Init();
 	bool LoadLevel(int level);
-	void Draw(cData *Data);
+	void Draw(cData *Data, CustomShaderManager *shaderManager);
 	int *GetMap();
 	void renderBillBoard();
 
