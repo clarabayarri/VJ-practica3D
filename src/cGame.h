@@ -7,6 +7,9 @@
 #define SCREEN_WIDTH	800
 #define SCREEN_HEIGHT	600
 
+#define CAMERA_DIST_TO_PLAYER 10
+#define CAMERA_ANGLE_TO_PLAYER 20
+
 class cGame
 {
 public:
@@ -30,7 +33,6 @@ private:
 	cScene Scene;
 	cData Data;
 	
-	int rendermode;
 	float ballX;
 	float ballZ;
 	float ballAngle;
