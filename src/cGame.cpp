@@ -84,11 +84,12 @@ bool cGame::Process()
 	if(keys[27])	res=false;	
 	
 	//Game Logic
-
+	float x = ballX;
+	float z = ballZ;
 	//Ball movement
 	if(keys['e']) {
 		ballX += STEP_SIZE * sin((90-ballAngle)*0.0174532925);
-		ballZ -= STEP_SIZE * sin(ballAngle*0.0174532925);
+		ballZ += STEP_SIZE * sin(ballAngle*0.0174532925);
 	}
 	if(keys['w']) {
 		ballX += STEP_SIZE * cos((90-ballAngle)*0.0174532925);
@@ -96,7 +97,7 @@ bool cGame::Process()
 	}
 	if(keys['q']) {
 		ballX -= STEP_SIZE * sin((90-ballAngle)*0.0174532925);
-		ballZ += STEP_SIZE * sin(ballAngle*0.0174532925);
+		ballZ -= STEP_SIZE * sin(ballAngle*0.0174532925);
 	}
 	if(keys['s']) {
 		ballX -= STEP_SIZE * cos((90-ballAngle)*0.0174532925);
@@ -116,19 +117,22 @@ void cGame::Render()
 	
 	// Dibuixar pilota
 	// Personatge.Draw()
+	glRotatef(-CAMERA_ANGLE_TO_PLAYER,1,0,0);
 	glTranslatef(0,0,-CAMERA_DIST_TO_PLAYER);
-	glRotatef(CAMERA_ANGLE_TO_PLAYER,1,0,0);
 	GLUquadricObj *q = gluNewQuadric();
 		gluSphere(q, 1,16,16);
 		gluDeleteQuadric(q);
 
 	// Dibuixar escena
 	glLoadIdentity();
-	glTranslatef(-ballX,0,-ballZ);
 	glTranslatef(0,0,-CAMERA_DIST_TO_PLAYER);
+	glRotatef(ballAngle,0,1,0);
+	glTranslatef(0,0,CAMERA_DIST_TO_PLAYER);
+	glTranslatef(-ballX,sin(-CAMERA_ANGLE_TO_PLAYER*0.0174532925)*CAMERA_DIST_TO_PLAYER,-ballZ);
+	//glTranslatef(0,0,-CAMERA_DIST_TO_PLAYER);
 	
-	glRotatef(-ballAngle,0,1,0);
-	glRotatef(CAMERA_ANGLE_TO_PLAYER,1,0,0);
+	
+	//glRotatef(CAMERA_ANGLE_TO_PLAYER,1,0,0);
 
 	Scene.Draw(&Data, &shaderManager);
 
