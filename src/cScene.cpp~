@@ -51,7 +51,7 @@ void cScene::Draw(cData *Data, CustomShaderManager *shaderManager) {
 	//float w,d,tw,td;
 	shaderManager->selectShader(0);
 	DrawGrass(Data);
-	forest.Render(Data);
+
 	/**
 	//Walls
 	for(i=0;i<SCENE_DEPTH;i++)

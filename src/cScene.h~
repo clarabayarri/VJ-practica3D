@@ -43,8 +43,6 @@ private:
 	float windangle;
 	float amplitude;
 
-	cForest forest;	
-
 	int map[SCENE_WIDTH * SCENE_DEPTH];		//scene
 
 	float x;
