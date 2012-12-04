@@ -21,10 +21,6 @@ bool cGame::Init()
 
 	//Graphics initialization
 	glClearColor(0.0f,0.0f,0.0f,0.0f);
-	glMatrixMode(GL_PROJECTION);
-	glLoadIdentity();
-	gluPerspective(45.0,(float)SCREEN_WIDTH/(float)SCREEN_HEIGHT,0.1,100);
-	glMatrixMode(GL_MODELVIEW);
 	
 	glEnable(GL_DEPTH_TEST);
 	glAlphaFunc(GL_GREATER, 0.05f);
@@ -32,6 +28,8 @@ bool cGame::Init()
 
 	// Shader initialization
 	shaderManager.initShaders();
+
+	ScreenExtras.init();
 
 	//Scene initialization
 	res = Data.Init();
@@ -112,6 +110,11 @@ bool cGame::Process()
 //Output
 void cGame::Render()
 {
+	glMatrixMode(GL_PROJECTION);
+	glLoadIdentity();
+	gluPerspective(45.0,(float)SCREEN_WIDTH/(float)SCREEN_HEIGHT,0.1,100);
+	glMatrixMode(GL_MODELVIEW);
+	
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glLoadIdentity();
 	
@@ -129,12 +132,8 @@ void cGame::Render()
 	glRotatef(ballAngle,0,1,0);
 	glTranslatef(0,0,CAMERA_DIST_TO_PLAYER);
 	glTranslatef(-ballX,sin(-CAMERA_ANGLE_TO_PLAYER*0.0174532925)*CAMERA_DIST_TO_PLAYER,-ballZ);
-	//glTranslatef(0,0,-CAMERA_DIST_TO_PLAYER);
-	
-	
-	//glRotatef(CAMERA_ANGLE_TO_PLAYER,1,0,0);
 
 	Scene.Draw(&Data, &shaderManager);
-
+	ScreenExtras.Draw(&Data);
 	glutSwapBuffers();
 }

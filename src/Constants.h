@@ -1,3 +1,7 @@
+/*****  Screen  *****/
+#define SCREEN_WIDTH	800
+#define SCREEN_HEIGHT	600
+
 /*****  Trees Related Constants  *****/
 #define NUM_TREE_TYPES	5
 #define	NUM_TREES		300

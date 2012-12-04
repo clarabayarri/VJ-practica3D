@@ -3,9 +3,8 @@
 #include "cScene.h"
 #include "cData.h"
 #include "customshadermanager.h"
-
-#define SCREEN_WIDTH	800
-#define SCREEN_HEIGHT	600
+#include "cScreenExtras.h"
+#include "Constants.h"
 
 #define CAMERA_DIST_TO_PLAYER 10
 #define CAMERA_ANGLE_TO_PLAYER 20
@@ -31,6 +30,7 @@ public:
 private:
 	unsigned char keys[256];
 	cScene Scene;
+	cScreenExtras ScreenExtras;
 	cData Data;
 	
 	float ballX;
