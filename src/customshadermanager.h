@@ -3,10 +3,7 @@
 
 #include "Globals.h"
 #include <vector>
-
-// Define the indices for shaders
-#define SHADER_CRT_DISPLAY 0
-
+#include "Constants.h"
 
 #define SHADER_VERT_EXT	".vert"
 #define SHADER_FRAG_EXT	".frag"
