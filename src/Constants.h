@@ -29,3 +29,7 @@
 #define OVERLAPPED_SURFACES	1
 #define LODS             	4
 #define DILATATION          2
+
+/*****  Shaders  *****/
+#define SHADER_NONE -1
+#define SHADER_CRT_DISPLAY 0
