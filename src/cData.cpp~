@@ -24,13 +24,12 @@ bool cData::LoadImage(int img, char *filename, int type) {
 }
 
 bool cData::Init() {
+	if(LoadImage(IMG_WALL1,	"textures/wall1.png",GL_RGBA))
+	if(LoadImage(IMG_WALL2,	"textures/wall2.png",GL_RGBA))
+	if(LoadImage(IMG_WALL3,	"textures/wall3.png",GL_RGBA))
+	if(LoadImage(IMG_FLOOR,	"textures/floor.png",GL_RGBA))
+	if(LoadImage(IMG_ROOF,	"textures/roof.png",GL_RGBA))
 	if(LoadImage(IMG_GRASS,	"textures/grass.png",GL_RGBA))
-	if(LoadImage(IMG_FENCE,	"textures/fence.png",GL_RGBA,true))
-	if(LoadImage(IMG_TREE1,	"textures/tree1.png",GL_RGBA))
-	if(LoadImage(IMG_TREE2,	"textures/tree2.png",GL_RGBA))
-	if(LoadImage(IMG_TREE3,	"textures/tree3.png",GL_RGBA))
-	if(LoadImage(IMG_TREE4,	"textures/tree4.png",GL_RGBA))
-	if(LoadImage(IMG_TREE5,	"textures/tree5.png",GL_RGBA))
 		return true;
 
 	return false;
