@@ -49,7 +49,7 @@ bool cScene::LoadLevel(int level)
 void cScene::Draw(cData *Data, CustomShaderManager *shaderManager) {
 	//int i,j,x,z;
 	//float w,d,tw,td;
-	shaderManager->selectShader(0);
+	shaderManager->selectShader(-1);
 	DrawGrass(Data);
 	forest.Render(Data);
 	/**
