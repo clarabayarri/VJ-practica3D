@@ -51,9 +51,7 @@ bool cGame::Loop()
 	return res;
 }
 
-void cGame::Finalize()
-{
-}
+void cGame::Finalize() {}
 
 //Input
 void cGame::ReadKeyboard(unsigned char key, int x, int y, bool press)
@@ -108,14 +106,14 @@ bool cGame::Process()
 }
 
 //Output
-void cGame::Render()
-{
+void cGame::Render() {
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
 	gluPerspective(45.0,(float)SCREEN_WIDTH/(float)SCREEN_HEIGHT,0.1,100);
-	glMatrixMode(GL_MODELVIEW);
 	
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
 	
 	// Dibuixar pilota
@@ -128,10 +126,9 @@ void cGame::Render()
 
 	// Dibuixar escena
 	glLoadIdentity();
-	glTranslatef(0,0,-CAMERA_DIST_TO_PLAYER);
+	glTranslatef(0,sin(-CAMERA_ANGLE_TO_PLAYER*0.0174532925)*CAMERA_DIST_TO_PLAYER,-CAMERA_DIST_TO_PLAYER);
 	glRotatef(ballAngle,0,1,0);
-	glTranslatef(0,0,CAMERA_DIST_TO_PLAYER);
-	glTranslatef(-ballX,sin(-CAMERA_ANGLE_TO_PLAYER*0.0174532925)*CAMERA_DIST_TO_PLAYER,-ballZ);
+	glTranslatef(-ballX,0,-ballZ);
 
 	Scene.Draw(&Data, &shaderManager);
 	ScreenExtras.Draw(&Data);

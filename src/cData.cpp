@@ -13,7 +13,7 @@ void cData::GetSize(int img, int *w, int *h)
 	texture[img].GetSize(w,h);
 }
 
-bool cData::LoadImage(int img, char *filename, int type) {
+bool cData::LoadImage(int img, char *filename, int type, bool minf) {
 	int res;
 	
 	if (minf) res = texture[img].Load(filename,type,GL_REPEAT,GL_REPEAT,GL_LINEAR,GL_LINEAR_MIPMAP_LINEAR); 
@@ -31,6 +31,8 @@ bool cData::Init() {
 	if(LoadImage(IMG_TREE3,	"textures/tree3.png",GL_RGBA))
 	if(LoadImage(IMG_TREE4,	"textures/tree4.png",GL_RGBA))
 	if(LoadImage(IMG_TREE5,	"textures/tree5.png",GL_RGBA))
+	if(LoadImage(IMG_FLOOR1,"textures/grass-brown.png",GL_RGBA,true))
+	if(LoadImage(IMG_FLOOR2,"textures/grass-green.png",GL_RGBA,true))
 		return true;
 
 	return false;

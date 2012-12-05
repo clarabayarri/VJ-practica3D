@@ -17,8 +17,7 @@ using namespace std;
 #define GRASS_PLANES	1
 
 
-class cScene
-{
+class cScene {
 public:
 	cScene(void);
 	virtual ~cScene(void);
@@ -28,21 +27,9 @@ public:
 	void Draw(cData *Data, CustomShaderManager *shaderManager);
 	int *GetMap();
 	void renderBillBoard();
+	float GetHeight(float x, float z);
 
 private:
-	void DrawGrass(cData *Data);
-	void MakeCubeDL(float w,float h,float d,float tw,float th,float td);
-	void MakeGrassDL();
-	int dl_cube;
-
-	int dl_grass;
-	vector<pair<float,float> > grassPosition;
-	vector<float> grassRotation;
-
-	bool wind;
-	float windangle;
-	float amplitude;
-
 	cForest forest;	
 
 	int map[SCENE_WIDTH * SCENE_DEPTH];		//scene

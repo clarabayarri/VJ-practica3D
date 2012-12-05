@@ -23,8 +23,14 @@ void cForest::Init() {
 	}
 }
 
-void cForest::Render(cData * data) {
-	floor.Render();
+void cForest::Render(cData * data, CustomShaderManager * shader) {
+	floor.Render(data,shader);
 	wall.Render(data);
 	for (int i = 0; i < NUM_TREE_TYPES; ++i) trees[i].Render(data);
+}
+
+float cForest::GetHeight(float x, float z) {
+	int x1 = std::floor(x);
+	int z1 = std::floor(z);
+	return floor.GetY(x,z);
 }

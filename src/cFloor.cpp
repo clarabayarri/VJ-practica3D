@@ -80,6 +80,9 @@ cFloor::~cFloor(){}
 void cFloor::Init() {
 	srand(time(NULL));
 
+	maxy = -TERRAIN_SIZE;
+	miny = TERRAIN_SIZE;
+
     vector<vector<float> > surface(TERRAIN_SIZE,vector<float>(TERRAIN_SIZE,0));
     vector<vector<float> > terrain(TERRAIN_SIZE,vector<float>(TERRAIN_SIZE,0));
 
@@ -88,12 +91,30 @@ void cFloor::Init() {
         add(terrain,surface,(i%2 == 1 ? -1 : 1));
     }
 
+	for (unsigned int i = 0; i < TERRAIN_SIZE; ++i)
+        for (unsigned int j = 0; j < TERRAIN_SIZE; ++j) {
+			if (terrain[i][j] > maxy) maxy = terrain[i][j];
+			if (terrain[i][j] < miny) miny = terrain[i][j];
+		}
+	
+	float variation = (maxy+miny)/2;
+	maxy -= variation;
+	miny -= variation;
+
+	for (unsigned int i = 0; i < TERRAIN_SIZE; ++i)
+        for (unsigned int j = 0; j < TERRAIN_SIZE; ++j)
+			terrain[i][j] -= variation;
+
 	heights = vector<vector<float> >(terrain);
 
     vertices = vector<vertex>(TERRAIN_SIZE*TERRAIN_SIZE);
+	textures = vector<pair<float,float> >(TERRAIN_SIZE*TERRAIN_SIZE);	
+
     for (unsigned int i = 0; i < TERRAIN_SIZE; ++i)
-        for (unsigned int j = 0; j < TERRAIN_SIZE; ++j)
+        for (unsigned int j = 0; j < TERRAIN_SIZE; ++j) {
             vertices[i*TERRAIN_SIZE+j]=(vertex(i*DILATATION,terrain[i][j],j*DILATATION));
+			textures[i*TERRAIN_SIZE+j]=pair<float,float>((float) (i%2),(float) (j%2));
+		}
 
     faces = vector<face>((TERRAIN_SIZE-1)*(TERRAIN_SIZE-1)*2);
     unsigned int f = 0;
@@ -105,6 +126,7 @@ void cFloor::Init() {
 
     UpdateSmoothedNormals();
 	GenerateArrays();
+	GenerateTextureArray();
 }
 
 float cFloor::GetSize() {
@@ -113,6 +135,14 @@ float cFloor::GetSize() {
 
 float cFloor::GetDilatation() {
 	return DILATATION;
+}
+
+float cFloor::GetMinY() {
+	return miny;
+}
+
+float cFloor::GetMaxY() {
+	return maxy;
 }
 
 float cFloor::GetY(int x, int y) {
@@ -154,4 +184,36 @@ void cFloor::UpdateSmoothedNormals() {
         normalize(normals[i]);
         vertices[i].normal = normals[i];
     }
+}
+
+void cFloor::Render(cData * data, CustomShaderManager * shader) {
+	glEnable(GL_TEXTURE_2D);
+	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_2D,data->GetID(IMG_FLOOR1));
+
+	glActiveTexture(GL_TEXTURE1);
+	glBindTexture(GL_TEXTURE_2D,data->GetID(IMG_FLOOR2));
+
+	shader->selectShader(SHADER_FLOOR);
+
+	GLint minimumy = glGetUniformLocation((SHADER_FLOOR+1)*3,"miny");
+	glUniform1f(minimumy,miny);
+	GLint maximumy = glGetUniformLocation((SHADER_FLOOR+1)*3,"maxy");
+	glUniform1f(maximumy,maxy);
+
+	GLint tex1 = glGetUniformLocation((SHADER_FLOOR+1)*3,"tex1");
+	glUniform1i(tex1,0);
+	GLint tex2 = glGetUniformLocation((SHADER_FLOOR+1)*3,"tex2");
+	glUniform1i(tex2,1);
+
+	cVBO::Render();
+	shader->selectShader(SHADER_NONE);
+	
+	glActiveTexture(GL_TEXTURE1);
+	glBindTexture(GL_TEXTURE_2D,0);
+
+	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_2D,0);
+
+	glDisable(GL_TEXTURE_2D);
 }

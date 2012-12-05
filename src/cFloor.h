@@ -2,6 +2,8 @@
 
 #include <iostream>
 #include "cVBO.h"
+#include "cData.h"
+#include "customshadermanager.h"
 #include "Constants.h"
 using namespace std;
 
@@ -13,13 +15,20 @@ public:
 	void Init();
 	float GetSize();
 	float GetDilatation();
+	float GetMinY();
+	float GetMaxY();
 	float GetY(int x, int z);
+
+	void Render(cData * data, CustomShaderManager * shader);
 
 protected:
     void UpdateSmoothedNormals();
 	void UpdateNormal(int f);
 
 	vector<vector<float> > heights;
+
+	float miny;
+	float maxy;
 
     bool ready;
 };

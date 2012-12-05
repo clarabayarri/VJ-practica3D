@@ -3,15 +3,17 @@
 #include "cFloor.h"
 #include "cWall.h"
 #include "cTreeForest.h"
+#include "customshadermanager.h"
 
-class cForest
-{
+class cForest {
 public:
 	cForest(void);
 	~cForest(void);
 
 	void Init();
-	void Render(cData * data);
+	void Render(cData * data, CustomShaderManager * shader);
+	float GetHeight(float x, float z);
+
 private:
 	cFloor floor;
 	cWall wall;
