@@ -30,7 +30,20 @@ void cForest::Render(cData * data, CustomShaderManager * shader) {
 }
 
 float cForest::GetHeight(float x, float z) {
-	int x1 = std::floor(x);
-	int z1 = std::floor(z);
-	return floor.GetY(x,z);
+	float x0 = std::floor(x);
+	float z0 = std::floor(z);
+	int tSize = floor.GetSize();
+
+	float height = 0;
+	if (x0+1 < tSize && z0+1 < tSize) {
+		height = (z-z0)*((x-x0)* floor.GetY(x0,z0)+ (1-x+x0)*floor.GetY(x0+1,z0))+(1-z+z0)*((x-x0)*floor.GetY(x0,z0+1) + (1-x+x0)*floor.GetY(x0+1,z0+1));
+	} else if (x0+1 < tSize) {
+		height = ((x-x0)* floor.GetY(x0,z0)+ (1-x+x0)*floor.GetY(x0+1,z0));
+	} else if (z0+1 < tSize) {
+		height = (z-z0)*(floor.GetY(x0,z0))+(1-z+z0)*(floor.GetY(x0,z0+1));
+	} else {
+		height = floor.GetY(x0,z0);
+	}
+
+	return height;
 }
