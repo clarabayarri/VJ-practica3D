@@ -21,6 +21,7 @@ public:
 
 	//Input
 	void ReadKeyboard(unsigned char key, int x, int y, bool press);
+		void ReadSpecialKeyboard(unsigned char key, int x, int y, bool press);
 	void ReadMouse(int button, int state, int x, int y);
 	//Process
 	bool Process();
@@ -29,6 +30,7 @@ public:
 
 private:
 	unsigned char keys[256];
+	unsigned char skeys[256];
 	cScene Scene;
 	cScreenExtras ScreenExtras;
 	cData Data;

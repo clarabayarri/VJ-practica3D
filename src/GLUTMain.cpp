@@ -21,11 +21,11 @@ void AppKeyboardUp(unsigned char key, int x, int y)
 }
 void AppSpecialKeys(int key, int x, int y)
 {
-	Game.ReadKeyboard(key,x,y,true);
+	Game.ReadSpecialKeyboard(key,x,y,true);
 }
 void AppSpecialKeysUp(int key, int x, int y)
 {
-	Game.ReadKeyboard(key,x,y,false);
+	Game.ReadSpecialKeyboard(key,x,y,false);
 }
 void AppMouseNoButton(int x, int y)
 {

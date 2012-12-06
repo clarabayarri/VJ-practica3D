@@ -54,9 +54,12 @@ bool cGame::Loop()
 void cGame::Finalize() {}
 
 //Input
-void cGame::ReadKeyboard(unsigned char key, int x, int y, bool press)
-{
+void cGame::ReadKeyboard(unsigned char key, int x, int y, bool press) {
 	keys[key] = press;
+}
+
+void cGame::ReadSpecialKeyboard(unsigned char key, int x, int y, bool press) {
+	skeys[key] = press;
 }
 
 void cGame::ReadMouse(int button, int state, int x, int y)
