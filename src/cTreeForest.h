@@ -11,6 +11,7 @@ public:
 	void Init(const vector<vector<float> >& t, int tex);
 	void Render(cData * data);
 
+	vector<vector<float> > GetTrees();
 private:
 	int dlId;
 	int texId;

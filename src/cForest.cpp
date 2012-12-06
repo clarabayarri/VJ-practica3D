@@ -4,6 +4,11 @@ cForest::cForest(void){}
 
 cForest::~cForest(void){}
 
+vector<cTreeForest> cForest::GetTrees()
+{
+	return trees;
+}
+
 void cForest::Init() {
 	floor.Init();
 	wall.Init(&floor);

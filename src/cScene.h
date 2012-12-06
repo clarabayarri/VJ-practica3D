@@ -29,6 +29,8 @@ public:
 	void renderBillBoard();
 	float GetHeight(float x, float z);
 
+	cForest *GetForest();
+
 private:
 	cForest forest;	
 

@@ -5,6 +5,11 @@ cTreeForest::cTreeForest() {}
 
 cTreeForest::~cTreeForest() {}
 
+vector<vector<float> > cTreeForest::GetTrees()
+{
+	return trees;
+}
+
 void cTreeForest::Init(const vector<vector<float> >& t, int tex) {
 	trees = vector<vector<float> >(t); 
 	texId = tex;

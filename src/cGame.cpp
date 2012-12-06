@@ -29,14 +29,14 @@ bool cGame::Init()
 	// Shader initialization
 	shaderManager.initShaders();
 
-	ScreenExtras.init();
-
 	//Scene initialization
 	res = Data.Init();
 	if (!res) return false;
 	Scene.Init();
+	ScreenExtras.init(Scene.GetForest());
 	res = Scene.LoadLevel(1);
 	if(!res) return false;
+
 
 	return res;
 }

@@ -9,9 +9,9 @@ cScreenExtras::~cScreenExtras(void)
 {
 }
 
-void cScreenExtras::init()
+void cScreenExtras::init(cForest *forest)
 {
-
+	SceneMap.Init(forest);
 }
 
 void cScreenExtras::Draw(cData *Data)

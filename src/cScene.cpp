@@ -9,6 +9,11 @@ void cScene::Init() {
 	forest.Init();
 }
 
+cForest* cScene::GetForest()
+{
+	return &forest;
+}
+
 bool cScene::LoadLevel(int level)
 {
 	FILE *fd;

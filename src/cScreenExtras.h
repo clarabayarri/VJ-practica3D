@@ -4,6 +4,7 @@
 #include "cTimeGauge.h"
 #include "cMunitionCounter.h"
 #include "cSceneMap.h"
+#include "cTreeForest.h"
 
 #define SCREEN_MARGIN 30
 
@@ -13,7 +14,7 @@ public:
 	cScreenExtras(void);
 	~cScreenExtras(void);
 
-	void init();
+	void init(cForest *Forest);
 	void Draw(cData *Data);
 
 private:
