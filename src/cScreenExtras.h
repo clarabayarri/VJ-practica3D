@@ -15,7 +15,7 @@ public:
 	~cScreenExtras(void);
 
 	void init(cForest *Forest);
-	void Draw(cData *Data);
+	void Draw(cData *Data, cAnimatedCharacter *Player);
 
 private:
 	cTimeGauge TimeGauge;
@@ -24,6 +24,6 @@ private:
 
 	void DrawTimeGauge(cData *Data);
 	void DrawMunitionCounter(cData *Data);
-	void DrawMap(cData *Data);
+	void DrawMap(cData *Data, cAnimatedCharacter *Player);
 };
 

@@ -4,6 +4,7 @@
 #include "cData.h"
 #include "customshadermanager.h"
 #include "cScreenExtras.h"
+#include "cAnimatedCharacter.h"
 #include "Constants.h"
 
 #define CAMERA_DIST_TO_PLAYER 10
@@ -35,9 +36,7 @@ private:
 	cScreenExtras ScreenExtras;
 	cData Data;
 	
-	float ballX;
-	float ballZ;
-	float ballAngle;
+	cAnimatedCharacter Player;
 
 	int mouseX;
 	int mouseY;

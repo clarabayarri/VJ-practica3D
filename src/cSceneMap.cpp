@@ -55,7 +55,7 @@ void cSceneMap::Init(cForest *forest)
 	glEndList();
 }
 
-void cSceneMap::Draw(cData *Data)
+void cSceneMap::Draw(cData *Data, cAnimatedCharacter *player)
 {
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
@@ -63,10 +63,18 @@ void cSceneMap::Draw(cData *Data)
 
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
-	glTranslatef(0,0,-0.1);
+	glTranslatef(0,0,-0.2);
 
 	// Draw border and trees
 	glCallList(dlId);
+
+	// Draw player
+	glEnable(GL_POINT_SMOOTH);
+	glPointSize(3.0f);
+	glColor3f(0.874,0.106,0.416);
+	glBegin(GL_POINTS);
+		glVertex3f(3*player->x + MAP_MARGIN,3*player->z + MAP_MARGIN, 0.1);
+	glEnd();
 
 	// Clear colors
 	glColor3f(1.0f,1.0f,1.0f);

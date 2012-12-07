@@ -3,6 +3,7 @@
 #include "cData.h"
 #include "cForest.h"
 #include "cTreeForest.h"
+#include "cAnimatedCharacter.h"
 #include "Constants.h"
 
 class cSceneMap
@@ -13,7 +14,7 @@ public:
 
 	void Init(cForest *forest);
 
-	void Draw(cData *Data);
+	void Draw(cData *Data, cAnimatedCharacter *player);
 
 private:
 	int dlId;

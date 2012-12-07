@@ -1,9 +1,6 @@
 #include "cGame.h"
 #include "Globals.h"
 
-#define STEP_SIZE 1
-#define ANGLE_STEP_SIZE 5
-
 cGame::cGame(void) {}
 cGame::~cGame(void){}
 
@@ -15,9 +12,6 @@ bool cGame::Init()
 	//Positions initialization
 	mouseX = -1;
 	mouseY = -1;
-	ballX = 0;
-	ballZ = 0;
-	ballAngle = 0;
 
 	//Graphics initialization
 	glClearColor(0.0f,0.0f,0.0f,0.0f);
@@ -83,27 +77,21 @@ bool cGame::Process()
 	if(keys[27])	res=false;	
 	
 	//Game Logic
-	float x = ballX;
-	float z = ballZ;
-	//Ball movement
+	//Player movement
 	if(keys['e']) {
-		ballX += STEP_SIZE * sin((90-ballAngle)*0.0174532925);
-		ballZ += STEP_SIZE * sin(ballAngle*0.0174532925);
+		Player.MoveRight();
 	}
 	if(keys['w']) {
-		ballX += STEP_SIZE * cos((90-ballAngle)*0.0174532925);
-		ballZ -= STEP_SIZE * cos(ballAngle*0.0174532925);
+		Player.MoveForward();
 	}
 	if(keys['q']) {
-		ballX -= STEP_SIZE * sin((90-ballAngle)*0.0174532925);
-		ballZ -= STEP_SIZE * sin(ballAngle*0.0174532925);
+		Player.MoveLeft();
 	}
 	if(keys['s']) {
-		ballX -= STEP_SIZE * cos((90-ballAngle)*0.0174532925);
-		ballZ += STEP_SIZE * cos(ballAngle*0.0174532925);
+		Player.MoveBackward();
 	}
-	if(keys['a']) ballAngle -= ANGLE_STEP_SIZE;
-	if(keys['d']) ballAngle += ANGLE_STEP_SIZE;
+	if(keys['a']) Player.RotateLeft();
+	if(keys['d']) Player.RotateRight();
 
 	return res;
 }
@@ -123,17 +111,16 @@ void cGame::Render() {
 	// Personatge.Draw()
 	glRotatef(-CAMERA_ANGLE_TO_PLAYER,1,0,0);
 	glTranslatef(0,0,-CAMERA_DIST_TO_PLAYER);
-	GLUquadricObj *q = gluNewQuadric();
-		gluSphere(q, 1,16,16);
-		gluDeleteQuadric(q);
+	Player.Draw();
 
 	// Dibuixar escena
 	glLoadIdentity();
-	glTranslatef(0,sin(-CAMERA_ANGLE_TO_PLAYER*0.0174532925)*CAMERA_DIST_TO_PLAYER,-CAMERA_DIST_TO_PLAYER);
-	glRotatef(ballAngle,0,1,0);
-	glTranslatef(-ballX,0,-ballZ);
+	float y = Scene.GetHeight(Player.x*DILATATION, Player.z*DILATATION);
+	glTranslatef(0,sin(-CAMERA_ANGLE_TO_PLAYER*0.0174532925)*CAMERA_DIST_TO_PLAYER-y,-CAMERA_DIST_TO_PLAYER);
+	glRotatef(Player.orientationAngle,0,1,0);
+	glTranslatef(-Player.x, 0, -Player.z);
 
 	Scene.Draw(&Data, &shaderManager);
-	ScreenExtras.Draw(&Data);
+	ScreenExtras.Draw(&Data, &Player);
 	glutSwapBuffers();
 }
