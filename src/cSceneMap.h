@@ -1,10 +1,9 @@
 #pragma once
 
 #include "cData.h"
-#include "cForest.h"
-#include "cTreeForest.h"
 #include "cAnimatedCharacter.h"
 #include "Constants.h"
+using namespace std;
 
 class cSceneMap
 {
@@ -12,7 +11,7 @@ public:
 	cSceneMap(void);
 	~cSceneMap(void);
 
-	void Init(cForest *forest);
+	void Init(const vector<vector<float> >& trees);
 
 	void Draw(cData *Data, cAnimatedCharacter *player);
 

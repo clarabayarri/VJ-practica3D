@@ -5,8 +5,7 @@ cTreeForest::cTreeForest() {}
 
 cTreeForest::~cTreeForest() {}
 
-vector<vector<float> > cTreeForest::GetTrees()
-{
+vector<vector<float> > cTreeForest::GetTrees() {
 	return trees;
 }
 

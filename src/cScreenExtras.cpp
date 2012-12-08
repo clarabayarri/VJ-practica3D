@@ -9,9 +9,8 @@ cScreenExtras::~cScreenExtras(void)
 {
 }
 
-void cScreenExtras::init(cForest *forest)
-{
-	SceneMap.Init(forest);
+void cScreenExtras::Init(const vector<vector<float> >& trees) {
+	SceneMap.Init(trees);
 }
 
 void cScreenExtras::Draw(cData *Data, cAnimatedCharacter *Player)

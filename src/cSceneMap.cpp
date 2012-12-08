@@ -11,8 +11,7 @@ cSceneMap::~cSceneMap(void)
 {
 }
 
-void cSceneMap::Init(cForest *forest)
-{
+void cSceneMap::Init(const vector<vector<float> >& trees) {
 	dlId = glGenLists(1);
 	glNewList(dlId,GL_COMPILE);
 		// Draw background
@@ -35,22 +34,17 @@ void cSceneMap::Init(cForest *forest)
 		glEnd();
 
 		//Draw trees
-		vector<cTreeForest> treeForests = forest->GetTrees();
 		glEnable(GL_POINT_SMOOTH);
 		glPointSize(2.0f);
 		glColor3f(0.106,0.369,0.125);
 		glBegin(GL_POINTS);
-			for (int k = 0; k < NUM_TREE_TYPES; ++k) {
-				cTreeForest treeForest = treeForests[k];
-				vector<vector<float> > trees = treeForest.GetTrees();
-				for (unsigned int j = 0; j < trees.size(); ++j) {
-					for (int i = 0; i < TREE_PLANES; ++i) {
-						float x = trees[j][0];
-						float z = trees[j][2];
-						glVertex2f(3*x + MAP_MARGIN,3*z + MAP_MARGIN);
-					}
-				}
+		for (unsigned int j = 0; j < trees.size(); ++j) {
+			for (int i = 0; i < TREE_PLANES; ++i) {
+				float x = trees[j][0];
+				float z = trees[j][2];
+				glVertex2f(3*x + MAP_MARGIN,3*z + MAP_MARGIN);
 			}
+		}
 		glEnd();
 	glEndList();
 }

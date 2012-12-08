@@ -14,7 +14,7 @@ public:
 	void Render(cData * data, CustomShaderManager * shader);
 	float GetHeight(float x, float z);
 
-	vector<cTreeForest> GetTrees();
+	vector<vector<float> > GetTrees();
 
 private:
 	cFloor floor;

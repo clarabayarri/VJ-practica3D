@@ -17,7 +17,7 @@ bool cGame::Init()
 	glClearColor(0.0f,0.0f,0.0f,0.0f);
 	
 	glEnable(GL_DEPTH_TEST);
-	glAlphaFunc(GL_GREATER, 0.05f);
+	glAlphaFunc(GL_GREATER, 0.5f);
 	glEnable(GL_ALPHA_TEST);
 
 	// Shader initialization
@@ -27,10 +27,9 @@ bool cGame::Init()
 	res = Data.Init();
 	if (!res) return false;
 	Scene.Init();
-	ScreenExtras.init(Scene.GetForest());
+	ScreenExtras.Init(Scene.GetForest());
 	res = Scene.LoadLevel(1);
 	if(!res) return false;
-
 
 	return res;
 }
@@ -93,6 +92,10 @@ bool cGame::Process()
 	if(keys['a']) Player.RotateLeft();
 	if(keys['d']) Player.RotateRight();
 
+	//if(ballX < 0) ballX = 0;
+	//if(ballZ < 0) ballZ = 0;
+	//if(ballX > (TERRAIN_SIZE-1)*DILATATION) ballX = (TERRAIN_SIZE-1)*DILATATION;
+	//if(ballZ > (TERRAIN_SIZE-1)*DILATATION) ballZ = (TERRAIN_SIZE-1)*DILATATION;
 	return res;
 }
 
@@ -111,15 +114,16 @@ void cGame::Render() {
 	// Personatge.Draw()
 	glRotatef(-CAMERA_ANGLE_TO_PLAYER,1,0,0);
 	glTranslatef(0,0,-CAMERA_DIST_TO_PLAYER);
-	Player.Draw();
+	GLUquadricObj *q = gluNewQuadric();
+		gluSphere(q, 0.1,16,16);
+		gluDeleteQuadric(q);
 
 	// Dibuixar escena
 	glLoadIdentity();
-	float y = Scene.GetHeight(Player.x*DILATATION, Player.z*DILATATION);
-	glTranslatef(0,sin(-CAMERA_ANGLE_TO_PLAYER*0.0174532925)*CAMERA_DIST_TO_PLAYER-y,-CAMERA_DIST_TO_PLAYER);
+	glTranslatef(0,sin(-CAMERA_ANGLE_TO_PLAYER*0.0174532925)*CAMERA_DIST_TO_PLAYER-Scene.GetHeight(Player.x/DILATATION,Player.z/DILATATION),-CAMERA_DIST_TO_PLAYER);
 	glRotatef(Player.orientationAngle,0,1,0);
-	glTranslatef(-Player.x, 0, -Player.z);
-
+	glTranslatef(-Player.x,0,-Player.z);
+	
 	Scene.Draw(&Data, &shaderManager);
 	ScreenExtras.Draw(&Data, &Player);
 	glutSwapBuffers();

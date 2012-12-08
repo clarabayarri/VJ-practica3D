@@ -4,9 +4,14 @@ cForest::cForest(void){}
 
 cForest::~cForest(void){}
 
-vector<cTreeForest> cForest::GetTrees()
-{
-	return trees;
+vector<vector<float> > cForest::GetTrees() {
+	vector<vector<float> > result(NUM_TREES);
+	int counter = 0;
+	for (unsigned int i = 0; i < NUM_TREE_TYPES; ++i) {
+		vector<vector<float> > aux = trees[i].GetTrees();
+		for (unsigned int j = 0; j < aux.size(); ++j) result[counter++] = aux[j];
+	}
+	return result;
 }
 
 void cForest::Init() {
@@ -41,11 +46,11 @@ float cForest::GetHeight(float x, float z) {
 
 	float height = 0;
 	if (x0+1 < tSize && z0+1 < tSize) {
-		height = (z-z0)*((x-x0)* floor.GetY(x0,z0)+ (1-x+x0)*floor.GetY(x0+1,z0))+(1-z+z0)*((x-x0)*floor.GetY(x0,z0+1) + (1-x+x0)*floor.GetY(x0+1,z0+1));
+		height = (1-z+z0)*((1-x+x0)*floor.GetY(x0,z0)+(x-x0)*floor.GetY(x0+1,z0))+(z-z0)*((1-x+x0)*floor.GetY(x0,z0+1) + (x-x0)*floor.GetY(x0+1,z0+1));
 	} else if (x0+1 < tSize) {
-		height = ((x-x0)* floor.GetY(x0,z0)+ (1-x+x0)*floor.GetY(x0+1,z0));
+		height = ((1-x+x0)*floor.GetY(x0,z0)+ (x-x0)*floor.GetY(x0+1,z0));
 	} else if (z0+1 < tSize) {
-		height = (z-z0)*(floor.GetY(x0,z0))+(1-z+z0)*(floor.GetY(x0,z0+1));
+		height = (1-z+z0)*(floor.GetY(x0,z0))+(z-z0)*(floor.GetY(x0,z0+1));
 	} else {
 		height = floor.GetY(x0,z0);
 	}
