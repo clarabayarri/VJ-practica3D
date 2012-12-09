@@ -8,7 +8,7 @@
 #define TREE_PLANES		2
 
 /*****  Number of Textures  *****/
-#define NUM_IMG		10
+#define NUM_IMG		11
 
 /*****  Texture Identifiers  *****/
 #define IMG_GRASS	0
@@ -21,6 +21,7 @@
 #define IMG_FLOOR1	7
 #define IMG_FLOOR2	8
 #define IMG_SKYDOME	9
+#define IMG_SENGLAR 10
 
 /*****  Number of Sounds  *****/
 #define NUM_AMBIENT_SOUNDS	1

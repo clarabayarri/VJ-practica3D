@@ -39,11 +39,9 @@ void cSceneMap::Init(const vector<vector<float> >& trees) {
 		glColor3f(0.106,0.369,0.125);
 		glBegin(GL_POINTS);
 		for (unsigned int j = 0; j < trees.size(); ++j) {
-			for (int i = 0; i < TREE_PLANES; ++i) {
-				float x = trees[j][0];
-				float z = trees[j][2];
-				glVertex2f(3*x + MAP_MARGIN,3*z + MAP_MARGIN);
-			}
+			float x = trees[j][0];
+			float z = trees[j][2];
+			glVertex2f(3*x + MAP_MARGIN,3*z + MAP_MARGIN);
 		}
 		glEnd();
 	glEndList();

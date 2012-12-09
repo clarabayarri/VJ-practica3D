@@ -1,5 +1,4 @@
 #include "cTimeGauge.h"
-#include <openglut.h>
 #include <sstream>
 #include <string>
 #include <iostream>
@@ -23,7 +22,7 @@ void cTimeGauge::Draw(cData *Data)
 {
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
-	gluOrtho2D(0, 2, 1, 0);
+	gluOrtho2D(0.0, 2.0, 1.0, 0.0);
 
 	CurrentTime = time(&CurrentTime);
 	double Difference = difftime(CurrentTime, StartTime);
@@ -31,10 +30,10 @@ void cTimeGauge::Draw(cData *Data)
 
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
-	glColor3f(0.2,0.2,0.2);
-	glTranslatef(0,0,-0.1);
+	glColor3f(0.2f,0.2f,0.2f);
+	glTranslatef(0.0f,0.0f,-0.1f);
 	glRasterPos2i(0, 0);
-	glutBitmapString(GLUT_BITMAP_HELVETICA_12, (const unsigned char *) text.c_str());
+	glutBitmapString(GLUT_BITMAP_HELVETICA_18, (const unsigned char *) text.c_str());
 }
 
 string cTimeGauge::FormatTime(double Difference)

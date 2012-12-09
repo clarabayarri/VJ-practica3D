@@ -3,6 +3,7 @@
 #pragma comment(lib,"OpenGLUT")
 
 #include "cData.h"
+#include "Globals.h"
 #include <ctime>
 using namespace std;
 
