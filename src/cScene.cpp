@@ -9,9 +9,8 @@ void cScene::Init() {
 	forest.Init();
 }
 
-cForest* cScene::GetForest()
-{
-	return &forest;
+vector<vector<float> > cScene::GetForest() {
+	return forest.GetTrees();
 }
 
 bool cScene::LoadLevel(int level)
@@ -88,40 +87,25 @@ void cScene::DrawGrass(cData *Data) {
 }**/
 
 /**
-void cScene::MakeCubeDL(float w,float h,float d,float tw,float th,float td) {
-	dl_cube = glGenLists(1);
-	glNewList(dl_cube,GL_COMPILE);
-		glBegin(GL_QUADS);
-			// Front Face
-			glTexCoord2f(0.0f, 0.0f); glVertex3f(0, 0,  0);
-			glTexCoord2f(  tw, 0.0f); glVertex3f(w, 0,  0);
-			glTexCoord2f(  tw,   th); glVertex3f(w, h,  0);
-			glTexCoord2f(0.0f,   th); glVertex3f(0, h,  0);
-			// Back Face
-			glTexCoord2f(  tw, 0.0f); glVertex3f(0, 0, -d);
-			glTexCoord2f(  tw,   th); glVertex3f(0, h, -d);
-			glTexCoord2f(0.0f,   th); glVertex3f(w, h, -d);
-			glTexCoord2f(0.0f, 0.0f); glVertex3f(w, 0, -d);
-			// Right face
-			glTexCoord2f(  td, 0.0f); glVertex3f(w, 0, -d);
-			glTexCoord2f(  td,   th); glVertex3f(w, h, -d);
-			glTexCoord2f(0.0f,   th); glVertex3f(w, h,  0);
-			glTexCoord2f(0.0f, 0.0f); glVertex3f(w, 0,  0);
-			// Left Face
-			glTexCoord2f(0.0f, 0.0f); glVertex3f(0, 0, -d);
-			glTexCoord2f(  td, 0.0f); glVertex3f(0, 0,  0);
-			glTexCoord2f(  td,   th); glVertex3f(0, h,  0);
-			glTexCoord2f(0.0f,   th); glVertex3f(0, h, -d);
-			// Bottom Face
-			/*glTexCoord2f(  tw,   td); glVertex3f(0, 0, -d);
-			glTexCoord2f(0.0f,   td); glVertex3f(w, 0, -d);
-			glTexCoord2f(0.0f, 0.0f); glVertex3f(w, 0,  0);
-			glTexCoord2f(  tw, 0.0f); glVertex3f(0, 0,  0);
-			// Top Face
-			glTexCoord2f(0.0f,   td); glVertex3f(0, h, -d);
-			glTexCoord2f(0.0f, 0.0f); glVertex3f(0, h,  0);
-			glTexCoord2f(  tw, 0.0f); glVertex3f(w, h,  0);
-			glTexCoord2f(  tw,   td); glVertex3f(w, h, -d);
+void cScene::MakeGrassDL() {
+	srand(100);
+	grassPosition = vector<pair<float,float> >(GRASS_NUMBER);
+	grassRotation = vector<float>(GRASS_NUMBER);
+	for (int i = 0; i < GRASS_NUMBER; ++i) {
+		grassPosition[i] = pair<float,float>(((float)(rand()%1000))/100,((float)(rand()%1000))/100);
+		grassRotation[i] = (float) (rand()%45);
+		if(rand()%2 == 0) grassRotation[i] = 180-grassRotation[i];
+	}
+
+	dl_grass = glGenLists(1);
+	glNewList(dl_grass,GL_COMPILE);
+		glBegin(GL_QUADS);			
+		for (int i = 0; i < GRASS_PLANES; ++i) {
+			glTexCoord2f(0.0f, 1.0f); glVertex3f(-cos((180.0/GRASS_PLANES*i)*PI/180.0), 0,  sin((180.0/GRASS_PLANES*i)*PI/180.0));
+			glTexCoord2f(1.0f, 1.0f); glVertex3f(cos((180.0/GRASS_PLANES*i)*PI/180.0), 0,  -sin((180.0/GRASS_PLANES*i)*PI/180.0));
+			glTexCoord2f(1.0f, 0.0f); glVertex3f(cos((180.0/GRASS_PLANES*i)*PI/180.0), 2,  -sin((180.0/GRASS_PLANES*i)*PI/180.0));
+			glTexCoord2f(0.0f, 0.0f); glVertex3f(-cos((180.0/GRASS_PLANES*i)*PI/180.0), 2,  sin((180.0/GRASS_PLANES*i)*PI/180.0));
+		}
 		glEnd();
 	glEndList();
 }**/

@@ -20,6 +20,7 @@ void CustomShaderManager::initShaders()
 	// Init existing shaders according to defined constants
 	// Atention: make sure you add them in the same order as constants!!
     compileShader("crt_display");
+	compileShader("height");
 }
 
 void printShaderInfoLog(GLint shader) {

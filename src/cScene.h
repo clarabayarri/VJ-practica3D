@@ -29,7 +29,7 @@ public:
 	void renderBillBoard();
 	float GetHeight(float x, float z);
 
-	cForest *GetForest();
+	vector<vector<float> > GetForest();
 
 private:
 	cForest forest;	

@@ -1,9 +1,6 @@
 #include "cGame.h"
 #include "Globals.h"
 
-#define STEP_SIZE 1
-#define ANGLE_STEP_SIZE 5
-
 cGame::cGame(void) {}
 cGame::~cGame(void){}
 
@@ -15,15 +12,12 @@ bool cGame::Init()
 	//Positions initialization
 	mouseX = -1;
 	mouseY = -1;
-	ballX = 0;
-	ballZ = 0;
-	ballAngle = 0;
 
 	//Graphics initialization
 	glClearColor(0.0f,0.0f,0.0f,0.0f);
 	
 	glEnable(GL_DEPTH_TEST);
-	glAlphaFunc(GL_GREATER, 0.05f);
+	glAlphaFunc(GL_GREATER, 0.5f);
 	glEnable(GL_ALPHA_TEST);
 
 	// Shader initialization
@@ -33,10 +27,11 @@ bool cGame::Init()
 	res = Data.Init();
 	if (!res) return false;
 	Scene.Init();
-	ScreenExtras.init(Scene.GetForest());
+	ScreenExtras.Init(Scene.GetForest());
 	res = Scene.LoadLevel(1);
 	if(!res) return false;
 
+	skydome.Init();
 
 	return res;
 }
@@ -83,28 +78,26 @@ bool cGame::Process()
 	if(keys[27])	res=false;	
 	
 	//Game Logic
-	float x = ballX;
-	float z = ballZ;
-	//Ball movement
+	//Player movement
 	if(keys['e']) {
-		ballX += STEP_SIZE * sin((90-ballAngle)*0.0174532925);
-		ballZ += STEP_SIZE * sin(ballAngle*0.0174532925);
+		Player.MoveRight();
 	}
 	if(keys['w']) {
-		ballX += STEP_SIZE * cos((90-ballAngle)*0.0174532925);
-		ballZ -= STEP_SIZE * cos(ballAngle*0.0174532925);
+		Player.MoveForward();
 	}
 	if(keys['q']) {
-		ballX -= STEP_SIZE * sin((90-ballAngle)*0.0174532925);
-		ballZ -= STEP_SIZE * sin(ballAngle*0.0174532925);
+		Player.MoveLeft();
 	}
 	if(keys['s']) {
-		ballX -= STEP_SIZE * cos((90-ballAngle)*0.0174532925);
-		ballZ += STEP_SIZE * cos(ballAngle*0.0174532925);
+		Player.MoveBackward();
 	}
-	if(keys['a']) ballAngle -= ANGLE_STEP_SIZE;
-	if(keys['d']) ballAngle += ANGLE_STEP_SIZE;
+	if(keys['a']) Player.RotateLeft();
+	if(keys['d']) Player.RotateRight();
 
+	//if(ballX < 0) ballX = 0;
+	//if(ballZ < 0) ballZ = 0;
+	//if(ballX > (TERRAIN_SIZE-1)*DILATATION) ballX = (TERRAIN_SIZE-1)*DILATATION;
+	//if(ballZ > (TERRAIN_SIZE-1)*DILATATION) ballZ = (TERRAIN_SIZE-1)*DILATATION;
 	return res;
 }
 
@@ -117,23 +110,29 @@ void cGame::Render() {
 	gluPerspective(45.0,(float)SCREEN_WIDTH/(float)SCREEN_HEIGHT,0.1,100);
 	
 	glMatrixMode(GL_MODELVIEW);
-	glLoadIdentity();
 	
+	// Dibuizar Skydome
+	glLoadIdentity();
+	glTranslatef(0,-2,0);
+	glRotatef(Player.orientationAngle,0,1,0);
+	skydome.Render(&Data);
+
 	// Dibuixar pilota
 	// Personatge.Draw()
+	glLoadIdentity();
 	glRotatef(-CAMERA_ANGLE_TO_PLAYER,1,0,0);
 	glTranslatef(0,0,-CAMERA_DIST_TO_PLAYER);
 	GLUquadricObj *q = gluNewQuadric();
-		gluSphere(q, 1,16,16);
+		gluSphere(q, 0.1,16,16);
 		gluDeleteQuadric(q);
 
 	// Dibuixar escena
 	glLoadIdentity();
-	glTranslatef(0,sin(-CAMERA_ANGLE_TO_PLAYER*0.0174532925)*CAMERA_DIST_TO_PLAYER,-CAMERA_DIST_TO_PLAYER);
-	glRotatef(ballAngle,0,1,0);
-	glTranslatef(-ballX,0,-ballZ);
-
+	glTranslatef(0,sin(-CAMERA_ANGLE_TO_PLAYER*0.0174532925)*CAMERA_DIST_TO_PLAYER-Scene.GetHeight(Player.x/DILATATION,Player.z/DILATATION),-CAMERA_DIST_TO_PLAYER);
+	glRotatef(Player.orientationAngle,0,1,0);
+	glTranslatef(-Player.x,0,-Player.z);
+	
 	Scene.Draw(&Data, &shaderManager);
-	ScreenExtras.Draw(&Data);
+	ScreenExtras.Draw(&Data, Player.GetPosition());
 	glutSwapBuffers();
 }

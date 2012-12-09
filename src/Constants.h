@@ -8,7 +8,7 @@
 #define TREE_PLANES		2
 
 /*****  Number of Textures  *****/
-#define NUM_IMG		9
+#define NUM_IMG		10
 
 /*****  Texture Identifiers  *****/
 #define IMG_GRASS	0
@@ -20,6 +20,7 @@
 #define IMG_TREE5	6
 #define IMG_FLOOR1	7
 #define IMG_FLOOR2	8
+#define IMG_SKYDOME	9
 
 /*****  Number of Sounds  *****/
 #define NUM_AMBIENT_SOUNDS	1
@@ -33,10 +34,13 @@
 /*****  Terrain Constants  *****/
 #define TERRAIN_SIZE 		32
 #define OVERLAPPED_SURFACES	1
-#define LODS             	4
+#define LODS             	5
 #define DILATATION          2
 
 /*****  Shaders  *****/
 #define SHADER_NONE -1
-#define SHADER_CRT_DISPLAY 0
+#define SHADER_CRT_DISPLAY	0
 #define SHADER_FLOOR		1
+
+/*****  Skydome  *****/
+#define SKY_SIZE 5

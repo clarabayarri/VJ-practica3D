@@ -25,7 +25,7 @@ bool cData::LoadImage(int img, char *filename, int type, bool minf) {
 
 bool cData::Init() {
 	if(LoadImage(IMG_GRASS,	"textures/grass.png",GL_RGBA))
-	if(LoadImage(IMG_FENCE,	"textures/fence.png",GL_RGBA,true))
+	if(LoadImage(IMG_FENCE,	"textures/fencefeather.png",GL_RGBA,true))
 	if(LoadImage(IMG_TREE1,	"textures/tree1.png",GL_RGBA))
 	if(LoadImage(IMG_TREE2,	"textures/tree2.png",GL_RGBA))
 	if(LoadImage(IMG_TREE3,	"textures/tree3.png",GL_RGBA))
@@ -33,6 +33,7 @@ bool cData::Init() {
 	if(LoadImage(IMG_TREE5,	"textures/tree5.png",GL_RGBA))
 	if(LoadImage(IMG_FLOOR1,"textures/grass-brown.png",GL_RGBA,true))
 	if(LoadImage(IMG_FLOOR2,"textures/grass-green.png",GL_RGBA,true))
+	if(LoadImage(IMG_SKYDOME,"textures/skydome1.png",GL_RGBA,true))
 		return true;
 
 	return false;

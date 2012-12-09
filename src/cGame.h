@@ -4,6 +4,8 @@
 #include "cData.h"
 #include "customshadermanager.h"
 #include "cScreenExtras.h"
+#include "cAnimatedCharacter.h"
+#include "cSkydome.h"
 #include "Constants.h"
 
 #define CAMERA_DIST_TO_PLAYER 10
@@ -21,7 +23,7 @@ public:
 
 	//Input
 	void ReadKeyboard(unsigned char key, int x, int y, bool press);
-		void ReadSpecialKeyboard(unsigned char key, int x, int y, bool press);
+	void ReadSpecialKeyboard(unsigned char key, int x, int y, bool press);
 	void ReadMouse(int button, int state, int x, int y);
 	//Process
 	bool Process();
@@ -31,13 +33,13 @@ public:
 private:
 	unsigned char keys[256];
 	unsigned char skeys[256];
+
 	cScene Scene;
 	cScreenExtras ScreenExtras;
 	cData Data;
-	
-	float ballX;
-	float ballZ;
-	float ballAngle;
+	cSkydome skydome;
+
+	cAnimatedCharacter Player;
 
 	int mouseX;
 	int mouseY;
