@@ -11,6 +11,7 @@ cScreenExtras::~cScreenExtras(void)
 
 void cScreenExtras::Init(const vector<vector<float> >& trees) {
 	SceneMap.Init(trees);
+	TimeGauge.Init();
 }
 
 void cScreenExtras::Draw(cData *Data, const vector<float>& player)
