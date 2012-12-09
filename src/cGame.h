@@ -5,6 +5,7 @@
 #include "customshadermanager.h"
 #include "cScreenExtras.h"
 #include "cAnimatedCharacter.h"
+#include "cSkydome.h"
 #include "Constants.h"
 
 #define CAMERA_DIST_TO_PLAYER 10

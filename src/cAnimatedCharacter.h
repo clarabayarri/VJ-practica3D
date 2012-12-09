@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Globals.h"
+using namespace std;
 
 class cAnimatedCharacter
 {
@@ -20,5 +21,7 @@ public:
 	void RotateRight();
 
 	void Draw();
+
+	vector<float> GetPosition();
 };
 

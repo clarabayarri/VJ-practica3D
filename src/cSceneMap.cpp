@@ -49,7 +49,7 @@ void cSceneMap::Init(const vector<vector<float> >& trees) {
 	glEndList();
 }
 
-void cSceneMap::Draw(cData *Data, cAnimatedCharacter *player)
+void cSceneMap::Draw(cData *Data, const vector<float>& player)
 {
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
@@ -67,7 +67,7 @@ void cSceneMap::Draw(cData *Data, cAnimatedCharacter *player)
 	glPointSize(3.0f);
 	glColor3f(0.874,0.106,0.416);
 	glBegin(GL_POINTS);
-		glVertex3f(3*player->x + MAP_MARGIN,3*player->z + MAP_MARGIN, 0.1);
+		glVertex3f(3*player[0] + MAP_MARGIN,3*player[2] + MAP_MARGIN, 0.1);
 	glEnd();
 
 	// Clear colors

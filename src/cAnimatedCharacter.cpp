@@ -47,3 +47,12 @@ void cAnimatedCharacter::Draw()
 	gluSphere(q, 0.1,16,16);
 	gluDeleteQuadric(q);
 }
+
+vector<float> cAnimatedCharacter::GetPosition()
+{
+	vector<float> position(3);
+	position[0] = x;
+	position[1] = 0;
+	position[2] = z;
+	return position;
+}

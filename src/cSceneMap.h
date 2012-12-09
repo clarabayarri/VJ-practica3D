@@ -1,7 +1,6 @@
 #pragma once
 
 #include "cData.h"
-#include "cAnimatedCharacter.h"
 #include "Constants.h"
 using namespace std;
 
@@ -13,7 +12,7 @@ public:
 
 	void Init(const vector<vector<float> >& trees);
 
-	void Draw(cData *Data, cAnimatedCharacter *player);
+	void Draw(cData *Data, const vector<float>& player);
 
 private:
 	int dlId;

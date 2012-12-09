@@ -14,7 +14,7 @@ public:
 	~cScreenExtras(void);
 
 	void Init(const vector<vector<float> >& trees);
-	void Draw(cData *Data, cAnimatedCharacter *Player);
+	void Draw(cData *Data, const vector<float>& player);
 
 private:
 	cTimeGauge TimeGauge;
@@ -23,6 +23,6 @@ private:
 
 	void DrawTimeGauge(cData *Data);
 	void DrawMunitionCounter(cData *Data);
-	void DrawMap(cData *Data, cAnimatedCharacter *Player);
+	void DrawMap(cData *Data, const vector<float>& player);
 };
 

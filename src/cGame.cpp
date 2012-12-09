@@ -133,6 +133,6 @@ void cGame::Render() {
 	glTranslatef(-Player.x,0,-Player.z);
 	
 	Scene.Draw(&Data, &shaderManager);
-	ScreenExtras.Draw(&Data, &Player);
+	ScreenExtras.Draw(&Data, Player.GetPosition());
 	glutSwapBuffers();
 }
