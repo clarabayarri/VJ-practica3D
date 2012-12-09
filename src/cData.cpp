@@ -33,7 +33,8 @@ bool cData::Init() {
 	if(LoadImage(IMG_TREE5,	"textures/tree5.png",GL_RGBA))
 	if(LoadImage(IMG_FLOOR1,"textures/grass-brown.png",GL_RGBA,true))
 	if(LoadImage(IMG_FLOOR2,"textures/grass-green.png",GL_RGBA,true))
-	if(LoadImage(IMG_SKYDOME,"textures/skydome1.png",GL_RGBA,true))
+	if(LoadImage(IMG_SKY1,"textures/skydome6.png",GL_RGBA,true))
+	if(LoadImage(IMG_SKY2,"textures/skydome2clouds.png",GL_RGBA,true))
 	if(LoadImage(IMG_SENGLAR,"textures/senglar.png",GL_RGBA,true))
 		return true;
 

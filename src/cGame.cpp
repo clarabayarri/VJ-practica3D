@@ -116,6 +116,8 @@ void cGame::Render() {
 	glTranslatef(0,-2,0);
 	glRotatef(Player.orientationAngle,0,1,0);
 	skydome.Render(&Data);
+	glRotatef((float) (glutGet(GLUT_ELAPSED_TIME)%360000)/1000,0,1,0);
+	clouds.Render(&Data);
 
 	// Dibuixar pilota
 	// Personatge.Draw()

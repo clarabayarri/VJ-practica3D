@@ -38,6 +38,7 @@ private:
 	cScreenExtras ScreenExtras;
 	cData Data;
 	cSkydome skydome;
+	cSkydome clouds;
 
 	cAnimatedCharacter Player;
 
