@@ -36,7 +36,8 @@ private:
 	cScene Scene;
 	cScreenExtras ScreenExtras;
 	cData Data;
-	
+	cSkydome skydome;
+
 	cAnimatedCharacter Player;
 
 	int mouseX;

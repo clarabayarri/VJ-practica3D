@@ -31,6 +31,8 @@ bool cGame::Init()
 	res = Scene.LoadLevel(1);
 	if(!res) return false;
 
+	skydome.Init();
+
 	return res;
 }
 
@@ -108,10 +110,16 @@ void cGame::Render() {
 	gluPerspective(45.0,(float)SCREEN_WIDTH/(float)SCREEN_HEIGHT,0.1,100);
 	
 	glMatrixMode(GL_MODELVIEW);
-	glLoadIdentity();
 	
+	// Dibuizar Skydome
+	glLoadIdentity();
+	glTranslatef(0,-2,0);
+	glRotatef(Player.orientationAngle,0,1,0);
+	skydome.Render(&Data);
+
 	// Dibuixar pilota
 	// Personatge.Draw()
+	glLoadIdentity();
 	glRotatef(-CAMERA_ANGLE_TO_PLAYER,1,0,0);
 	glTranslatef(0,0,-CAMERA_DIST_TO_PLAYER);
 	GLUquadricObj *q = gluNewQuadric();
