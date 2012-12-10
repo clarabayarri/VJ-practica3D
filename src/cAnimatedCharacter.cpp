@@ -7,6 +7,19 @@ cAnimatedCharacter::cAnimatedCharacter(void):x(5),z(5){}
 
 cAnimatedCharacter::~cAnimatedCharacter(void){}
 
+void cAnimatedCharacter::SetXZ(float setx, float setz) {
+	SetX(setx);
+	SetZ(setz);
+}
+
+void cAnimatedCharacter::SetX(float setx) {
+	x = setx;
+}
+
+void cAnimatedCharacter::SetZ(float setz) {
+	z = setz;
+}
+
 void cAnimatedCharacter::MoveForward()
 {
 	x += STEP_SIZE * (float) cos((90-orientationAngle)*0.0174532925);

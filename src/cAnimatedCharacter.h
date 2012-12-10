@@ -13,6 +13,9 @@ public:
 	cAnimatedCharacter(void);
 	~cAnimatedCharacter(void);
 
+	void SetXZ(float setx, float setz);
+	void SetX(float setx);
+	void SetZ(float setz);
 	void MoveForward();
 	void MoveBackward();
 	void MoveLeft();

@@ -33,7 +33,7 @@ void cTreeForest::Init(const vector<vector<float> >& t, int tex) {
 
 void cTreeForest::Render(cData * data) {
 	glEnable(GL_TEXTURE_2D);
-	glAlphaFunc(GL_GREATER, 0.2f);
+	glAlphaFunc(GL_GREATER, 0.1f);
 	glEnable(GL_ALPHA_TEST);
 	glBindTexture(GL_TEXTURE_2D,data->GetID(texId));
 	glCallList(dlId);

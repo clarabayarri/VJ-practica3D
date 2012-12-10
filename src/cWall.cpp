@@ -51,7 +51,10 @@ void cWall::Init(cFloor * floor) {
 
 void cWall::Render(cData * data) {
 	glEnable(GL_TEXTURE_2D);
+	glAlphaFunc(GL_GREATER, 0.2f);
+	glEnable(GL_ALPHA_TEST);
 	glBindTexture(GL_TEXTURE_2D,data->GetID(IMG_FENCE));
 	cVBO::Render();
 	glDisable(GL_TEXTURE_2D);
+	glDisable(GL_ALPHA_TEST);
 }

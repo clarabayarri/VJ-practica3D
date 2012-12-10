@@ -39,6 +39,8 @@ bool cGame::Init()
 	InitialZoomAngle = INITIAL_ZOOM_TOTAL_ROTATION_ANGLE;
 	InitialZoomDistance = INITIAL_ZOOM_TOTAL_DISTANCE;
 
+	Player.SetXZ((float) TERRAIN_SIZE,(float) TERRAIN_SIZE);
+
 	return res;
 }
 
