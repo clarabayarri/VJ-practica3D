@@ -28,13 +28,16 @@ bool cGame::Init()
 	if (!res) return false;
 	Scene.Init();
 	ScreenExtras.Init(Scene.GetForest());
-	res = Scene.LoadLevel(1);
+	//res = Scene.LoadLevel(1);
 	if(!res) return false;
 
 	skydome.Init();
 	skydome.SetTexId(IMG_SKY1);
 	clouds.Init();
 	clouds.SetTexId(IMG_SKY2);
+
+	InitialZoomAngle = INITIAL_ZOOM_TOTAL_ROTATION_ANGLE;
+	InitialZoomDistance = INITIAL_ZOOM_TOTAL_DISTANCE;
 
 	return res;
 }
@@ -77,11 +80,14 @@ bool cGame::Process()
 {
 	bool res=true;
 	
-	//Process Input
+	// Process Input
 	if(keys[27])	res=false;	
+
+	// Omit keys while zooming into the scene
+	if(InitialZoomDistance > 0) return res;
 	
-	//Game Logic
-	//Player movement
+	// Game Logic
+	// Player movement
 	if(keys['e']) {
 		Player.MoveRight();
 	}
@@ -122,22 +128,25 @@ void cGame::Render() {
 	glRotatef((float) (glutGet(GLUT_ELAPSED_TIME)%360000)/1000,0,1,0);
 	clouds.Render(&Data);
 
-	// Dibuixar pilota
-	// Personatge.Draw()
+	float TotalDistanceToPlayer = CAMERA_DIST_TO_PLAYER + InitialZoomDistance;
+	float TotalRotationAngle = Player.orientationAngle + InitialZoomAngle;
+
+	// Dibuixar personatge
 	glLoadIdentity();
-	glRotatef(-CAMERA_ANGLE_TO_PLAYER,1,0,0);
-	glTranslatef(0,0,-CAMERA_DIST_TO_PLAYER);
-	GLUquadricObj *q = gluNewQuadric();
-		gluSphere(q, 0.1,16,16);
-		gluDeleteQuadric(q);
+	glRotatef(-CAMERA_ANGLE_TO_PLAYER, 1, 0, 0);
+	glTranslatef(0, 0, -TotalDistanceToPlayer);
+	Player.Draw();
 
 	// Dibuixar escena
 	glLoadIdentity();
-	glTranslatef(0.0f,(float) sin(-CAMERA_ANGLE_TO_PLAYER*0.0174532925)*CAMERA_DIST_TO_PLAYER-Scene.GetHeight(Player.x/DILATATION,Player.z/DILATATION),-CAMERA_DIST_TO_PLAYER);
-	glRotatef(Player.orientationAngle,0,1,0);
-	glTranslatef(-Player.x,0,-Player.z);	
+	glTranslatef(0.0f, (float) sin(-CAMERA_ANGLE_TO_PLAYER*0.0174532925)*TotalDistanceToPlayer-Scene.GetHeight(Player.x/DILATATION,Player.z/DILATATION), -TotalDistanceToPlayer);
+	glRotatef(TotalRotationAngle, 0, 1, 0);
+	glTranslatef(-Player.x, 0, -Player.z);	
 		
 	Scene.Draw(&Data, &shaderManager);
 	ScreenExtras.Draw(&Data, Player.GetPosition(), 0);
 	glutSwapBuffers();
+
+	if (InitialZoomAngle > 0) InitialZoomAngle -= INITIAL_ZOOM_ANGLE_DECREASE_STEP;
+	else if (InitialZoomDistance > 0) InitialZoomDistance -= INITIAL_ZOOM_DISTANCE_DECREASE_STEP;
 }

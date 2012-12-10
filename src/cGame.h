@@ -8,8 +8,13 @@
 #include "cSkydome.h"
 #include "Constants.h"
 
-#define CAMERA_DIST_TO_PLAYER 10.0f
-#define CAMERA_ANGLE_TO_PLAYER 20.0f
+#define CAMERA_DIST_TO_PLAYER 5.0f
+#define CAMERA_ANGLE_TO_PLAYER 15.0f
+
+#define INITIAL_ZOOM_TOTAL_ROTATION_ANGLE 360
+#define INITIAL_ZOOM_TOTAL_DISTANCE 40
+#define INITIAL_ZOOM_ANGLE_DECREASE_STEP 10
+#define INITIAL_ZOOM_DISTANCE_DECREASE_STEP 2
 
 class cGame
 {
@@ -44,6 +49,9 @@ private:
 
 	int mouseX;
 	int mouseY;
+
+	int InitialZoomAngle;
+	int InitialZoomDistance;
 
 	CustomShaderManager shaderManager;
 };
