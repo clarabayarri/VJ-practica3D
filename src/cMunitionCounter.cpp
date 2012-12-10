@@ -21,7 +21,7 @@ void cMunitionCounter::Draw(cData *Data, int count)
 
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
-	glTranslatef(0,0,-0.1f);
+	glTranslatef(0.0f,0.0f,-0.1f);
 	
 	glColor3f(0.2f,0.2f,0.2f);
 	glRasterPos2f(1.3f, 0.6f);

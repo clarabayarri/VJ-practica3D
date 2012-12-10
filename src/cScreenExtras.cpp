@@ -26,8 +26,8 @@ void cScreenExtras::DrawTimeGauge(cData *Data)
 {
 	GLuint left = SCREEN_MARGIN;
 	GLuint top = SCREEN_MARGIN;
-	GLuint right = (unsigned int) (SCREEN_WIDTH*0.2 + SCREEN_MARGIN);
-	GLuint bottom = (unsigned int) (SCREEN_HEIGHT * 0.15 + SCREEN_MARGIN);
+	GLuint right = 100 + SCREEN_MARGIN;
+	GLuint bottom = 50 + SCREEN_MARGIN;
 	glViewport(left, SCREEN_HEIGHT - bottom, right - left, bottom - top);
 
 	TimeGauge.Draw(Data);
