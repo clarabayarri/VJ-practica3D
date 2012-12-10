@@ -21,10 +21,10 @@ void cTreeForest::Init(const vector<vector<float> >& t, int tex) {
 				float x = trees[j][0];
 				float y = trees[j][1];
 				float z = trees[j][2];
-				glTexCoord2f(0.000f, 1.000f); glVertex3f(-cos((180.0/TREE_PLANES*i)*PI/180.0)+x*DILATATION	, y,	sin((180.0/TREE_PLANES*i)*PI/180.0)+z*DILATATION	);
-				glTexCoord2f(1.000f, 1.000f); glVertex3f(cos((180.0/TREE_PLANES*i)*PI/180.0)+x*DILATATION	, y,	-sin((180.0/TREE_PLANES*i)*PI/180.0)+z*DILATATION	);
-				glTexCoord2f(1.000f, 0.000f); glVertex3f(cos((180.0/TREE_PLANES*i)*PI/180.0)+x*DILATATION	, y+2,	-sin((180.0/TREE_PLANES*i)*PI/180.0)+z*DILATATION	);
-				glTexCoord2f(0.000f, 0.000f); glVertex3f(-cos((180.0/TREE_PLANES*i)*PI/180.0)+x*DILATATION	, y+2,  sin((180.0/TREE_PLANES*i)*PI/180.0)+z*DILATATION	);
+				glTexCoord2f(0.000f, 1.000f); glVertex3f((float) -cos((180.0/TREE_PLANES*i)*PI/180.0)+x*DILATATION	, y,	(float) sin((180.0/TREE_PLANES*i)*PI/180.0)+z*DILATATION	);
+				glTexCoord2f(1.000f, 1.000f); glVertex3f((float) cos((180.0/TREE_PLANES*i)*PI/180.0)+x*DILATATION	, y,	(float) -sin((180.0/TREE_PLANES*i)*PI/180.0)+z*DILATATION	);
+				glTexCoord2f(1.000f, 0.000f); glVertex3f((float) cos((180.0/TREE_PLANES*i)*PI/180.0)+x*DILATATION	, y+2,	(float) -sin((180.0/TREE_PLANES*i)*PI/180.0)+z*DILATATION	);
+				glTexCoord2f(0.000f, 0.000f); glVertex3f((float) -cos((180.0/TREE_PLANES*i)*PI/180.0)+x*DILATATION	, y+2,  (float)sin((180.0/TREE_PLANES*i)*PI/180.0)+z*DILATATION	);
 			}
 		}
 		glEnd();
@@ -33,7 +33,10 @@ void cTreeForest::Init(const vector<vector<float> >& t, int tex) {
 
 void cTreeForest::Render(cData * data) {
 	glEnable(GL_TEXTURE_2D);
+	glAlphaFunc(GL_GREATER, 0.2f);
+	glEnable(GL_ALPHA_TEST);
 	glBindTexture(GL_TEXTURE_2D,data->GetID(texId));
 	glCallList(dlId);
 	glDisable(GL_TEXTURE_2D);
+	glDisable(GL_ALPHA_TEST);
 }

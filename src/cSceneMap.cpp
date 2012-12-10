@@ -1,31 +1,26 @@
 #include "cSceneMap.h"
 
-#define MAP_MARGIN 3
+#define MAP_MARGIN 3.0f
 
-cSceneMap::cSceneMap(void)
-{
-}
+cSceneMap::cSceneMap(void) {}
 
-
-cSceneMap::~cSceneMap(void)
-{
-}
+cSceneMap::~cSceneMap(void) {}
 
 void cSceneMap::Init(const vector<vector<float> >& trees) {
 	dlId = glGenLists(1);
 	glNewList(dlId,GL_COMPILE);
 		// Draw background
-		glColor3f(0.969,0.839,0.612);
+		glColor3f(0.969f,0.839f,0.612f);
 		glBegin(GL_QUADS);
-			glVertex3f(1.0,1.0,-0.1);
-			glVertex3f(99.0,1.0,-0.1);
-			glVertex3f(99.0,99.0,-0.1);
-			glVertex3f(1.0,99.0,-0.1);
+			glVertex3f(1.0f,1.0f,-0.1f);
+			glVertex3f(99.0f,1.0f,-0.1f);
+			glVertex3f(99.0f,99.0f,-0.1f);
+			glVertex3f(1.0f,99.0f,-0.1f);
 		glEnd();
 	
 		// Draw border
-		glColor3f(0.275,0.212,0.086);
-		glLineWidth(2.0);
+		glColor3f(0.275f,0.212f,0.086f);
+		glLineWidth(2.0f);
 		glBegin(GL_LINE_LOOP);
 			glVertex2i(1,1);
 			glVertex2i(99,1);
@@ -36,7 +31,7 @@ void cSceneMap::Init(const vector<vector<float> >& trees) {
 		//Draw trees
 		glEnable(GL_POINT_SMOOTH);
 		glPointSize(2.0f);
-		glColor3f(0.106,0.369,0.125);
+		glColor3f(0.106f,0.369f,0.125f);
 		glBegin(GL_POINTS);
 		for (unsigned int j = 0; j < trees.size(); ++j) {
 			float x = trees[j][0];
@@ -55,7 +50,7 @@ void cSceneMap::Draw(cData *Data, const vector<float>& player)
 
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
-	glTranslatef(0,0,-0.2);
+	glTranslatef(0.0f,0.0f,-0.2f);
 
 	// Draw border and trees
 	glCallList(dlId);
@@ -63,9 +58,9 @@ void cSceneMap::Draw(cData *Data, const vector<float>& player)
 	// Draw player
 	glEnable(GL_POINT_SMOOTH);
 	glPointSize(3.0f);
-	glColor3f(0.874,0.106,0.416);
+	glColor3f(0.874f,0.106f,0.416f);
 	glBegin(GL_POINTS);
-		glVertex3f(3*player[0] + MAP_MARGIN,3*player[2] + MAP_MARGIN, 0.1);
+		glVertex3f(3*player[0] + MAP_MARGIN,3*player[2] + MAP_MARGIN, 0.1f);
 	glEnd();
 
 	// Clear colors

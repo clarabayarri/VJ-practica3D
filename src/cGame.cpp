@@ -17,8 +17,8 @@ bool cGame::Init()
 	glClearColor(0.0f,0.0f,0.0f,0.0f);
 	
 	glEnable(GL_DEPTH_TEST);
-	glAlphaFunc(GL_GREATER, 0.5f);
-	glEnable(GL_ALPHA_TEST);
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 	// Shader initialization
 	shaderManager.initShaders();
@@ -32,6 +32,9 @@ bool cGame::Init()
 	if(!res) return false;
 
 	skydome.Init();
+	skydome.SetTexId(IMG_SKY1);
+	clouds.Init();
+	clouds.SetTexId(IMG_SKY2);
 
 	return res;
 }
@@ -107,13 +110,13 @@ void cGame::Render() {
 
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
-	gluPerspective(45.0,(float)SCREEN_WIDTH/(float)SCREEN_HEIGHT,0.1,100);
+	gluPerspective(45.0,(float)SCREEN_WIDTH/(float)SCREEN_HEIGHT,0.01,100);
 	
 	glMatrixMode(GL_MODELVIEW);
 	
-	// Dibuizar Skydome
+	// Dibuixar Skydome
 	glLoadIdentity();
-	glTranslatef(0,-2,0);
+	glTranslatef(0.0f,-(float) SKY_SIZE/2+0.1f,0.0f);
 	glRotatef(Player.orientationAngle,0,1,0);
 	skydome.Render(&Data);
 	glRotatef((float) (glutGet(GLUT_ELAPSED_TIME)%360000)/1000,0,1,0);
@@ -130,10 +133,10 @@ void cGame::Render() {
 
 	// Dibuixar escena
 	glLoadIdentity();
-	glTranslatef(0,sin(-CAMERA_ANGLE_TO_PLAYER*0.0174532925)*CAMERA_DIST_TO_PLAYER-Scene.GetHeight(Player.x/DILATATION,Player.z/DILATATION),-CAMERA_DIST_TO_PLAYER);
+	glTranslatef(0.0f,(float) sin(-CAMERA_ANGLE_TO_PLAYER*0.0174532925)*CAMERA_DIST_TO_PLAYER-Scene.GetHeight(Player.x/DILATATION,Player.z/DILATATION),-CAMERA_DIST_TO_PLAYER);
 	glRotatef(Player.orientationAngle,0,1,0);
-	glTranslatef(-Player.x,0,-Player.z);
-	
+	glTranslatef(-Player.x,0,-Player.z);	
+		
 	Scene.Draw(&Data, &shaderManager);
 	ScreenExtras.Draw(&Data, Player.GetPosition(), 0);
 	glutSwapBuffers();

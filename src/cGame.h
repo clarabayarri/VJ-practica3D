@@ -8,8 +8,8 @@
 #include "cSkydome.h"
 #include "Constants.h"
 
-#define CAMERA_DIST_TO_PLAYER 10
-#define CAMERA_ANGLE_TO_PLAYER 20
+#define CAMERA_DIST_TO_PLAYER 10.0f
+#define CAMERA_ANGLE_TO_PLAYER 20.0f
 
 class cGame
 {

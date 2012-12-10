@@ -28,6 +28,7 @@ public:
 	int *GetMap();
 	void renderBillBoard();
 	float GetHeight(float x, float z);
+	float GetMinY();
 
 	vector<vector<float> > GetForest();
 

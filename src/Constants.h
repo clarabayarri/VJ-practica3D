@@ -37,12 +37,9 @@
 #define TERRAIN_SIZE 		32
 #define OVERLAPPED_SURFACES	1
 #define LODS             	5
-#define DILATATION          2
+#define DILATATION          2.0f
 
 /*****  Shaders  *****/
-#define SHADER_NONE -1
+#define SHADER_NONE			-1
 #define SHADER_CRT_DISPLAY	0
 #define SHADER_FLOOR		1
-
-/*****  Skydome  *****/
-#define SKY_SIZE 1

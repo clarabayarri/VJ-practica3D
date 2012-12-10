@@ -4,6 +4,8 @@
 #include "cFloor.h"
 #include "cData.h"
 
+#define WALL_HEIGHT 1.5f
+
 class cWall : public cVBO {
 public:
 	cWall(void);

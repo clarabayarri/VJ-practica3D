@@ -13,6 +13,7 @@ public:
 	void Init();
 	void Render(cData * data, CustomShaderManager * shader);
 	float GetHeight(float x, float z);
+	float GetMinY();
 
 	vector<vector<float> > GetTrees();
 

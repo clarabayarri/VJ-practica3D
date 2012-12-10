@@ -10,4 +10,5 @@
 #include <vector>
 #include <time.h>
 
-#define PI 3.141592654
+/***** Pi ****/
+#define PI 3.141592654f

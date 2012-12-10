@@ -2,7 +2,8 @@
 
 #include "cVBO.h"
 #include "cData.h"
-#include "Constants.h"
+
+#define SKY_SIZE 1.0f
 
 class cSkydome : public cVBO {
 public:
@@ -11,5 +12,8 @@ public:
 
 	void Init();
 	void Render(cData * data);
+	void SetTexId(int id);
+private:
+	int texId;
 };
 

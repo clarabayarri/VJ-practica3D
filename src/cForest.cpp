@@ -23,11 +23,11 @@ void cForest::Init() {
 	for (int i = 0; i < NUM_TREES; ++i) counter[rand()%5]++;
 	for (int i = 0; i < NUM_TREE_TYPES; ++i) {
 		vector<vector<float> > coords(counter[i],vector<float>(3));
-		int size = (floor.GetSize()-2);
+		int size = (int) (floor.GetSize()-2);
 		for (int j = 0; j < counter[i]; ++j) {
-			coords[j][0] = ((rand()%size+1));
-			coords[j][2] = ((rand()%size+1));
-			coords[j][1] = floor.GetY(coords[j][0],coords[j][2]);
+			coords[j][0] = (float) ((rand()%size+1));
+			coords[j][2] = (float) ((rand()%size+1));
+			coords[j][1] = GetHeight(coords[j][0], coords[j][2]);
 		}
 		trees[i].Init(coords,IMG_TREE1+i);
 	}
@@ -40,9 +40,9 @@ void cForest::Render(cData * data, CustomShaderManager * shader) {
 }
 
 float cForest::GetHeight(float x, float z) {
-	float x0 = std::floor(x);
-	float z0 = std::floor(z);
-	int tSize = floor.GetSize();
+	int x0 = (int) std::floor(x);
+	int z0 = (int) std::floor(z);
+	int tSize = (int) floor.GetSize();
 
 	float height = 0;
 	if (x0+1 < tSize && z0+1 < tSize) {
@@ -56,4 +56,8 @@ float cForest::GetHeight(float x, float z) {
 	}
 
 	return height;
+}
+
+float cForest::GetMinY() {
+	return floor.GetMinY();
 }

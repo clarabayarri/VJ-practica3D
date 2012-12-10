@@ -1,7 +1,7 @@
 #include "cSkydome.h"
 using namespace std;
 
-cSkydome::cSkydome(void) {}
+cSkydome::cSkydome(void):texId(0) {}
 
 cSkydome::~cSkydome(void) {}
 
@@ -18,7 +18,7 @@ void cSkydome::Init() {
 			float p = ((float) phi*10)*PI/180;
 			vertices[theta*37+phi] = vertex(cos(t)*cos(p)*SKY_SIZE,sin(t)*SKY_SIZE,cos(t)*sin(p)*SKY_SIZE,
 											-cos(t)*cos(p),-sin(t),-cos(t)*sin(p));
-			textures[theta*37+phi] = pair<float,float>((float) phi/36,1-(float) theta/9);
+			textures[theta*37+phi] = pair<float,float>((float) phi/36.0f,0.5f-(float) theta/18.0f);
 		}
 
 	for (unsigned int theta = 0; theta < 9; ++theta) {
@@ -36,8 +36,12 @@ void cSkydome::Init() {
 void cSkydome::Render(cData * data) {
 	glDisable(GL_DEPTH_TEST);
 	glEnable(GL_TEXTURE_2D);
-	glBindTexture(GL_TEXTURE_2D,data->GetID(IMG_SKYDOME));
+	glBindTexture(GL_TEXTURE_2D,data->GetID(texId));
 	cVBO::Render();
 	glEnable(GL_DEPTH_TEST);
 	glDisable(GL_TEXTURE_2D);
+}
+
+void cSkydome::SetTexId(int id) {
+	texId = id;
 }

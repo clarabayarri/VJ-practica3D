@@ -17,12 +17,12 @@ void print(const vector<vector<float> >& terrain) {
 void RandomInit(vector<vector<float> >& terrain) {
     for (unsigned int i = 0; i < terrain.size(); ++i)
         for (unsigned int j = 0; j < terrain.size(); ++j)
-            terrain[i][j] = rand()%(TERRAIN_SIZE)-TERRAIN_SIZE/2;
+            terrain[i][j] = (float) (rand()%(TERRAIN_SIZE)-TERRAIN_SIZE/2);
 }
 
 float getBilinearFilteredPixelColor(const vector<vector<float> >& tex, double i, double j) {
-   int x = i/2;
-   int y = j/2;
+   int x = (int) (i/2);
+   int y = (int) (j/2);
    int xx = (x+1)%tex.size();
    int yy = (y+1)%tex.size();
    return (tex[x][y]+tex[x][yy]+tex[xx][y]+tex[xx][yy])/4;
@@ -40,13 +40,13 @@ void GenerateSurface(vector<vector<float> >& terrain) {
     float normalize = 1.0;
     float reduction = 2;
     for (unsigned int i = 0; i < LODS; ++i) {
-        vector<vector<float> > lod(TERRAIN_SIZE/reduction,vector<float>(TERRAIN_SIZE/reduction));
+        vector<vector<float> > lod((unsigned int) (TERRAIN_SIZE/reduction),vector<float>((unsigned int) (TERRAIN_SIZE/reduction)));
         RandomInit(lod);
 
         vector<vector<float> > aux;
         float augmentation = reduction/2;
         for (unsigned int j = 0; j < i+1; ++j) {
-            aux = vector<vector<float> >(TERRAIN_SIZE/augmentation,vector<float>(TERRAIN_SIZE/augmentation));
+            aux = vector<vector<float> >((unsigned int) (TERRAIN_SIZE/augmentation),vector<float>((unsigned int) (TERRAIN_SIZE/augmentation)));
             for (unsigned int i = 0; i < aux.size(); ++i)
                 for (unsigned int j = 0; j < aux.size(); ++j)
                     aux[i][j] = getBilinearFilteredPixelColor(lod,i,j);
@@ -54,7 +54,7 @@ void GenerateSurface(vector<vector<float> >& terrain) {
             augmentation = augmentation/2;
         }
 
-        add(terrain,lod,reduction);
+        add(terrain,lod,(int) reduction);
         normalize+=reduction;
         reduction*=2;
     }
@@ -78,7 +78,7 @@ cFloor::cFloor():ready(false) {}
 cFloor::~cFloor(){}
 
 void cFloor::Init() {
-	srand(time(NULL));
+	srand((unsigned int) time(NULL));
 
 	maxy = -TERRAIN_SIZE;
 	miny = TERRAIN_SIZE;
