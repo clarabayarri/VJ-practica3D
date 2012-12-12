@@ -111,25 +111,32 @@ bool cGame::Process()
 	if(keys['p']) {
 		WireframeRendering = !WireframeRendering;
 		keys['p'] = false;
+		if(!WireframeRendering) {
+			CameraDist = DEFAULT_CAMERA_DIST_TO_PLAYER;
+			CameraAngle = DEFAULT_CAMERA_ANGLE_TO_PLAYER;
+		}
 	}
 
 	// Camera angle and distance to player
-	if(keys['8']) {
-		CameraDist--;
-		if (CameraDist < DEFAULT_CAMERA_DIST_TO_PLAYER) CameraDist = DEFAULT_CAMERA_DIST_TO_PLAYER;
+	if(WireframeRendering) {
+		if(keys['8']) {
+			CameraDist--;
+			if (CameraDist < DEFAULT_CAMERA_DIST_TO_PLAYER) CameraDist = DEFAULT_CAMERA_DIST_TO_PLAYER;
+		}
+		if(keys['2']) {
+			CameraDist++;
+			if (CameraDist > DEFAULT_CAMERA_DIST_TO_PLAYER*8) CameraDist = DEFAULT_CAMERA_DIST_TO_PLAYER*8;
+		}
+		if(keys['4']) {
+			CameraAngle--;
+			if (CameraAngle < 0) CameraAngle = 0;
+		}
+		if(keys['6']) {
+			CameraAngle++;
+			if (CameraAngle > 90) CameraAngle = 90;
+		}
 	}
-	if(keys['2']) {
-		CameraDist++;
-		if (CameraDist > DEFAULT_CAMERA_DIST_TO_PLAYER*8) CameraDist = DEFAULT_CAMERA_DIST_TO_PLAYER*8;
-	}
-	if(keys['4']) {
-		CameraAngle--;
-		if (CameraAngle < 0) CameraAngle = 0;
-	}
-	if(keys['6']) {
-		CameraAngle++;
-		if (CameraAngle > 90) CameraAngle = 90;
-	}
+	
 	//if(ballX < 0) ballX = 0;
 	//if(ballZ < 0) ballZ = 0;
 	//if(ballX > (TERRAIN_SIZE-1)*DILATATION) ballX = (TERRAIN_SIZE-1)*DILATATION;
