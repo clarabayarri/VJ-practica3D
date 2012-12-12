@@ -217,3 +217,9 @@ void cFloor::Render(cData * data, CustomShaderManager * shader) {
 
 	glDisable(GL_TEXTURE_2D);
 }
+
+void cFloor::RenderPhysical() {
+	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+	cVBO::Render();
+	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+}

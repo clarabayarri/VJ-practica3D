@@ -12,6 +12,7 @@ public:
 
 	void Init();
 	void Render(cData * data, CustomShaderManager * shader);
+	void RenderPhysical();
 	float GetHeight(float x, float z);
 	float GetMinY();
 

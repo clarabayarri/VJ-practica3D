@@ -12,6 +12,8 @@ bool cGame::Init()
 	//Positions initialization
 	mouseX = -1;
 	mouseY = -1;
+	CameraDist = DEFAULT_CAMERA_DIST_TO_PLAYER;
+	CameraAngle = DEFAULT_CAMERA_ANGLE_TO_PLAYER;
 
 	//Graphics initialization
 	glClearColor(0.0f,0.0f,0.0f,0.0f);
@@ -28,7 +30,6 @@ bool cGame::Init()
 	if (!res) return false;
 	Scene.Init();
 	ScreenExtras.Init(Scene.GetForest());
-	//res = Scene.LoadLevel(1);
 	if(!res) return false;
 
 	skydome.Init();
@@ -40,6 +41,8 @@ bool cGame::Init()
 	InitialZoomDistance = INITIAL_ZOOM_TOTAL_DISTANCE;
 
 	Player.SetXZ((float) TERRAIN_SIZE,(float) TERRAIN_SIZE);
+
+	WireframeRendering = false;
 
 	return res;
 }
@@ -105,6 +108,28 @@ bool cGame::Process()
 	if(keys['a']) Player.RotateLeft();
 	if(keys['d']) Player.RotateRight();
 
+	if(keys['p']) {
+		WireframeRendering = !WireframeRendering;
+		keys['p'] = false;
+	}
+
+	// Camera angle and distance to player
+	if(keys['8']) {
+		CameraDist--;
+		if (CameraDist < DEFAULT_CAMERA_DIST_TO_PLAYER) CameraDist = DEFAULT_CAMERA_DIST_TO_PLAYER;
+	}
+	if(keys['2']) {
+		CameraDist++;
+		if (CameraDist > DEFAULT_CAMERA_DIST_TO_PLAYER*8) CameraDist = DEFAULT_CAMERA_DIST_TO_PLAYER*8;
+	}
+	if(keys['4']) {
+		CameraAngle--;
+		if (CameraAngle < 0) CameraAngle = 0;
+	}
+	if(keys['6']) {
+		CameraAngle++;
+		if (CameraAngle > 90) CameraAngle = 90;
+	}
 	//if(ballX < 0) ballX = 0;
 	//if(ballZ < 0) ballZ = 0;
 	//if(ballX > (TERRAIN_SIZE-1)*DILATATION) ballX = (TERRAIN_SIZE-1)*DILATATION;
@@ -130,22 +155,39 @@ void cGame::Render() {
 	glRotatef((float) (glutGet(GLUT_ELAPSED_TIME)%360000)/1000,0,1,0);
 	clouds.Render(&Data);
 
-	float TotalDistanceToPlayer = CAMERA_DIST_TO_PLAYER + InitialZoomDistance;
+	float TotalDistanceToPlayer = CameraDist + InitialZoomDistance;
 	float TotalRotationAngle = Player.orientationAngle + InitialZoomAngle;
 
 	// Dibuixar personatge
 	glLoadIdentity();
-	glRotatef(-CAMERA_ANGLE_TO_PLAYER, 1, 0, 0);
+	glRotatef(-DEFAULT_CAMERA_ANGLE_TO_PLAYER, 1, 0, 0);
 	glTranslatef(0, 0, -TotalDistanceToPlayer);
 	Player.Draw();
 
 	// Dibuixar escena
 	glLoadIdentity();
-	glTranslatef(0.0f, (float) sin(-CAMERA_ANGLE_TO_PLAYER*0.0174532925)*TotalDistanceToPlayer-Scene.GetHeight(Player.x/DILATATION,Player.z/DILATATION), -TotalDistanceToPlayer);
+	glTranslatef(0.0f, (float) sin(-DEFAULT_CAMERA_ANGLE_TO_PLAYER*0.0174532925)*TotalDistanceToPlayer-Scene.GetHeight(Player.x/DILATATION,Player.z/DILATATION), -TotalDistanceToPlayer);
+	glRotatef(CameraAngle - DEFAULT_CAMERA_ANGLE_TO_PLAYER,1.0f,0.0f,0.0f);
 	glRotatef(TotalRotationAngle, 0, 1, 0);
 	glTranslatef(-Player.x, 0, -Player.z);	
-		
 	Scene.Draw(&Data, &shaderManager);
+
+	if (WireframeRendering) {
+		// Dibuixar personatge
+		glLoadIdentity();
+		glRotatef(-DEFAULT_CAMERA_ANGLE_TO_PLAYER, 1, 0, 0);
+		glTranslatef(0, 0, -TotalDistanceToPlayer);
+		Player.DrawPhysical();
+
+		// Dibuixar escena
+		glLoadIdentity();
+		glTranslatef(0.0f, (float) sin(-DEFAULT_CAMERA_ANGLE_TO_PLAYER*0.0174532925)*TotalDistanceToPlayer-Scene.GetHeight(Player.x/DILATATION,Player.z/DILATATION), -TotalDistanceToPlayer);
+		glRotatef(CameraAngle - DEFAULT_CAMERA_ANGLE_TO_PLAYER,1.0f,0.0f,0.0f);
+		glRotatef(TotalRotationAngle, 0, 1, 0);
+		glTranslatef(-Player.x, 0, -Player.z);	
+		Scene.DrawPhysical();
+	}
+
 	ScreenExtras.Draw(&Data, Player.GetPosition(), 0);
 	glutSwapBuffers();
 

@@ -23,8 +23,8 @@ public:
 	virtual ~cScene(void);
 
 	void Init();
-	bool LoadLevel(int level);
 	void Draw(cData *Data, CustomShaderManager *shaderManager);
+	void DrawPhysical();
 	int *GetMap();
 	void renderBillBoard();
 	float GetHeight(float x, float z);

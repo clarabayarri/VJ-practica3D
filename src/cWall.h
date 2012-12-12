@@ -13,5 +13,6 @@ public:
 
 	void Init(cFloor * floor);
 	void Render(cData * data);
+	void RenderPhysical();
 };
 

@@ -8,8 +8,8 @@
 #include "cSkydome.h"
 #include "Constants.h"
 
-#define CAMERA_DIST_TO_PLAYER 5.0f
-#define CAMERA_ANGLE_TO_PLAYER 15.0f
+#define DEFAULT_CAMERA_DIST_TO_PLAYER 5.0f
+#define DEFAULT_CAMERA_ANGLE_TO_PLAYER 15.0f
 
 #define INITIAL_ZOOM_TOTAL_ROTATION_ANGLE 360
 #define INITIAL_ZOOM_TOTAL_DISTANCE 40
@@ -52,6 +52,11 @@ private:
 
 	int InitialZoomAngle;
 	int InitialZoomDistance;
+
+	bool WireframeRendering;
+
+	float CameraDist;
+	float CameraAngle;
 
 	CustomShaderManager shaderManager;
 };
