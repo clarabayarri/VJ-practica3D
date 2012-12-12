@@ -3,7 +3,7 @@
 #define STEP_SIZE 0.1f
 #define ANGLE_STEP_SIZE 5.0f
 
-cAnimatedCharacter::cAnimatedCharacter(void):x(5),z(5){}
+cAnimatedCharacter::cAnimatedCharacter(void):x(32),z(32){}
 
 cAnimatedCharacter::~cAnimatedCharacter(void){}
 
