@@ -10,10 +10,12 @@ public:
 
 	void Init(const vector<vector<float> >& t, int tex);
 	void Render(cData * data);
+	void RenderPhysical();
 
 	vector<vector<float> > GetTrees();
 private:
 	int dlId;
+	int dlIdPhysical;
 	int texId;
 
 	vector<vector<float> > trees;

@@ -58,3 +58,10 @@ void cWall::Render(cData * data) {
 	glDisable(GL_TEXTURE_2D);
 	glDisable(GL_ALPHA_TEST);
 }
+
+void cWall::RenderPhysical()
+{
+	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+	cVBO::Render();
+	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+}

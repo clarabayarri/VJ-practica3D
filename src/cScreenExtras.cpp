@@ -11,18 +11,17 @@ cScreenExtras::~cScreenExtras(void)
 
 void cScreenExtras::Init(const vector<vector<float> >& trees) {
 	SceneMap.Init(trees);
-	TimeGauge.Init();
 }
 
-void cScreenExtras::Draw(cData *Data, const vector<float>& player, int munitionCount)
+void cScreenExtras::Draw(cData *Data, double RemainingTime, const vector<float>& player, int munitionCount)
 {
-	DrawTimeGauge(Data);
+	DrawTimeGauge(RemainingTime);
 	DrawMunitionCounter(Data, munitionCount);
 	DrawMap(Data, player);
 	glViewport(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
 }
 
-void cScreenExtras::DrawTimeGauge(cData *Data)
+void cScreenExtras::DrawTimeGauge(double RemainingTime)
 {
 	GLuint left = SCREEN_MARGIN;
 	GLuint top = SCREEN_MARGIN;
@@ -30,7 +29,7 @@ void cScreenExtras::DrawTimeGauge(cData *Data)
 	GLuint bottom = 50 + SCREEN_MARGIN;
 	glViewport(left, SCREEN_HEIGHT - bottom, right - left, bottom - top);
 
-	TimeGauge.Draw(Data);
+	TimeGauge.Draw(RemainingTime);
 }
 
 void cScreenExtras::DrawMunitionCounter(cData *Data, int count)

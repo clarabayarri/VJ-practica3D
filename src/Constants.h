@@ -8,7 +8,7 @@
 #define TREE_PLANES		2
 
 /*****  Number of Textures  *****/
-#define NUM_IMG		12
+#define NUM_IMG		13
 
 /*****  Texture Identifiers  *****/
 #define IMG_GRASS	0
@@ -23,6 +23,7 @@
 #define IMG_SKY1	9
 #define IMG_SKY2	10
 #define IMG_SENGLAR 11
+#define IMG_GAMEOVER 12
 
 /*****  Number of Sounds  *****/
 #define NUM_AMBIENT_SOUNDS	1

@@ -20,6 +20,7 @@ public:
 	float GetY(int x, int z);
 
 	void Render(cData * data, CustomShaderManager * shader);
+	void RenderPhysical();
 
 protected:
     void UpdateSmoothedNormals();

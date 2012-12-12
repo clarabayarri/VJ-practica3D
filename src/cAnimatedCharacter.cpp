@@ -3,7 +3,7 @@
 #define STEP_SIZE 0.1f
 #define ANGLE_STEP_SIZE 5.0f
 
-cAnimatedCharacter::cAnimatedCharacter(void):x(5),z(5){}
+cAnimatedCharacter::cAnimatedCharacter(void):x(TERRAIN_SIZE),z(TERRAIN_SIZE){}
 
 cAnimatedCharacter::~cAnimatedCharacter(void){}
 
@@ -59,6 +59,11 @@ void cAnimatedCharacter::Draw()
 	GLUquadricObj *q = gluNewQuadric();
 	gluSphere(q, 0.1,16,16);
 	gluDeleteQuadric(q);
+}
+
+void cAnimatedCharacter::DrawPhysical()
+{
+
 }
 
 vector<float> cAnimatedCharacter::GetPosition()

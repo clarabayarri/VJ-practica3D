@@ -1,6 +1,8 @@
 #include "cTreeForest.h"
 #include "cFloor.h"
 
+const float DEG2RAD = 3.14159f/180.0f;
+
 cTreeForest::cTreeForest() {}
 
 cTreeForest::~cTreeForest() {}
@@ -29,6 +31,49 @@ void cTreeForest::Init(const vector<vector<float> >& t, int tex) {
 		}
 		glEnd();
 	glEndList();
+
+	dlIdPhysical = glGenLists(1);
+	glNewList(dlIdPhysical,GL_COMPILE);
+		glBegin(GL_QUADS);
+		for (unsigned int j = 0; j < trees.size(); ++j) {
+			float x = trees[j][0] * DILATATION;
+			float y = trees[j][1];
+			float z = trees[j][2] * DILATATION;
+
+			float radius = 0.25f;
+			float height = 2.0f;
+
+			// Bottom face
+			glBegin(GL_LINE_LOOP);
+				for (int i=0; i < 360; i++)
+				{
+					float degInRad = i*DEG2RAD;
+					glVertex3f(x + cos(degInRad)*radius, y, z + sin(degInRad)*radius);
+				}
+			glEnd();
+
+			// Top face
+			glBegin(GL_LINE_LOOP);
+				for (int i=0; i < 360; i++)
+				{
+					float degInRad = i*DEG2RAD;
+					glVertex3f(x + cos(degInRad)*radius, y + height, z + sin(degInRad)*radius);
+				}
+			glEnd();
+
+			// Middle
+			glBegin(GL_TRIANGLE_STRIP);
+				for (int i=0; i < 360; i+=10)
+				{
+					float degInRad = i*DEG2RAD;
+					glVertex3f(x + cos(degInRad)*radius, y, z + sin(degInRad)*radius);
+					glVertex3f(x + cos(degInRad)*radius, y + height, z + sin(degInRad)*radius);
+				}
+			glEnd();
+
+		}
+		glEnd();
+	glEndList();
 }
 
 void cTreeForest::Render(cData * data) {
@@ -39,4 +84,11 @@ void cTreeForest::Render(cData * data) {
 	glCallList(dlId);
 	glDisable(GL_TEXTURE_2D);
 	glDisable(GL_ALPHA_TEST);
+}
+
+void cTreeForest::RenderPhysical()
+{
+	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+	glCallList(dlIdPhysical);
+	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 }

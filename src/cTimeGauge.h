@@ -4,7 +4,6 @@
 
 #include "cData.h"
 #include "Globals.h"
-#include <ctime>
 using namespace std;
 
 class cTimeGauge
@@ -13,13 +12,11 @@ public:
 	cTimeGauge(void);
 	~cTimeGauge(void);
 
-	void Init();
-
-	void Draw(cData *Data);
+	void Draw(double RemainingTime);
 
 private:
-	time_t StartTime;
-	time_t CurrentTime;
+	bool ChangingColor;
+	int ColorCount;
 
 	string FormatTime(double Difference);
 };

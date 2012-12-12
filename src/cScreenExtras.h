@@ -14,14 +14,14 @@ public:
 	~cScreenExtras(void);
 
 	void Init(const vector<vector<float> >& trees);
-	void Draw(cData *Data, const vector<float>& player, int munitionCount);
+	void Draw(cData *Data, double RemainingTime, const vector<float>& player, int munitionCount);
 
 private:
 	cTimeGauge TimeGauge;
 	cMunitionCounter MunitionCounter;
 	cSceneMap SceneMap;
 
-	void DrawTimeGauge(cData *Data);
+	void DrawTimeGauge(double RemainingTime);
 	void DrawMunitionCounter(cData *Data, int count);
 	void DrawMap(cData *Data, const vector<float>& player);
 };

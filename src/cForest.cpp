@@ -39,6 +39,12 @@ void cForest::Render(cData * data, CustomShaderManager * shader) {
 	for (int i = 0; i < NUM_TREE_TYPES; ++i) trees[i].Render(data);
 }
 
+void cForest::RenderPhysical() {
+	floor.RenderPhysical();
+	wall.RenderPhysical();
+	for (int i = 0; i < NUM_TREE_TYPES; ++i) trees[i].RenderPhysical();
+}
+
 float cForest::GetHeight(float x, float z) {
 	int x0 = (int) std::floor(x);
 	int z0 = (int) std::floor(z);

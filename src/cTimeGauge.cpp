@@ -4,6 +4,9 @@
 #include <iostream>
 using namespace std;
 
+#define DANGER_TIME 30.0
+#define COLOR_FRAMES 5
+
 cTimeGauge::cTimeGauge(void)
 {
 }
@@ -13,24 +16,32 @@ cTimeGauge::~cTimeGauge(void)
 {
 }
 
-void cTimeGauge::Init()
-{
-	StartTime = time(&StartTime);
-}
-
-void cTimeGauge::Draw(cData *Data)
+void cTimeGauge::Draw(double RemainingTime)
 {
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
 	gluOrtho2D(0.0, 1.0, 1.0, 0.0);
 
-	CurrentTime = time(&CurrentTime);
-	double Difference = difftime(CurrentTime, StartTime);
-	string text = FormatTime(Difference);
-
+	string text = FormatTime(RemainingTime);
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
-	glColor3f(0.2f, 0.2f, 0.2f);
+
+	if (RemainingTime > DANGER_TIME) {
+		glColor3f(0.2f, 0.2f, 0.2f);
+	} else {
+		if (ChangingColor) {
+			glColor3f(0.9f, 0.1f, 0.1f);
+		} else {
+			glColor3f(1.0f, 1.0f, 1.0f);
+		}
+		
+		ColorCount++;
+		if (ColorCount > COLOR_FRAMES) {
+			ColorCount = 0;
+			ChangingColor = !ChangingColor;
+		}
+	}
+
 	glTranslatef(0.0f, 0.0f, -0.1f);
 	glRasterPos2f(0.0f, 0.6f);
 	glutBitmapString(GLUT_BITMAP_HELVETICA_18, (const unsigned char *) text.c_str());
