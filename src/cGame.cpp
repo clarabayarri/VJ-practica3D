@@ -46,6 +46,7 @@ bool cGame::Init()
 	Player.SetXZ((float) TERRAIN_SIZE,(float) TERRAIN_SIZE);
 
 	WireframeRendering = false;
+	MunitionCount = 0;
 
 	return res;
 }
@@ -103,15 +104,23 @@ bool cGame::Process()
 	// Player movement
 	if(keys['e']) {
 		Player.MoveRight();
+		if(Scene.CollidesBoars(Player.GetPosition(),Player.radius)) ++MunitionCount;
+		if(Scene.CollidesPhysics(Player.GetPosition(),Player.radius)) Player.MoveLeft();
 	}
 	if(keys['w']) {
 		Player.MoveForward();
+		if(Scene.CollidesBoars(Player.GetPosition(),Player.radius)) ++MunitionCount;
+		if(Scene.CollidesPhysics(Player.GetPosition(),Player.radius)) Player.MoveBackward();
 	}
 	if(keys['q']) {
 		Player.MoveLeft();
+		if(Scene.CollidesBoars(Player.GetPosition(),Player.radius)) ++MunitionCount;
+		if(Scene.CollidesPhysics(Player.GetPosition(),Player.radius)) Player.MoveRight();
 	}
 	if(keys['s']) {
 		Player.MoveBackward();
+		if(Scene.CollidesBoars(Player.GetPosition(),Player.radius)) ++MunitionCount;
+		if(Scene.CollidesPhysics(Player.GetPosition(),Player.radius)) Player.MoveForward();
 	}
 	if(keys['a']) Player.RotateLeft();
 	if(keys['d']) Player.RotateRight();
@@ -185,7 +194,7 @@ void cGame::Render() {
 	glRotatef(CameraAngle - DEFAULT_CAMERA_ANGLE_TO_PLAYER,1.0f,0.0f,0.0f);
 	glRotatef(TotalRotationAngle, 0, 1, 0);
 	glTranslatef(-Player.x, 0, -Player.z);	
-	Scene.Draw(&Data, &shaderManager);
+	Scene.Draw(&Data, &shaderManager, TotalRotationAngle);
 
 	if (WireframeRendering) {
 		// Dibuixar personatge
@@ -200,7 +209,7 @@ void cGame::Render() {
 		glRotatef(CameraAngle - DEFAULT_CAMERA_ANGLE_TO_PLAYER,1.0f,0.0f,0.0f);
 		glRotatef(TotalRotationAngle, 0, 1, 0);
 		glTranslatef(-Player.x, 0, -Player.z);	
-		Scene.DrawPhysical();
+		Scene.DrawPhysical(TotalRotationAngle);
 	}
 
 	if (Gameover) {
@@ -209,7 +218,7 @@ void cGame::Render() {
 
 	// Only draw extras once the player has control
 	if (InitialZoomDistance == 0) {
-		ScreenExtras.Draw(&Data, GetTimeRemainingForLevel(), Player.GetPosition(), 0);
+		ScreenExtras.Draw(&Data, GetTimeRemainingForLevel(), Player.GetPosition(), MunitionCount);
 	}
 	
 	glutSwapBuffers();

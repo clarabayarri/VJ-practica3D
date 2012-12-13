@@ -3,7 +3,7 @@
 #define STEP_SIZE 0.1f
 #define ANGLE_STEP_SIZE 5.0f
 
-cAnimatedCharacter::cAnimatedCharacter(void):x(TERRAIN_SIZE),z(TERRAIN_SIZE){}
+cAnimatedCharacter::cAnimatedCharacter(void):x(TERRAIN_SIZE),z(TERRAIN_SIZE),radius(0.1){}
 
 cAnimatedCharacter::~cAnimatedCharacter(void){}
 
@@ -57,7 +57,7 @@ void cAnimatedCharacter::RotateRight()
 void cAnimatedCharacter::Draw()
 {
 	GLUquadricObj *q = gluNewQuadric();
-	gluSphere(q, 0.1,16,16);
+	gluSphere(q, radius,16,16);
 	gluDeleteQuadric(q);
 }
 
@@ -68,9 +68,10 @@ void cAnimatedCharacter::DrawPhysical()
 
 vector<float> cAnimatedCharacter::GetPosition()
 {
-	vector<float> position(3);
+	vector<float> position(4);
 	position[0] = x;
 	position[1] = 0;
 	position[2] = z;
+	position[3] = orientationAngle;
 	return position;
 }

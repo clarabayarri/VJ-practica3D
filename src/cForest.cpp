@@ -14,6 +14,16 @@ vector<vector<float> > cForest::GetTrees() {
 	return result;
 }
 
+vector<vector<float> > cForest::GetBoars() {
+	vector<vector<float> > result(NUM_BOARS);
+	int counter = 0;
+	for (unsigned int i = 0; i < NUM_BOAR_TYPES; ++i) {
+		vector<vector<float> > aux = boars[i].GetBoars();
+		for (unsigned int j = 0; j < aux.size(); ++j) result[counter++] = aux[j];
+	}
+	return result;
+}
+
 void cForest::Init() {
 	floor.Init();
 	wall.Init(&floor);
@@ -31,18 +41,34 @@ void cForest::Init() {
 		}
 		trees[i].Init(coords,IMG_TREE1+i);
 	}
+
+	boars = vector<cBoarCollection>(NUM_BOAR_TYPES);
+	vector<int> counter2(NUM_BOAR_TYPES,0);
+	for (int i = 0; i < NUM_BOARS; ++i) counter2[rand()%NUM_BOAR_TYPES]++;
+	for (int i = 0; i < NUM_BOAR_TYPES; ++i) {
+		vector<vector<float> > coords(counter2[i],vector<float>(3));
+		int size = (int) (floor.GetSize()-3)*100+1;
+		for (int j = 0; j < counter2[i]; ++j) {
+			coords[j][0] = (float) (rand()%size)/100+1;
+			coords[j][2] = (float) (rand()%size)/100+1;
+			coords[j][1] = GetHeight(coords[j][0], coords[j][2]);
+		}
+		boars[i].Init(coords,IMG_BOAR1+i);
+	}
 }
 
-void cForest::Render(cData * data, CustomShaderManager * shader) {
+void cForest::Render(cData * data, CustomShaderManager * shader, float OrientationAngle) {
 	floor.Render(data,shader);
 	wall.Render(data);
 	for (int i = 0; i < NUM_TREE_TYPES; ++i) trees[i].Render(data);
+	for (int i = 0; i < NUM_BOAR_TYPES; ++i) boars[i].Render(data, OrientationAngle);
 }
 
-void cForest::RenderPhysical() {
+void cForest::RenderPhysical(float OrientationAngle) {
 	floor.RenderPhysical();
 	wall.RenderPhysical();
 	for (int i = 0; i < NUM_TREE_TYPES; ++i) trees[i].RenderPhysical();
+	for (int i = 0; i < NUM_BOAR_TYPES; ++i) boars[i].RenderPhysical(OrientationAngle);
 }
 
 float cForest::GetHeight(float x, float z) {
@@ -66,4 +92,20 @@ float cForest::GetHeight(float x, float z) {
 
 float cForest::GetMinY() {
 	return floor.GetMinY();
+}
+
+bool cForest::CollidesPhysics(vector<float> PlayerPosition, float PlayerRadius)
+{
+	for (int i = 0; i < NUM_TREE_TYPES; ++i) {
+		if (trees[i].Collides(PlayerPosition, PlayerRadius)) return true;
+	}
+	return false;
+}
+
+bool cForest::CollidesBoars(vector<float> PlayerPosition, float PlayerRadius)
+{
+	for (int i = 0; i < NUM_BOAR_TYPES; ++i) {
+		if (boars[i].Collides(PlayerPosition, PlayerRadius)) return true;
+	}
+	return false;
 }

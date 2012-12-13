@@ -10,6 +10,7 @@ public:
 	float x;
 	float z;
 	float orientationAngle;
+	float radius;
 
 	cAnimatedCharacter(void);
 	~cAnimatedCharacter(void);

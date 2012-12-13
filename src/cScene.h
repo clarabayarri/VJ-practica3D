@@ -23,12 +23,15 @@ public:
 	virtual ~cScene(void);
 
 	void Init();
-	void Draw(cData *Data, CustomShaderManager *shaderManager);
-	void DrawPhysical();
+	void Draw(cData *Data, CustomShaderManager *shaderManager, float OrientationAngle);
+	void DrawPhysical(float OrientationAngle);
 	int *GetMap();
 	void renderBillBoard();
 	float GetHeight(float x, float z);
 	float GetMinY();
+
+	bool CollidesPhysics(vector<float> PlayerPosition, float PlayerRadius);
+	bool CollidesBoars(vector<float> PlayerPosition, float PlayerRadius);
 
 	vector<vector<float> > GetForest();
 

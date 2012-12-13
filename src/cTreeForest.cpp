@@ -1,7 +1,8 @@
 #include "cTreeForest.h"
 #include "cFloor.h"
+#include "Globals.h"
 
-const float DEG2RAD = 3.14159f/180.0f;
+#define TREE_PHYSICAL_WIDTH 0.5f
 
 cTreeForest::cTreeForest() {}
 
@@ -34,45 +35,43 @@ void cTreeForest::Init(const vector<vector<float> >& t, int tex) {
 
 	dlIdPhysical = glGenLists(1);
 	glNewList(dlIdPhysical,GL_COMPILE);
-		glBegin(GL_QUADS);
-		for (unsigned int j = 0; j < trees.size(); ++j) {
-			float x = trees[j][0] * DILATATION;
-			float y = trees[j][1];
-			float z = trees[j][2] * DILATATION;
+	for (unsigned int j = 0; j < trees.size(); ++j) {
+		float x = trees[j][0] * DILATATION;
+		float y = trees[j][1];
+		float z = trees[j][2] * DILATATION;
 
-			float radius = 0.25f;
-			float height = 2.0f;
+		float radius = TREE_PHYSICAL_WIDTH / 2.0f;
+		float height = 2.0f;
 
-			// Bottom face
-			glBegin(GL_LINE_LOOP);
-				for (int i=0; i < 360; i++)
-				{
-					float degInRad = i*DEG2RAD;
-					glVertex3f(x + cos(degInRad)*radius, y, z + sin(degInRad)*radius);
-				}
-			glEnd();
-
-			// Top face
-			glBegin(GL_LINE_LOOP);
-				for (int i=0; i < 360; i++)
-				{
-					float degInRad = i*DEG2RAD;
-					glVertex3f(x + cos(degInRad)*radius, y + height, z + sin(degInRad)*radius);
-				}
-			glEnd();
-
-			// Middle
-			glBegin(GL_TRIANGLE_STRIP);
-				for (int i=0; i < 360; i+=10)
-				{
-					float degInRad = i*DEG2RAD;
-					glVertex3f(x + cos(degInRad)*radius, y, z + sin(degInRad)*radius);
-					glVertex3f(x + cos(degInRad)*radius, y + height, z + sin(degInRad)*radius);
-				}
-			glEnd();
-
-		}
+		// Bottom face
+		glBegin(GL_LINE_LOOP);
+			for (int i=0; i < 360; i++)
+			{
+				float degInRad = i*DEG2RAD;
+				glVertex3f(x + cos(degInRad)*radius, y, z + sin(degInRad)*radius);
+			}
 		glEnd();
+
+		// Top face
+		glBegin(GL_LINE_LOOP);
+			for (int i=0; i < 360; i++)
+			{
+				float degInRad = i*DEG2RAD;
+				glVertex3f(x + cos(degInRad)*radius, y + height, z + sin(degInRad)*radius);
+			}
+		glEnd();
+
+		// Middle
+		glBegin(GL_TRIANGLE_STRIP);
+			for (int i=0; i < 360; i+=10)
+			{
+				float degInRad = i*DEG2RAD;
+				glVertex3f(x + cos(degInRad)*radius, y, z + sin(degInRad)*radius);
+				glVertex3f(x + cos(degInRad)*radius, y + height, z + sin(degInRad)*radius);
+			}
+		glEnd();
+
+	}
 	glEndList();
 }
 
@@ -91,4 +90,17 @@ void cTreeForest::RenderPhysical()
 	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 	glCallList(dlIdPhysical);
 	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+}
+
+bool cTreeForest::Collides(vector<float> PlayerPosition, float PlayerRadius)
+{
+	for (unsigned int j = 0; j < trees.size(); ++j) {
+		float diffx = PlayerPosition[0] - trees[j][0]*DILATATION;
+		float diffz = PlayerPosition[2] - trees[j][2]*DILATATION;
+		float distance = sqrt(diffx*diffx + diffz*diffz);
+		if (distance < PlayerRadius+ TREE_PHYSICAL_WIDTH/2) {
+			return true;
+		}
+	}
+	return false;
 }

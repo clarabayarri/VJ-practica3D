@@ -12,3 +12,4 @@
 
 /***** Pi ****/
 #define PI 3.141592654f
+#define DEG2RAD 3.14159f/180.0f;

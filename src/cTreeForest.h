@@ -12,6 +12,8 @@ public:
 	void Render(cData * data);
 	void RenderPhysical();
 
+	bool Collides(vector<float> PlayerPosition, float PlayerRadius);
+
 	vector<vector<float> > GetTrees();
 private:
 	int dlId;

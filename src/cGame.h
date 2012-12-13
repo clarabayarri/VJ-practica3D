@@ -64,6 +64,8 @@ private:
 	double LevelTimeLimit;
 	double GetTimeRemainingForLevel();
 
+	int MunitionCount;
+
 	CustomShaderManager shaderManager;
 
 	void DrawGameOver();

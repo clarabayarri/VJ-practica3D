@@ -2,13 +2,15 @@
 #define SCREEN_WIDTH	800
 #define SCREEN_HEIGHT	600
 
-/*****  Trees Related Constants  *****/
+/*****  Trees & boars Related Constants  *****/
 #define NUM_TREE_TYPES	5
+#define NUM_BOAR_TYPES	4
 #define	NUM_TREES		300
+#define NUM_BOARS		20
 #define TREE_PLANES		2
 
 /*****  Number of Textures  *****/
-#define NUM_IMG		13
+#define NUM_IMG		17
 
 /*****  Texture Identifiers  *****/
 #define IMG_GRASS	0
@@ -24,6 +26,10 @@
 #define IMG_SKY2	10
 #define IMG_SENGLAR 11
 #define IMG_GAMEOVER 12
+#define IMG_BOAR1	13
+#define IMG_BOAR2	14
+#define IMG_BOAR3	15
+#define	IMG_BOAR4	16
 
 /*****  Number of Sounds  *****/
 #define NUM_AMBIENT_SOUNDS	1
