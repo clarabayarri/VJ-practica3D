@@ -20,5 +20,6 @@ private:
 	int texId;
 
 	vector<vector<float> > boars;
+	vector<int> disappearing;
 };
 

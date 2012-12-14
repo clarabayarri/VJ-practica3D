@@ -3,6 +3,7 @@
 
 #define BOAR_WIDTH 0.5f
 #define BOAR_HEIGHT 0.5f
+#define BLINK_TOTAL 20
 
 cBoarCollection::cBoarCollection(void)
 {
@@ -19,6 +20,7 @@ vector<vector<float> > cBoarCollection::GetBoars() {
 
 void cBoarCollection::Init(const vector<vector<float> >& t, int tex) {
 	boars = vector<vector<float> >(t); 
+	disappearing = vector<int> (t.size(),BLINK_TOTAL);
 	texId = tex;
 }
 
@@ -29,22 +31,35 @@ void cBoarCollection::Render(cData * data, float OrientationAngle) {
 	glBindTexture(GL_TEXTURE_2D,data->GetID(texId));
 	glBegin(GL_QUADS);
 	for (unsigned int j = 0; j < boars.size(); ++j) {
-		float x = boars[j][0];
-		float y = boars[j][1];
-		float z = boars[j][2];
+		if (disappearing[j] % 4 == 0) {
+			float x = boars[j][0];
+			float y = boars[j][1];
+			float z = boars[j][2];
 
-		float displacement = BOAR_WIDTH/2.0f;
-		float ax = displacement * (float) sin((90-OrientationAngle)*0.0174532925);
-		float az = displacement * (float) sin(OrientationAngle*0.0174532925);
+			float displacement = BOAR_WIDTH/2.0f;
+			float ax = displacement * (float) sin((90-OrientationAngle)*0.0174532925);
+			float az = displacement * (float) sin(OrientationAngle*0.0174532925);
 
-		glTexCoord2f(0.000f, 1.000f); glVertex3f((x-ax)*DILATATION, y,				(float) (z-az)*DILATATION	);
-		glTexCoord2f(1.000f, 1.000f); glVertex3f((x+ax)*DILATATION, y,				(float) (z+az)*DILATATION	);
-		glTexCoord2f(1.000f, 0.000f); glVertex3f((x+ax)*DILATATION, y+BOAR_HEIGHT,	(float) (z+az)*DILATATION	);
-		glTexCoord2f(0.000f, 0.000f); glVertex3f((x-ax)*DILATATION, y+BOAR_HEIGHT,	(float) (z-az)*DILATATION	);
+			glTexCoord2f(0.000f, 1.000f); glVertex3f((x-ax)*DILATATION, y,				(float) (z-az)*DILATATION	);
+			glTexCoord2f(1.000f, 1.000f); glVertex3f((x+ax)*DILATATION, y,				(float) (z+az)*DILATATION	);
+			glTexCoord2f(1.000f, 0.000f); glVertex3f((x+ax)*DILATATION, y+BOAR_HEIGHT,	(float) (z+az)*DILATATION	);
+			glTexCoord2f(0.000f, 0.000f); glVertex3f((x-ax)*DILATATION, y+BOAR_HEIGHT,	(float) (z-az)*DILATATION	);
+		}
+		if (disappearing[j] < BLINK_TOTAL) {
+			disappearing[j]--;
+		}
 	}
 	glEnd();
 	glDisable(GL_TEXTURE_2D);
 	glDisable(GL_ALPHA_TEST);
+
+	for (unsigned int j = 0; j < boars.size(); ++j) {
+		if (disappearing[j] == 0) {
+			boars.erase(boars.begin()+j);
+			disappearing.erase(disappearing.begin()+j);
+			break;
+		}
+	}
 }
 
 void cBoarCollection::RenderPhysical(float OrientationAngle)
@@ -112,8 +127,8 @@ bool cBoarCollection::Collides(vector<float> PlayerPosition, float PlayerRadius)
 		float diffx = PlayerPosition[0] - boars[j][0]*DILATATION;
 		float diffz = PlayerPosition[2] - boars[j][2]*DILATATION;
 		float distance = sqrt(diffx*diffx + diffz*diffz);
-		if (distance < PlayerRadius+BOAR_WIDTH/2) {
-			boars.erase(boars.begin()+j);
+		if (distance < PlayerRadius+BOAR_WIDTH/2 && disappearing[j] == BLINK_TOTAL) {
+			disappearing[j]--;
 			return true;
 		}
 	}
