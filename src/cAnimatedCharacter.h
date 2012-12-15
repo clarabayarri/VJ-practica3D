@@ -1,7 +1,9 @@
 #pragma once
 
+#pragma comment(lib,"MD2Model")
+
 #include "Globals.h"
-#include "Constants.h"
+#include "cMD2Model.h"
 using namespace std;
 
 class cAnimatedCharacter
@@ -18,6 +20,7 @@ public:
 	void SetXZ(float setx, float setz);
 	void SetX(float setx);
 	void SetZ(float setz);
+	void SetModel(char * m);
 	void MoveForward();
 	void MoveBackward();
 	void MoveLeft();
@@ -28,6 +31,8 @@ public:
 	void Draw();
 	void DrawPhysical();
 
-	vector<float> GetPosition();
+	std::vector<float> GetPosition();
+
+	cMD2Model model;
 };
 

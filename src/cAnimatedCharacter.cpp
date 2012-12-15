@@ -3,7 +3,7 @@
 #define STEP_SIZE 0.1f
 #define ANGLE_STEP_SIZE 5.0f
 
-cAnimatedCharacter::cAnimatedCharacter(void):x(TERRAIN_SIZE),z(TERRAIN_SIZE),radius(0.1){}
+cAnimatedCharacter::cAnimatedCharacter(void):x(1.0f),z(1.0f),radius(0.1f){}
 
 cAnimatedCharacter::~cAnimatedCharacter(void){}
 
@@ -18,6 +18,10 @@ void cAnimatedCharacter::SetX(float setx) {
 
 void cAnimatedCharacter::SetZ(float setz) {
 	z = setz;
+}
+
+void cAnimatedCharacter::SetModel(char * m) {
+	model.Load(m);
 }
 
 void cAnimatedCharacter::MoveForward()
@@ -54,21 +58,18 @@ void cAnimatedCharacter::RotateRight()
 	orientationAngle += ANGLE_STEP_SIZE;
 }
 
-void cAnimatedCharacter::Draw()
-{
-	GLUquadricObj *q = gluNewQuadric();
-	gluSphere(q, radius,16,16);
-	gluDeleteQuadric(q);
+void cAnimatedCharacter::Draw() {
+	glTranslatef(0.0f,-model.GetMinY()/4,0.0f);
+	glScalef(0.25f,0.25f,0.25f);
+	model.Render(0,0,0,90,0);
 }
 
-void cAnimatedCharacter::DrawPhysical()
-{
+void cAnimatedCharacter::DrawPhysical() {
 
 }
 
-vector<float> cAnimatedCharacter::GetPosition()
-{
-	vector<float> position(4);
+std::vector<float> cAnimatedCharacter::GetPosition() {
+	std::vector<float> position(4);
 	position[0] = x;
 	position[1] = 0;
 	position[2] = z;

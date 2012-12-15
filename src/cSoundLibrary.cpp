@@ -11,8 +11,10 @@ cSoundLibrary::~cSoundLibrary() {}
 
 void cSoundLibrary::Init() {
 	FMOD_RESULT result;
-	result = fmodSystem->createStream("music/test.mp3", FMOD_SOFTWARE | FMOD_LOOP_NORMAL, 0, &ambientSound[AMBIENT_HALLELLUJAH]);
-	//result = fmodSystem->createStream("music/test.mp3", FMOD_SOFTWARE, 0, &actionSound[AMBIENT_HALLELLUJAH]);
+	result = fmodSystem->createStream("sounds/ambient1.mp3", FMOD_SOFTWARE | FMOD_LOOP_NORMAL, 0, &ambientSound[AMBIENT1]);
+	result = fmodSystem->createStream("sounds/ambient2.mp3", FMOD_SOFTWARE | FMOD_LOOP_NORMAL, 0, &ambientSound[AMBIENT2]);
+	result = fmodSystem->createStream("sounds/boar.mp3", FMOD_SOFTWARE, 0, &actionSound[BOAR]);
+	result = fmodSystem->createStream("sounds/enemy.mp3", FMOD_SOFTWARE, 0, &actionSound[ENEMY]);
 }
 
 void cSoundLibrary::PlayAmbient(int soundId) {

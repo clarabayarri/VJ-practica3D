@@ -18,6 +18,10 @@ bool cGame::Init()
 	mouseY = -1;
 	WireframeRendering = false;
 
+	//Sounds initialization
+	sounds.Init();
+	playing = false; 
+
 	//Graphics initialization
 	glClearColor(0.0f,0.0f,0.0f,0.0f);
 	
@@ -67,6 +71,7 @@ void cGame::InitGame()
 	InitialZoomDistance = INITIAL_ZOOM_TOTAL_DISTANCE;
 
 	Player.SetXZ((float) TERRAIN_SIZE,(float) TERRAIN_SIZE);
+	Player.SetModel("knight");
 
 	MunitionCount = 0;
 }
@@ -111,11 +116,17 @@ bool cGame::Process()
 	
 	// Process Input
 	if(keys[27])	res=false;	
+	
+	if (!playing) {
+		sounds.PlayAmbient(AMBIENT1);
+		playing = true;
+	}
 
 	if(!Scene.IsInitialized) {
 		ProcessStartScreenKeys();
 	} else if (InitialZoomDistance == 0 && !Gameover) {
 		ProcessGameKeys();
+
 	}
 
 	if(WireframeRendering) ProcessWireframeModeKeys();
@@ -242,7 +253,7 @@ void cGame::DrawStartScreen()
 		glTranslatef(0.0f,0.0f,-0.1f);
 		glColor3f(0.2f,0.2f,0.2f);
 		glRasterPos2f(0.2f, 1.1f);
-		string text = "Press the spacebar to start!";
+		std::string text = "Press the spacebar to start!";
 		glutBitmapString(GLUT_BITMAP_HELVETICA_18, (const unsigned char *) text.c_str());
 	
 		glColor3f(1.0f,1.0f,1.0f);
@@ -271,6 +282,7 @@ void cGame::DrawGame()
 	glLoadIdentity();
 	glRotatef(-DEFAULT_CAMERA_ANGLE_TO_PLAYER, 1, 0, 0);
 	glTranslatef(0, 0, -TotalDistanceToPlayer);
+	glRotatef(InitialZoomAngle, 0, 1, 0);
 	Player.Draw();
 
 	// Dibuixar escena
@@ -280,15 +292,14 @@ void cGame::DrawGame()
 	glRotatef(TotalRotationAngle, 0, 1, 0);
 	glTranslatef(-Player.x, 0, -Player.z);	
 	Scene.Draw(&Data, &shaderManager, TotalRotationAngle);
-	
+
 	// Only draw extras once the player has control
 	if (InitialZoomDistance == 0) {
 		ScreenExtras.Draw(&Data, GetTimeRemainingForLevel(), Player.GetPosition(), MunitionCount);
 	}
 }
 
-void cGame::DrawWireframeGame()
-{
+void cGame::DrawWireframeGame() {
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
 	gluPerspective(45.0,(float)SCREEN_WIDTH/(float)SCREEN_HEIGHT,0.01,100);
@@ -306,7 +317,7 @@ void cGame::DrawWireframeGame()
 
 	// Dibuixar escena
 	glLoadIdentity();
-	glTranslatef(0.0f, (float) sin(-DEFAULT_CAMERA_ANGLE_TO_PLAYER*0.0174532925)*TotalDistanceToPlayer-Scene.GetHeight(Player.x/DILATATION,Player.z/DILATATION), -TotalDistanceToPlayer);
+	glTranslatef(0.0f,(float) sin(-DEFAULT_CAMERA_ANGLE_TO_PLAYER*0.0174532925)*TotalDistanceToPlayer-Scene.GetHeight(Player.x/DILATATION,Player.z/DILATATION), -TotalDistanceToPlayer);
 	glRotatef(CameraAngle - DEFAULT_CAMERA_ANGLE_TO_PLAYER,1.0f,0.0f,0.0f);
 	glRotatef(TotalRotationAngle, 0, 1, 0);
 	glTranslatef(-Player.x, 0, -Player.z);	

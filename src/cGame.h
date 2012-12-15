@@ -6,8 +6,9 @@
 #include "cScreenExtras.h"
 #include "cAnimatedCharacter.h"
 #include "cSkydome.h"
-#include "Constants.h"
+#include "cSoundLibrary.h"
 #include <ctime>
+#include "Constants.h"
 
 #define DEFAULT_CAMERA_DIST_TO_PLAYER 5.0f
 #define DEFAULT_CAMERA_ANGLE_TO_PLAYER 15.0f
@@ -83,4 +84,7 @@ private:
 	void DrawGameOver();
 
 	void UpdateFrameVariables();
+
+	cSoundLibrary sounds;
+	bool playing;
 };

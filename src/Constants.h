@@ -33,13 +33,16 @@
 #define IMG_START_SCREEN	17
 
 /*****  Number of Sounds  *****/
-#define NUM_AMBIENT_SOUNDS	1
-#define NUM_ACTION_SOUNDS	1
+#define NUM_AMBIENT_SOUNDS	2
+#define NUM_ACTION_SOUNDS	2
 
 /*****  Ambient Sounds Identifiers  *****/
-#define AMBIENT_HALLELLUJAH	0
+#define AMBIENT1			0
+#define AMBIENT2			1
 
 /*****  Action Sounds Identifiers  *****/
+#define BOAR				0
+#define	ENEMY				1
 
 /*****  Terrain Constants  *****/
 #define TERRAIN_SIZE 		32
