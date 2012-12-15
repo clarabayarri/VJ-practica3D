@@ -10,26 +10,27 @@
 #define TREE_PLANES		2
 
 /*****  Number of Textures  *****/
-#define NUM_IMG		17
+#define NUM_IMG		18
 
 /*****  Texture Identifiers  *****/
-#define IMG_GRASS	0
-#define IMG_FENCE	1
-#define IMG_TREE1	2
-#define IMG_TREE2	3
-#define IMG_TREE3	4
-#define IMG_TREE4	5
-#define IMG_TREE5	6
-#define IMG_FLOOR1	7
-#define IMG_FLOOR2	8
-#define IMG_SKY1	9
-#define IMG_SKY2	10
-#define IMG_SENGLAR 11
-#define IMG_GAMEOVER 12
-#define IMG_BOAR1	13
-#define IMG_BOAR2	14
-#define IMG_BOAR3	15
-#define	IMG_BOAR4	16
+#define IMG_GRASS			0
+#define IMG_FENCE			1
+#define IMG_TREE1			2
+#define IMG_TREE2			3
+#define IMG_TREE3			4
+#define IMG_TREE4			5
+#define IMG_TREE5			6
+#define IMG_FLOOR1			7
+#define IMG_FLOOR2			8
+#define IMG_SKY1			9
+#define IMG_SKY2			10
+#define IMG_SENGLAR			11
+#define IMG_GAMEOVER		12
+#define IMG_BOAR1			13
+#define IMG_BOAR2			14
+#define IMG_BOAR3			15
+#define	IMG_BOAR4			16
+#define IMG_START_SCREEN	17
 
 /*****  Number of Sounds  *****/
 #define NUM_AMBIENT_SOUNDS	1

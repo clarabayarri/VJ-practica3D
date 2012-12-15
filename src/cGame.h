@@ -63,10 +63,24 @@ private:
 	time_t StartTime;
 	double LevelTimeLimit;
 	double GetTimeRemainingForLevel();
+	int FrameCounter;
 
 	int MunitionCount;
 
 	CustomShaderManager shaderManager;
 
+	void InitStartScreen();
+	void InitGame();
+
+	void ProcessStartScreenKeys();
+	void ProcessGameKeys();
+	void ProcessWireframeModeKeys();
+
+	void DrawStartScreen();
+	void DrawSky();
+	void DrawGame();
+	void DrawWireframeGame();
 	void DrawGameOver();
+
+	void UpdateFrameVariables();
 };

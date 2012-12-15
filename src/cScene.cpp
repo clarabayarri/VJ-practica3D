@@ -7,6 +7,7 @@ cScene::~cScene(void){}
 
 void cScene::Init() {
 	forest.Init();
+	IsInitialized = true;
 }
 
 vector<vector<float> > cScene::GetForest() {

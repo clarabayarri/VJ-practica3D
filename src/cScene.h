@@ -22,6 +22,8 @@ public:
 	cScene(void);
 	virtual ~cScene(void);
 
+	bool IsInitialized;
+
 	void Init();
 	void Draw(cData *Data, CustomShaderManager *shaderManager, float OrientationAngle);
 	void DrawPhysical(float OrientationAngle);

@@ -41,6 +41,7 @@ bool cData::Init() {
 	if(LoadImage(IMG_BOAR2,"textures/boar2.png",GL_RGBA,true))
 	if(LoadImage(IMG_BOAR3,"textures/boar3.png",GL_RGBA,true))
 	if(LoadImage(IMG_BOAR4,"textures/boar4.png",GL_RGBA,true))
+	if(LoadImage(IMG_START_SCREEN,"textures/boarquest.png",GL_RGBA,true))
 		return true;
 
 	return false;
