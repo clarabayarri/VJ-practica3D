@@ -280,7 +280,7 @@ void cGame::DrawGame()
 	glRotatef(TotalRotationAngle, 0, 1, 0);
 	glTranslatef(-Player.x, 0, -Player.z);	
 	Scene.Draw(&Data, &shaderManager, TotalRotationAngle);
-
+	
 	// Only draw extras once the player has control
 	if (InitialZoomDistance == 0) {
 		ScreenExtras.Draw(&Data, GetTimeRemainingForLevel(), Player.GetPosition(), MunitionCount);
@@ -289,6 +289,12 @@ void cGame::DrawGame()
 
 void cGame::DrawWireframeGame()
 {
+	glMatrixMode(GL_PROJECTION);
+	glLoadIdentity();
+	gluPerspective(45.0,(float)SCREEN_WIDTH/(float)SCREEN_HEIGHT,0.01,100);
+	
+	glMatrixMode(GL_MODELVIEW);
+
 	float TotalDistanceToPlayer = CameraDist + InitialZoomDistance;
 	float TotalRotationAngle = Player.orientationAngle + InitialZoomAngle;
 
