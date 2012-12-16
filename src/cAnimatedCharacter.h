@@ -86,6 +86,7 @@ protected:
 	int state;
 	cMD2Model model;
 	float animation_frame;
+	float scale;
 	bool dying;
 
 	int disappearing;

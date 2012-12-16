@@ -18,7 +18,6 @@ public:
 	void Draw();
 	void Logic(float min, float max);
 	void MoveForward(float min, float max);
-	void DrawPhysical();
 	void Attack();
 	
 protected:

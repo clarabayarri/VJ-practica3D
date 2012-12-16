@@ -4,7 +4,7 @@
 #define STEP_SIZE 0.1f
 #define ANGLE_STEP_SIZE 5.0f
 
-cAnimatedCharacter::cAnimatedCharacter(void):x(1.0f),z(1.0f),radius(0.1f),life(100),dead(false),animation_frame(0.0f),dying(false){
+cAnimatedCharacter::cAnimatedCharacter(void):x(1.0f),z(1.0f),scale(1.0f),radius(0.1f),life(100),dead(false),animation_frame(0.0f),dying(false){
 	state = -1;
 	SetState(ANIM_STAND);
 }
@@ -79,7 +79,36 @@ void cAnimatedCharacter::Draw() {
 }
 
 void cAnimatedCharacter::DrawPhysical() {
+	float height = (model.GetMaxY() - model.GetMinY())*scale;
+	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+	// Cylinder
+	// Bottom face
+	glBegin(GL_LINE_LOOP);
+		for (int i=0; i < 360; i++)
+		{
+			float degInRad = i*DEG2RAD;
+			glVertex3f(cos(degInRad)*radius, 0.0f, sin(degInRad)*radius);
+		}
+	glEnd();
+	// Top face
+	glBegin(GL_LINE_LOOP);
+		for (int i=0; i < 360; i++)
+		{
+			float degInRad = i*DEG2RAD;
+			glVertex3f(cos(degInRad)*radius, height, sin(degInRad)*radius);
+		}
+	glEnd();
 
+	// Middle
+	glBegin(GL_TRIANGLE_STRIP);
+		for (int i=0; i < 360; i+=20)
+		{
+			float degInRad = i*DEG2RAD;
+			glVertex3f(cos(degInRad)*radius, 0.0f, sin(degInRad)*radius);
+			glVertex3f(cos(degInRad)*radius, height, sin(degInRad)*radius);
+		}
+	glEnd();
+	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 }
 
 std::vector<float> cAnimatedCharacter::GetPosition() {

@@ -9,12 +9,25 @@ void cPlayer::Init() {
 	SetModel("knight");
 	SetState(ANIM_STAND);
 	dying = false;
+	radius = 0.3f;
+	scale = 0.25f;
 }
 
 void cPlayer::Draw() {
-	glScalef(0.25f,0.25f,0.25f);
+	glPushMatrix();
+	glScalef(scale,scale,scale);
 
 	cAnimatedCharacter::Draw();
+	glPopMatrix();
+}
+
+void cPlayer::DrawPhysical(cScene *Scene) {
+	glPushMatrix();
+	glTranslatef(x,Scene->GetHeight(x/DILATATION,z/DILATATION),z);
+	glColor3f(0.13f, 0.267f, 0.722);
+	cAnimatedCharacter::DrawPhysical();
+	glColor3f(1.0f,1.0f,1.0f);
+	glPopMatrix();
 }
 
 float cPlayer::GetMinY() {

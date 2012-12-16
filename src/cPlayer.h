@@ -1,6 +1,6 @@
 #pragma once
+#include "cScene.h"
 #include "canimatedcharacter.h"
-
 
 class cPlayer :
 	public cAnimatedCharacter
@@ -11,6 +11,7 @@ public:
 
 	void Init();
 	void Draw();
+	void DrawPhysical(cScene *Scene);
 	float GetMinY();
 
 	float GetCurrentMinX();

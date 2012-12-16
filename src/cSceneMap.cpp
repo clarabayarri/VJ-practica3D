@@ -58,7 +58,7 @@ void cSceneMap::Draw(cData *Data, const std::vector<float>& player, const std::v
 	// Draw enemies
 	glEnable(GL_POINT_SMOOTH);
 	glPointSize(5.0f);
-	glColor3f(0.874f, 0.106f, 0.416f);
+	glColor3f(0.722f, 0.13f, 0.13f);
 	glBegin(GL_POINTS);
 	for(int i = 0; i < enemies.size(); ++i) {
 		glVertex3f(enemies[i][0]+MAP_MARGIN, enemies[i][2]+MAP_MARGIN, 0.1f);
@@ -68,7 +68,7 @@ void cSceneMap::Draw(cData *Data, const std::vector<float>& player, const std::v
 	// Draw player
 	glEnable(GL_POINT_SMOOTH);
 	glPointSize(5.0f);
-	glColor3f(0.174f, 0.106f, 0.816f);
+	glColor3f(0.13f, 0.267f, 0.722);
 	glBegin(GL_POINTS);
 		glVertex3f(player[0]+MAP_MARGIN, player[2]+MAP_MARGIN, 0.1f);
 	glEnd();

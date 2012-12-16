@@ -365,7 +365,7 @@ void cGame::DrawWireframeGame() {
 	glLoadIdentity();
 	glRotatef(-DEFAULT_CAMERA_ANGLE_TO_PLAYER, 1, 0, 0);
 	glTranslatef(0, 0, -TotalDistanceToPlayer);
-	Player.DrawPhysical();
+	
 
 	// Dibuixar escena
 	glLoadIdentity();
@@ -376,6 +376,7 @@ void cGame::DrawWireframeGame() {
 	for (unsigned int i = 0; i < Bullets.size(); ++i) {
 		Bullets[i].DrawPhysical();
 	}
+	Player.DrawPhysical(&Scene);
 	Scene.DrawPhysical(TotalRotationAngle);
 	Enemies.DrawPhysical(&Scene);
 }

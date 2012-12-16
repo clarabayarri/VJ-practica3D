@@ -39,12 +39,14 @@ void cEnemies::Draw(cScene *Scene) {
 }
 
 void cEnemies::DrawPhysical(cScene *Scene) {
+	glColor3f(0.722f, 0.13f, 0.13f);
 	for (unsigned int i = 0; i < bauuls.size(); ++i) {
 		glPushMatrix();
-		glTranslatef(bauuls[i].x,-bauuls[i].GetMinY()+Scene->GetHeight(bauuls[i].x/DILATATION,bauuls[i].z/DILATATION),bauuls[i].z);
+		glTranslatef(bauuls[i].x,Scene->GetHeight(bauuls[i].x/DILATATION,bauuls[i].z/DILATATION),bauuls[i].z);
 		bauuls[i].DrawPhysical();
 		glPopMatrix();
 	}
+	glColor3f(1.0f,1.0f,1.0f);
 }
 
 void cEnemies::Logic(float min, float max) {

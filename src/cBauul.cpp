@@ -1,4 +1,5 @@
 #include "cBauul.h"
+#include "Constants.h"
 
 #define DISAPPEAR_BLINK 40
 
@@ -55,10 +56,6 @@ void cBauul::MoveForward(float min, float max) {
 	if (x > max) x = max;
 	if (z < min) z = min;
 	if (z > max) z = max;
-}
-
-void cBauul::DrawPhysical() {
-	model.RenderBoundingBox();
 }
 
 void cBauul::Attack() {

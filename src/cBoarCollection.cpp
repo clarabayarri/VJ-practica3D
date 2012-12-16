@@ -64,6 +64,8 @@ void cBoarCollection::Render(cData * data, float OrientationAngle) {
 
 void cBoarCollection::RenderPhysical(float OrientationAngle)
 {
+	glColor3f(0.569f, 0.412f, 0.192f);
+
 	// Billboard
 	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 	glBegin(GL_QUADS);
@@ -117,7 +119,8 @@ void cBoarCollection::RenderPhysical(float OrientationAngle)
 				glVertex3f(x + cos(degInRad)*radius, y + BOAR_HEIGHT, z + sin(degInRad)*radius);
 			}
 		glEnd();
-		}
+	}
+	glColor3f(1.0f,1.0f,1.0f);
 	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 }
 
