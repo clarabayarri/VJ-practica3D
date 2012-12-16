@@ -5,7 +5,7 @@
 #include "customshadermanager.h"
 #include "cScreenExtras.h"
 #include "cPlayer.h"
-#include "cBauul.h"
+#include "cEnemies.h"
 #include "cSkydome.h"
 #include "cSoundLibrary.h"
 #include <ctime>
@@ -49,6 +49,7 @@ private:
 	cSkydome clouds;
 
 	cPlayer Player;
+	cEnemies Enemies;
 
 	int mouseX;
 	int mouseY;
@@ -87,10 +88,9 @@ private:
 	void UpdateFrameVariables();
 
 	void CollidesBoars();
+	void CollidesEnemies();
 
 	cSoundLibrary sounds;
 	bool playingAmbient;
 	bool playingEnemy;
-
-	std::vector<cBauul> bauuls;
 };

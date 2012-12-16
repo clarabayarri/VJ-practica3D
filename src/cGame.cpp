@@ -38,14 +38,6 @@ bool cGame::Init() {
 	res = Data.Init();
 	if (!res) return false;
 
-	//Enemies initialization
-	bauuls = std::vector<cBauul>(NUM_BAUULS);
-	for (int i = 0; i < NUM_BAUULS; ++i) {
-		bauuls[i].Init();
-		bauuls[i].SetXZ((rand()%(TERRAIN_SIZE-2)+1)*DILATATION,(rand()%(TERRAIN_SIZE-2)+1)*DILATATION);
-		bauuls[i].SetOrientation(rand()%360);
-	}
-
 	InitStartScreen();
 	return res;
 }
@@ -82,6 +74,8 @@ void cGame::InitGame()
 
 	Player.SetXZ((float) TERRAIN_SIZE,(float) TERRAIN_SIZE);
 	Player.Init();
+
+	Enemies.Init();
 
 	MunitionCount = 0;
 }
@@ -133,17 +127,7 @@ bool cGame::Process() {
 		ProcessStartScreenKeys();
 	} else if (InitialZoomDistance == 0 && !Gameover) {
 		ProcessGameKeys();
-		for (int i = 0; i < NUM_BAUULS; ++i) {
-			bauuls[i].Logic(DILATATION,(TERRAIN_SIZE-1)*DILATATION);
-			if (bauuls[i].CollidesCharacter(Player.x,Player.z,Player.radius)) {
-				bauuls[i].Attack();
-				if(!playingEnemy) {
-					sounds.PlayAction(SOUND_ENEMY);
-					playingEnemy = true;
-				}
-				//Player.Die();
-			}
-		}
+		CollidesEnemies();
 	}
 
 
@@ -164,6 +148,16 @@ void cGame::CollidesBoars() {
 	if(Scene.CollidesBoars(Player.GetPosition())) {
 		++MunitionCount;
 		sounds.PlayAction(SOUND_BOAR);
+	}
+}
+
+void cGame::CollidesEnemies() {
+	if (Enemies.Collides(Player.GetPosition())) {
+		if(!playingEnemy) {
+			sounds.PlayAction(SOUND_ENEMY);
+			playingEnemy = true;
+		}
+		//Player.Die();
 	}
 }
 
@@ -319,12 +313,7 @@ void cGame::DrawGame()
 	glRotatef(TotalRotationAngle, 0, 1, 0);
 	glTranslatef(-Player.x, 0, -Player.z);	
 	Scene.Draw(&Data, &shaderManager, TotalRotationAngle);
-	for (int i = 0; i < NUM_BAUULS; ++i) {
-		glPushMatrix();
-		glTranslatef(bauuls[i].x,-bauuls[i].GetMinY()+Scene.GetHeight(bauuls[i].x/DILATATION,bauuls[i].z/DILATATION),bauuls[i].z);
-		bauuls[i].Draw();
-		glPopMatrix();
-	}
+	Enemies.Draw(&Scene);
 
 	// Only draw extras once the player has control
 	if (InitialZoomDistance == 0) {
@@ -355,12 +344,7 @@ void cGame::DrawWireframeGame() {
 	glRotatef(TotalRotationAngle, 0, 1, 0);
 	glTranslatef(-Player.x, 0, -Player.z);	
 	Scene.DrawPhysical(TotalRotationAngle);
-	for (int i = 0; i < NUM_BAUULS; ++i) {
-		glPushMatrix();
-		glTranslatef(bauuls[i].x,-bauuls[i].GetMinY()+Scene.GetHeight(bauuls[i].x/DILATATION,bauuls[i].z/DILATATION),bauuls[i].z);
-		bauuls[i].DrawPhysical();
-		glPopMatrix();
-	}
+	Enemies.DrawPhysical(&Scene);
 
 }
 
