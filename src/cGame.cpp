@@ -77,7 +77,7 @@ void cGame::InitGame()
 
 	Enemies.Init();
 
-	MunitionCount = 0;
+	MunitionCount = 5;
 }
 
 bool cGame::Loop()
@@ -127,10 +127,9 @@ bool cGame::Process() {
 		ProcessStartScreenKeys();
 	} else if (InitialZoomDistance == 0 && !Gameover) {
 		ProcessGameKeys();
+		ProcessBullets();
 		CollidesEnemies();
 	}
-
-
 
 	if(WireframeRendering) ProcessWireframeModeKeys();
 
@@ -144,6 +143,18 @@ void cGame::ProcessStartScreenKeys()
 	}
 }
 
+void cGame::ProcessBullets()
+{
+	for(int i = 0; i < Bullets.size(); ++i) {
+		Bullets[i].Move();
+	}
+	for(int i = 0; i < Bullets.size(); ++i) {
+		if (Bullets[i].IsFinished) {
+			Bullets.erase(Bullets.begin() + i);
+		}
+	}
+}
+
 void cGame::CollidesBoars() {
 	if(Scene.CollidesBoars(Player.GetPosition())) {
 		++MunitionCount;
@@ -152,6 +163,14 @@ void cGame::CollidesBoars() {
 }
 
 void cGame::CollidesEnemies() {
+	Enemies.Logic();
+	for(int i = 0; i < Bullets.size(); ++i) {
+		if(Enemies.CollidesBullet(Bullets[i].GetPosition())) {
+			// TODO: Play sound
+			Bullets.erase(Bullets.begin() + i);
+			break;
+		}
+	}
 	if (Enemies.Collides(Player.GetPosition())) {
 		if(!playingEnemy) {
 			sounds.PlayAction(SOUND_ENEMY);
@@ -187,6 +206,10 @@ void cGame::ProcessGameKeys()
 	}
 	if(keys['a']) Player.RotateLeft();
 	if(keys['d']) Player.RotateRight();
+	if(keys[' ']) {
+		keys[' '] = false;
+		Shoot();
+	}
 
 	if(keys['p']) {
 		WireframeRendering = !WireframeRendering;
@@ -215,6 +238,16 @@ void cGame::ProcessWireframeModeKeys()
 	if(keys['6']) {
 		CameraAngle++;
 		if (CameraAngle > 90) CameraAngle = 90;
+	}
+}
+
+void cGame::Shoot() {
+	if (MunitionCount > 0) {
+		cBullet Bullet;
+		Bullet.SetPosition(Player.GetPosition());
+		Bullet.Move();
+		Bullets.push_back(Bullet);
+		--MunitionCount;
 	}
 }
 
@@ -313,7 +346,11 @@ void cGame::DrawGame()
 	glRotatef(TotalRotationAngle, 0, 1, 0);
 	glTranslatef(-Player.x, 0, -Player.z);	
 	Scene.Draw(&Data, &shaderManager, TotalRotationAngle);
+	for (int i = 0; i < Bullets.size(); ++i) {
+		Bullets[i].Draw(&Data);
+	}
 	Enemies.Draw(&Scene);
+	
 
 	// Only draw extras once the player has control
 	if (InitialZoomDistance == 0) {
@@ -343,7 +380,11 @@ void cGame::DrawWireframeGame() {
 	glRotatef(CameraAngle - DEFAULT_CAMERA_ANGLE_TO_PLAYER,1.0f,0.0f,0.0f);
 	glRotatef(TotalRotationAngle, 0, 1, 0);
 	glTranslatef(-Player.x, 0, -Player.z);	
+	for (int i = 0; i < Bullets.size(); ++i) {
+		Bullets[i].DrawPhysical();
+	}
 	Scene.DrawPhysical(TotalRotationAngle);
+	
 	Enemies.DrawPhysical(&Scene);
 
 }

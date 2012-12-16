@@ -15,5 +15,8 @@ public:
 	float GetCurrentMinZ();
 	float GetCurrentMaxX();
 	float GetCurrentMaxZ();
+
+protected:
+	void DecreaseLife();
 };
 

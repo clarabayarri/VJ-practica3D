@@ -8,6 +8,7 @@
 #include "cEnemies.h"
 #include "cSkydome.h"
 #include "cSoundLibrary.h"
+#include "cBullet.h"
 #include <ctime>
 #include "Constants.h"
 
@@ -79,6 +80,9 @@ private:
 	void ProcessGameKeys();
 	void ProcessWireframeModeKeys();
 
+	void ProcessBullets();
+	void Shoot();
+
 	void DrawStartScreen();
 	void DrawSky();
 	void DrawGame();
@@ -93,4 +97,6 @@ private:
 	cSoundLibrary sounds;
 	bool playingAmbient;
 	bool playingEnemy;
+
+	std::vector<cBullet> Bullets;
 };

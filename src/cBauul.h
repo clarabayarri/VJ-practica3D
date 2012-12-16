@@ -20,6 +20,9 @@ public:
 	void MoveForward(float min, float max);
 	void DrawPhysical();
 	void Attack();
+	
+protected:
+	void DecreaseLife();
 
 private:
 	bool nextState;

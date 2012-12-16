@@ -17,6 +17,7 @@ public:
 	void Logic();
 
 	bool Collides(std::vector<float> PlayerPosition);
+	bool CollidesBullet(std::vector<float> Position);
 
 private:
 	std::vector<cBauul> bauuls;

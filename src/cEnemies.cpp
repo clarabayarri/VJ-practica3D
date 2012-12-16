@@ -51,9 +51,18 @@ void cEnemies::Logic()
 bool cEnemies::Collides(std::vector<float> PlayerPosition)
 {
 	for (int i = 0; i < NUM_BAUULS; ++i) {
-		bauuls[i].Logic(DILATATION,(TERRAIN_SIZE-1)*DILATATION);
 		if (bauuls[i].CollidesCharacter(PlayerPosition[PLAYER_X],PlayerPosition[PLAYER_Z],PlayerPosition[PLAYER_RADIUS])) {
 			bauuls[i].Attack();
+			return true;
+		}
+	}
+	return false;
+}
+
+bool cEnemies::CollidesBullet(std::vector<float> Position)
+{
+	for (int i = 0; i < NUM_BAUULS; ++i) {
+		if (bauuls[i].CollidesBullet(Position)) {
 			return true;
 		}
 	}

@@ -58,3 +58,7 @@ void cBauul::Attack() {
 	actionstate = STATE_ATTACK;
 	SetState(ANIM_ATTACK);
 }
+
+void cBauul::DecreaseLife() {
+	life -= 50;
+}

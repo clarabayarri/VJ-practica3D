@@ -68,13 +68,17 @@ public:
 	virtual float GetMaxY();
 	virtual float GetCurrentMaxZ();
 	bool CollidesCharacter(float x0, float z0, float radius0);
+	bool CollidesBullet(std::vector<float> Position);
 
 	std::vector<float> GetPosition();
 
 protected:
 	void SetState(int st);
 	int state;
+	int life;
 	cMD2Model model;
 	float animation_frame;
+
+	virtual void DecreaseLife();
 };
 

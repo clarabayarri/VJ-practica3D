@@ -4,7 +4,7 @@
 #define STEP_SIZE 0.1f
 #define ANGLE_STEP_SIZE 5.0f
 
-cAnimatedCharacter::cAnimatedCharacter(void):x(1.0f),z(1.0f),radius(0.1f),animation_frame(0.0f){
+cAnimatedCharacter::cAnimatedCharacter(void):x(1.0f),z(1.0f),radius(0.1f),animation_frame(0.0f),life(100){
 	state = -1;
 	SetState(ANIM_STAND);
 }
@@ -128,4 +128,16 @@ bool cAnimatedCharacter::CollidesCharacter(float x0, float z0, float radius0) {
 		//(GetCurrentMaxZ() > minz && GetCurrentMaxZ() < maxz) || (GetCurrentMinZ() > minz && GetCurrentMinZ() < maxz)) 
 	if (sqrt((x-x0)*(x-x0)+(z-z0)*(z-z0)) < (radius+radius0)) return true;
 	return false;
+}
+
+bool cAnimatedCharacter::CollidesBullet(std::vector<float> Position) {
+	if (Position[1] < model.GetMaxY() && sqrt((x-Position[0])*(x-Position[0])+(z-Position[2])*(z-Position[2])) < radius) {
+		DecreaseLife();
+		return true;
+	}
+	return false;
+}
+
+void cAnimatedCharacter::DecreaseLife() {
+
 }

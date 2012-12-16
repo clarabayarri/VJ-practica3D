@@ -34,3 +34,7 @@ float cPlayer::GetCurrentMaxX() {
 float cPlayer::GetCurrentMaxZ() {
 	return model.GetMaxZ()/4+z;
 }
+
+void cPlayer::DecreaseLife() {
+	life -= 20;
+}
