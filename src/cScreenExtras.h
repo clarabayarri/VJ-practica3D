@@ -13,8 +13,8 @@ public:
 	cScreenExtras(void);
 	~cScreenExtras(void);
 
-	void Init(const vector<vector<float> >& trees);
-	void Draw(cData *Data, double RemainingTime, const vector<float>& player, int munitionCount);
+	void Init(const std::vector<std::vector<float> >& trees);
+	void Draw(cData *Data, double RemainingTime, const std::vector<float>& player, const std::vector<std::vector<float> >& enemies, int munitionCount);
 
 private:
 	cTimeGauge TimeGauge;
@@ -23,6 +23,6 @@ private:
 
 	void DrawTimeGauge(double RemainingTime);
 	void DrawMunitionCounter(cData *Data, int count);
-	void DrawMap(cData *Data, const vector<float>& player);
+	void DrawMap(cData *Data, const vector<float>& player, const std::vector<std::vector<float> >& enemies);
 };
 

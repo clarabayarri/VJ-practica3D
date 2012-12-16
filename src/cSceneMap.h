@@ -12,7 +12,7 @@ public:
 
 	void Init(const vector<vector<float> >& trees);
 
-	void Draw(cData *Data, const vector<float>& player);
+	void Draw(cData *Data, const std::vector<float>& player, const std::vector<std::vector<float> >& enemies);
 
 private:
 	int dlId;

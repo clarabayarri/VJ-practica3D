@@ -11,6 +11,8 @@ public:
 
 	void Init();
 
+	std::vector<std::vector<float> > GetEnemies();
+
 	void Draw(cScene *Scene);
 	void DrawPhysical(cScene *Scene);
 

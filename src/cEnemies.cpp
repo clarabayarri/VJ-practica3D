@@ -21,6 +21,14 @@ void cEnemies::Init()
 	}
 }
 
+std::vector<std::vector<float> > cEnemies::GetEnemies() {
+	std::vector<std::vector<float> > result;
+	for (int i = 0; i < bauuls.size(); ++i) {
+		result.push_back(bauuls[i].GetPosition());
+	}
+	return result;
+}
+
 void cEnemies::Draw(cScene *Scene)
 {
 	for (int i = 0; i < bauuls.size(); ++i) {

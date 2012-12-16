@@ -42,7 +42,7 @@ void cSceneMap::Init(const vector<vector<float> >& trees) {
 	glEndList();
 }
 
-void cSceneMap::Draw(cData *Data, const vector<float>& player)
+void cSceneMap::Draw(cData *Data, const std::vector<float>& player, const std::vector<std::vector<float> >& enemies)
 {
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
@@ -55,10 +55,20 @@ void cSceneMap::Draw(cData *Data, const vector<float>& player)
 	// Draw border and trees
 	glCallList(dlId);
 
+	// Draw enemies
+	glEnable(GL_POINT_SMOOTH);
+	glPointSize(5.0f);
+	glColor3f(0.874f, 0.106f, 0.416f);
+	glBegin(GL_POINTS);
+	for(int i = 0; i < enemies.size(); ++i) {
+		glVertex3f(enemies[i][0]+MAP_MARGIN, enemies[i][2]+MAP_MARGIN, 0.1f);
+	}
+	glEnd();
+
 	// Draw player
 	glEnable(GL_POINT_SMOOTH);
-	glPointSize(3.0f);
-	glColor3f(0.874f, 0.106f, 0.416f);
+	glPointSize(5.0f);
+	glColor3f(0.174f, 0.106f, 0.816f);
 	glBegin(GL_POINTS);
 		glVertex3f(player[0]+MAP_MARGIN, player[2]+MAP_MARGIN, 0.1f);
 	glEnd();

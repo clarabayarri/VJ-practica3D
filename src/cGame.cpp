@@ -77,7 +77,7 @@ void cGame::InitGame()
 
 	Enemies.Init();
 
-	MunitionCount = 5;
+	MunitionCount = 0;
 }
 
 bool cGame::Loop()
@@ -353,7 +353,7 @@ void cGame::DrawGame()
 
 	// Only draw extras once the player has control
 	if (InitialZoomDistance == 0) {
-		ScreenExtras.Draw(&Data, GetTimeRemainingForLevel(), Player.GetPosition(), MunitionCount);
+		ScreenExtras.Draw(&Data, GetTimeRemainingForLevel(), Player.GetPosition(), Enemies.GetEnemies(), MunitionCount);
 	}
 }
 
