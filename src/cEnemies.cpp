@@ -29,6 +29,10 @@ std::vector<std::vector<float> > cEnemies::GetEnemies() {
 	return result;
 }
 
+int cEnemies::EnemyCount() {
+	return bauuls.size();
+}
+
 void cEnemies::Draw(cScene *Scene)
 {
 	for (int i = 0; i < bauuls.size(); ++i) {

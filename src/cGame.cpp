@@ -163,13 +163,14 @@ void cGame::CollidesBoars() {
 }
 
 void cGame::CollidesEnemies() {
-	Enemies.Logic();
 	for(int i = 0; i < Bullets.size(); ++i) {
 		if(Enemies.CollidesBullet(Bullets[i].GetPosition())) {
 			// TODO: Play sound
 			Bullets[i].IsFinished = true;
+			if (Enemies.EnemyCount() == 0) InitGame();
 		}
 	}
+	Enemies.Logic();
 	if (Enemies.Collides(Player.GetPosition())) {
 		if(!playingEnemy) {
 			sounds.PlayAction(SOUND_ENEMY);

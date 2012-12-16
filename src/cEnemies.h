@@ -12,6 +12,7 @@ public:
 	void Init();
 
 	std::vector<std::vector<float> > GetEnemies();
+	int EnemyCount();
 
 	void Draw(cScene *Scene);
 	void DrawPhysical(cScene *Scene);
