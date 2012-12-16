@@ -17,7 +17,7 @@ public:
 	void Draw(cScene *Scene);
 	void DrawPhysical(cScene *Scene);
 
-	void Logic();
+	void Logic(float min, float max);
 
 	bool Collides(std::vector<float> PlayerPosition);
 	bool CollidesBullet(std::vector<float> Position);

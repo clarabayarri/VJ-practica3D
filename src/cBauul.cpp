@@ -17,7 +17,8 @@ void cBauul::Draw() {
 		int start_frame = animlist[state][0];
 		int modulo = animlist[state][1] - animlist[state][0] +1;
 		if ((int)animation_frame/20 > 1) nextState = true;
-		model.Render(0,0,0,90+orientationAngle,0, start_frame + (int)animation_frame%modulo,1,  1,1,  0,0,0);
+		if (dying && animation_frame/modulo > 1) animation_frame = modulo-1;
+		if (!dead) model.Render(0,0,0,90+orientationAngle,0, start_frame + (int)animation_frame%modulo,1,  1,1,  0,0,0);
 	}
 	if (disappearing > 0) {
 		disappearing++;

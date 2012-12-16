@@ -1,5 +1,7 @@
 #pragma once
 #include "canimatedcharacter.h"
+
+
 class cPlayer :
 	public cAnimatedCharacter
 {

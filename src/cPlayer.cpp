@@ -7,6 +7,8 @@ cPlayer::~cPlayer(void){}
 
 void cPlayer::Init() {
 	SetModel("knight");
+	SetState(ANIM_STAND);
+	dying = false;
 }
 
 void cPlayer::Draw() {

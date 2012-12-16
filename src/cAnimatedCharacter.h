@@ -6,6 +6,8 @@
 #include "cMD2Model.h"
 using namespace std;
 
+#define	STATE_DYING	17
+
 /***** MD2 Models constants ****/
 const int animlist[21][3] = 
 {
@@ -50,12 +52,12 @@ public:
 	void SetX(float setx);
 	void SetZ(float setz);
 	void SetModel(char * m);
-	void MoveForward();
-	void MoveBackward();
-	void MoveLeft();
-	void MoveRight();
-	void RotateLeft();
-	void RotateRight();
+	virtual void MoveForward();
+	virtual void MoveBackward();
+	virtual void MoveLeft();
+	virtual void MoveRight();
+	virtual void RotateLeft();
+	virtual void RotateRight();
 	void SetOrientation(float pitch);
 
 	virtual void Draw();
@@ -73,14 +75,18 @@ public:
 	bool CollidesBullet(std::vector<float> Position);
 
 	void StartDisappearing();
+	void Kill();
+	bool IsDead();
 
 	std::vector<float> GetPosition();
 
 protected:
 	void SetState(int st);
+
 	int state;
 	cMD2Model model;
 	float animation_frame;
+	bool dying;
 
 	int disappearing;
 

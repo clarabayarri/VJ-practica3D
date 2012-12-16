@@ -11,7 +11,7 @@ cGame::~cGame(void){}
 bool cGame::Init() {
 	glewInit();
 	bool res=true;
-	
+
 	srand((unsigned int) time(NULL));
 
 	//Positions initialization
@@ -22,7 +22,6 @@ bool cGame::Init() {
 	//Sounds initialization
 	sounds.Init();
 	playingAmbient = false; 
-	playingEnemy = false; 
 
 	//Graphics initialization
 	glClearColor(0.0f,0.0f,0.0f,0.0f);
@@ -55,19 +54,13 @@ void cGame::InitStartScreen()
 	clouds.SetTexId(IMG_SKY2);
 }
 
-void cGame::InitGame()
-{
+void cGame::InitGame() {
 	CameraDist = DEFAULT_CAMERA_DIST_TO_PLAYER;
 	CameraAngle = DEFAULT_CAMERA_ANGLE_TO_PLAYER;
 	Scene.Init();
 	ScreenExtras.Init(Scene.GetForest());
 	LevelTimeLimit = 5*SECONDS_TO_MINUTE;
 	StartTime = time(0);
-	
-	skydome.Init();
-	skydome.SetTexId(IMG_SKY1);
-	clouds.Init();
-	clouds.SetTexId(IMG_SKY2);
 
 	InitialZoomAngle = INITIAL_ZOOM_TOTAL_ROTATION_ANGLE;
 	InitialZoomDistance = INITIAL_ZOOM_TOTAL_DISTANCE;
@@ -76,6 +69,7 @@ void cGame::InitGame()
 	Player.Init();
 
 	Enemies.Init();
+	playingEnemy = false; 
 
 	MunitionCount = 0;
 }
@@ -128,6 +122,7 @@ bool cGame::Process() {
 	} else if (InitialZoomDistance == 0 && !Gameover) {
 		ProcessGameKeys();
 		ProcessBullets();
+		Enemies.Logic(DILATATION,(TERRAIN_SIZE-2)*DILATATION);
 		CollidesEnemies();
 	}
 
@@ -145,10 +140,10 @@ void cGame::ProcessStartScreenKeys()
 
 void cGame::ProcessBullets()
 {
-	for(int i = 0; i < Bullets.size(); ++i) {
+	for(unsigned int i = 0; i < Bullets.size(); ++i) {
 		Bullets[i].Move();
 	}
-	for(int i = 0; i < Bullets.size(); ++i) {
+	for(unsigned int i = 0; i < Bullets.size(); ++i) {
 		if (Bullets[i].IsFinished) {
 			Bullets.erase(Bullets.begin() + i);
 		}
@@ -163,20 +158,20 @@ void cGame::CollidesBoars() {
 }
 
 void cGame::CollidesEnemies() {
-	for(int i = 0; i < Bullets.size(); ++i) {
+	for(unsigned int i = 0; i < Bullets.size(); ++i) {
 		if(Enemies.CollidesBullet(Bullets[i].GetPosition())) {
 			// TODO: Play sound
 			Bullets[i].IsFinished = true;
 			if (Enemies.EnemyCount() == 0) InitGame();
 		}
 	}
-	Enemies.Logic();
 	if (Enemies.Collides(Player.GetPosition())) {
 		if(!playingEnemy) {
 			sounds.PlayAction(SOUND_ENEMY);
 			playingEnemy = true;
 		}
-		//Player.Die();
+		Player.Kill();
+		Gameover = true;
 	}
 }
 
@@ -206,7 +201,7 @@ void cGame::ProcessGameKeys()
 	}
 	if(keys['a']) Player.RotateLeft();
 	if(keys['d']) Player.RotateRight();
-	if(keys[' ']) {
+		if(keys[' ']) {
 		keys[' '] = false;
 		Shoot();
 	}
@@ -275,8 +270,7 @@ void cGame::Render() {
 	UpdateFrameVariables();
 }
 
-void cGame::DrawStartScreen()
-{
+void cGame::DrawStartScreen() {
 	GLuint left = SCREEN_WIDTH/2 - 200;
 	GLuint top = SCREEN_HEIGHT/2 - 250;
 	GLuint right = SCREEN_WIDTH/2 + 200;
@@ -346,11 +340,10 @@ void cGame::DrawGame()
 	glRotatef(TotalRotationAngle, 0, 1, 0);
 	glTranslatef(-Player.x, 0, -Player.z);	
 	Scene.Draw(&Data, &shaderManager, TotalRotationAngle);
-	for (int i = 0; i < Bullets.size(); ++i) {
+	for (unsigned int i = 0; i < Bullets.size(); ++i) {
 		Bullets[i].Draw(&Data);
 	}
 	Enemies.Draw(&Scene);
-	
 
 	// Only draw extras once the player has control
 	if (InitialZoomDistance == 0) {
@@ -380,13 +373,11 @@ void cGame::DrawWireframeGame() {
 	glRotatef(CameraAngle - DEFAULT_CAMERA_ANGLE_TO_PLAYER,1.0f,0.0f,0.0f);
 	glRotatef(TotalRotationAngle, 0, 1, 0);
 	glTranslatef(-Player.x, 0, -Player.z);	
-	for (int i = 0; i < Bullets.size(); ++i) {
+	for (unsigned int i = 0; i < Bullets.size(); ++i) {
 		Bullets[i].DrawPhysical();
 	}
 	Scene.DrawPhysical(TotalRotationAngle);
-	
 	Enemies.DrawPhysical(&Scene);
-
 }
 
 void cGame::DrawGameOver()
