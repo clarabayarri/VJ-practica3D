@@ -4,21 +4,21 @@ cForest::cForest(void){}
 
 cForest::~cForest(void){}
 
-vector<vector<float> > cForest::GetTrees() {
-	vector<vector<float> > result(NUM_TREES);
+std::vector<std::vector<float> > cForest::GetTrees() {
+	std::vector<std::vector<float> > result(NUM_TREES);
 	int counter = 0;
 	for (unsigned int i = 0; i < NUM_TREE_TYPES; ++i) {
-		vector<vector<float> > aux = trees[i].GetTrees();
+		std::vector<std::vector<float> > aux = trees[i].GetTrees();
 		for (unsigned int j = 0; j < aux.size(); ++j) result[counter++] = aux[j];
 	}
 	return result;
 }
 
-vector<vector<float> > cForest::GetBoars() {
-	vector<vector<float> > result(NUM_BOARS);
+std::vector<std::vector<float> > cForest::GetBoars() {
+	std::vector<std::vector<float> > result(NUM_BOARS);
 	int counter = 0;
 	for (unsigned int i = 0; i < NUM_BOAR_TYPES; ++i) {
-		vector<vector<float> > aux = boars[i].GetBoars();
+		std::vector<std::vector<float> > aux = boars[i].GetBoars();
 		for (unsigned int j = 0; j < aux.size(); ++j) result[counter++] = aux[j];
 	}
 	return result;
@@ -27,12 +27,12 @@ vector<vector<float> > cForest::GetBoars() {
 void cForest::Init() {
 	floor.Init();
 	wall.Init(&floor);
-	trees = vector<cTreeForest>(NUM_TREE_TYPES);
+	trees = std::vector<cTreeForest>(NUM_TREE_TYPES);
 
-	vector<int> counter(5,0);
+	std::vector<int> counter(5,0);
 	for (int i = 0; i < NUM_TREES; ++i) counter[rand()%5]++;
 	for (int i = 0; i < NUM_TREE_TYPES; ++i) {
-		vector<vector<float> > coords(counter[i],vector<float>(3));
+		std::vector<std::vector<float> > coords(counter[i],std::vector<float>(3));
 		int size = (int) (floor.GetSize()-3)*100+1;
 		for (int j = 0; j < counter[i]; ++j) {
 			coords[j][0] = (float) (rand()%size)/100+1;
@@ -42,11 +42,11 @@ void cForest::Init() {
 		trees[i].Init(coords,IMG_TREE1+i);
 	}
 
-	boars = vector<cBoarCollection>(NUM_BOAR_TYPES);
-	vector<int> counter2(NUM_BOAR_TYPES,0);
+	boars = std::vector<cBoarCollection>(NUM_BOAR_TYPES);
+	std::vector<int> counter2(NUM_BOAR_TYPES,0);
 	for (int i = 0; i < NUM_BOARS; ++i) counter2[rand()%NUM_BOAR_TYPES]++;
 	for (int i = 0; i < NUM_BOAR_TYPES; ++i) {
-		vector<vector<float> > coords(counter2[i],vector<float>(3));
+		std::vector<std::vector<float> > coords(counter2[i],std::vector<float>(3));
 		int size = (int) (floor.GetSize()-3)*100+1;
 		for (int j = 0; j < counter2[i]; ++j) {
 			coords[j][0] = (float) (rand()%size)/100+1;
@@ -94,18 +94,18 @@ float cForest::GetMinY() {
 	return floor.GetMinY();
 }
 
-bool cForest::CollidesPhysics(vector<float> PlayerPosition, float PlayerRadius)
+bool cForest::CollidesPhysics(std::vector<float> PlayerPosition)
 {
 	for (int i = 0; i < NUM_TREE_TYPES; ++i) {
-		if (trees[i].Collides(PlayerPosition, PlayerRadius)) return true;
+		if (trees[i].Collides(PlayerPosition)) return true;
 	}
 	return false;
 }
 
-bool cForest::CollidesBoars(vector<float> PlayerPosition, float PlayerRadius)
+bool cForest::CollidesBoars(std::vector<float> PlayerPosition)
 {
 	for (int i = 0; i < NUM_BOAR_TYPES; ++i) {
-		if (boars[i].Collides(PlayerPosition, PlayerRadius)) return true;
+		if (boars[i].Collides(PlayerPosition)) return true;
 	}
 	return false;
 }

@@ -1,7 +1,7 @@
 #pragma once
 #include "cData.h"
 #include <vector>
-using namespace std;
+
 
 class cBoarCollection
 {
@@ -9,17 +9,17 @@ public:
 	cBoarCollection(void);
 	~cBoarCollection(void);
 
-	void Init(const vector<vector<float> >& t, int tex);
+	void Init(const std::vector<std::vector<float> >& t, int tex);
 	void Render(cData * data, float OrientationAngle);
 	void RenderPhysical(float OrientationAngle);
 
-	bool Collides(vector<float> PlayerPosition, float PlayerRadius);
+	bool Collides(std::vector<float> PlayerPosition);
 
-	vector<vector<float> > GetBoars();
+	std::vector<std::vector<float> > GetBoars();
 private:
 	int texId;
 
-	vector<vector<float> > boars;
-	vector<int> disappearing;
+	std::vector<std::vector<float> > boars;
+	std::vector<int> disappearing;
 };
 

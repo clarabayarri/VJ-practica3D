@@ -9,9 +9,9 @@ void cWall::Init(cFloor * floor) {
 	unsigned int tSize = (unsigned int) floor->GetSize();
 	float tDilatation = floor->GetDilatation();
 
-	vertices = vector<vertex>((tSize)*8);
-	faces = vector<face>((tSize-1)*8);
-	textures = vector<pair<float,float> >((tSize)*8);	
+	vertices = std::vector<vertex>((tSize)*8);
+	faces = std::vector<face>((tSize-1)*8);
+	textures = std::vector<std::pair<float,float> >((tSize)*8);	
 
 	for (unsigned int i = 0; i < tSize; ++i) {
 		//Front
@@ -40,10 +40,10 @@ void cWall::Init(cFloor * floor) {
 	GenerateArrays();
 	
 	for (unsigned int i = 0; i < (tSize)*2; ++i) {
-		textures[i*4]	= pair<float,float>(0.000f,1.000f);
-		textures[i*4+1] = pair<float,float>(0.000f,0.250f);
-		textures[i*4+2] = pair<float,float>(1.000f,1.000f);
-		textures[i*4+3] = pair<float,float>(1.000f,0.250f);
+		textures[i*4]	= std::pair<float,float>(0.000f,1.000f);
+		textures[i*4+1] = std::pair<float,float>(0.000f,0.250f);
+		textures[i*4+2] = std::pair<float,float>(1.000f,1.000f);
+		textures[i*4+3] = std::pair<float,float>(1.000f,0.250f);
     }
 
 	GenerateTextureArray();

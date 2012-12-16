@@ -14,13 +14,13 @@ cBoarCollection::~cBoarCollection(void)
 {
 }
 
-vector<vector<float> > cBoarCollection::GetBoars() {
+std::vector<std::vector<float> > cBoarCollection::GetBoars() {
 	return boars;
 }
 
-void cBoarCollection::Init(const vector<vector<float> >& t, int tex) {
-	boars = vector<vector<float> >(t); 
-	disappearing = vector<int> (t.size(),BLINK_TOTAL);
+void cBoarCollection::Init(const std::vector<std::vector<float> >& t, int tex) {
+	boars = std::vector<std::vector<float> >(t); 
+	disappearing = std::vector<int> (t.size(),BLINK_TOTAL);
 	texId = tex;
 }
 
@@ -121,13 +121,13 @@ void cBoarCollection::RenderPhysical(float OrientationAngle)
 	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 }
 
-bool cBoarCollection::Collides(vector<float> PlayerPosition, float PlayerRadius)
+bool cBoarCollection::Collides(std::vector<float> PlayerPosition)
 {
 	for (unsigned int j = 0; j < boars.size(); ++j) {
-		float diffx = PlayerPosition[0] - boars[j][0]*DILATATION;
-		float diffz = PlayerPosition[2] - boars[j][2]*DILATATION;
+		float diffx = PlayerPosition[PLAYER_X] - boars[j][0]*DILATATION;
+		float diffz = PlayerPosition[PLAYER_Z] - boars[j][2]*DILATATION;
 		float distance = sqrt(diffx*diffx + diffz*diffz);
-		if (distance < PlayerRadius+BOAR_WIDTH/2 && disappearing[j] == BLINK_TOTAL) {
+		if (distance < PlayerPosition[PLAYER_RADIUS] + BOAR_WIDTH/2 && disappearing[j] == BLINK_TOTAL) {
 			disappearing[j]--;
 			return true;
 		}

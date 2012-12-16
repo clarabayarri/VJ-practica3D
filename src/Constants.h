@@ -57,3 +57,10 @@
 
 /*****  Enemies  *****/
 #define NUM_BAUULS			3
+
+/*****	Player	*****/
+#define PLAYER_X		0
+#define PLAYER_Y		1
+#define PLAYER_Z		2
+#define PLAYER_ANGLE	3
+#define PLAYER_RADIUS	4

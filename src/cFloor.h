@@ -5,7 +5,7 @@
 #include "cData.h"
 #include "customshadermanager.h"
 #include "Constants.h"
-using namespace std;
+
 
 class cFloor : public cVBO {
 public:
@@ -26,7 +26,7 @@ protected:
     void UpdateSmoothedNormals();
 	void UpdateNormal(int f);
 
-	vector<vector<float> > heights;
+	std::vector<std::vector<float> > heights;
 
 	float miny;
 	float maxy;

@@ -17,16 +17,16 @@ public:
 	float GetHeight(float x, float z);
 	float GetMinY();
 
-	bool CollidesPhysics(vector<float> PlayerPosition, float PlayerRadius);
-	bool CollidesBoars(vector<float> PlayerPosition, float PlayerRadius);
+	bool CollidesPhysics(std::vector<float> PlayerPosition);
+	bool CollidesBoars(std::vector<float> PlayerPosition);
 
-	vector<vector<float> > GetTrees();
-	vector<vector<float> > GetBoars();
+	std::vector<std::vector<float> > GetTrees();
+	std::vector<std::vector<float> > GetBoars();
 
 private:
 	cFloor floor;
 	cWall wall;
-	vector<cTreeForest> trees;
-	vector<cBoarCollection> boars;
+	std::vector<cTreeForest> trees;
+	std::vector<cBoarCollection> boars;
 };
 

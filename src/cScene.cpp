@@ -10,7 +10,7 @@ void cScene::Init() {
 	IsInitialized = true;
 }
 
-vector<vector<float> > cScene::GetForest() {
+std::vector<std::vector<float> > cScene::GetForest() {
 	return forest.GetTrees();
 }
 
@@ -33,18 +33,18 @@ float cScene::GetMinY() {
 	return forest.GetMinY();
 }
 
-bool cScene::CollidesPhysics(vector<float> PlayerPosition, float PlayerRadius)
+bool cScene::CollidesPhysics(std::vector<float> PlayerPosition)
 {
 	// Walls
-	if (PlayerPosition[0] < PlayerRadius || PlayerPosition[2] < PlayerRadius ||
-		PlayerPosition[0] + PlayerRadius > (TERRAIN_SIZE-1)*DILATATION ||
-		PlayerPosition[2] + PlayerRadius > (TERRAIN_SIZE-1)*DILATATION) return true;
+	if (PlayerPosition[0] < PlayerPosition[PLAYER_RADIUS] || PlayerPosition[2] < PlayerPosition[PLAYER_RADIUS] ||
+		PlayerPosition[0] + PlayerPosition[PLAYER_RADIUS] > (TERRAIN_SIZE-1)*DILATATION ||
+		PlayerPosition[2] + PlayerPosition[PLAYER_RADIUS] > (TERRAIN_SIZE-1)*DILATATION) return true;
 
 	// Forest
-	return forest.CollidesPhysics(PlayerPosition, PlayerRadius);
+	return forest.CollidesPhysics(PlayerPosition);
 }
 
-bool cScene::CollidesBoars(vector<float> PlayerPosition, float PlayerRadius)
+bool cScene::CollidesBoars(std::vector<float> PlayerPosition)
 {
-	return forest.CollidesBoars(PlayerPosition, PlayerRadius);
+	return forest.CollidesBoars(PlayerPosition);
 }

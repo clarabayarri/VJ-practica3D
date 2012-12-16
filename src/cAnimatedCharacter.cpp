@@ -1,4 +1,5 @@
 #include "cAnimatedCharacter.h"
+#include "Constants.h"
 
 #define STEP_SIZE 0.1f
 #define ANGLE_STEP_SIZE 5.0f
@@ -74,11 +75,12 @@ void cAnimatedCharacter::DrawPhysical() {
 }
 
 std::vector<float> cAnimatedCharacter::GetPosition() {
-	std::vector<float> position(4);
-	position[0] = x;
-	position[1] = 0;
-	position[2] = z;
-	position[3] = orientationAngle;
+	std::vector<float> position(5);
+	position[PLAYER_X] = x;
+	position[PLAYER_Y] = 0;
+	position[PLAYER_Z] = z;
+	position[PLAYER_ANGLE] = orientationAngle;
+	position[PLAYER_RADIUS] = radius;
 	return position;
 }
 

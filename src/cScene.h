@@ -3,7 +3,7 @@
 #include "cData.h"
 #include "cForest.h"
 #include "customshadermanager.h"
-using namespace std;
+
 
 #define SCENE_WIDTH		8	//#tiles
 #define SCENE_DEPTH		8
@@ -32,10 +32,10 @@ public:
 	float GetHeight(float x, float z);
 	float GetMinY();
 
-	bool CollidesPhysics(vector<float> PlayerPosition, float PlayerRadius);
-	bool CollidesBoars(vector<float> PlayerPosition, float PlayerRadius);
+	bool CollidesPhysics(std::vector<float> PlayerPosition);
+	bool CollidesBoars(std::vector<float> PlayerPosition);
 
-	vector<vector<float> > GetForest();
+	std::vector<std::vector<float> > GetForest();
 
 private:
 	cForest forest;	

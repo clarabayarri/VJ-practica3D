@@ -161,7 +161,7 @@ void cGame::ProcessStartScreenKeys()
 }
 
 void cGame::CollidesBoars() {
-	if(Scene.CollidesBoars(Player.GetPosition(),Player.radius)) {
+	if(Scene.CollidesBoars(Player.GetPosition())) {
 		++MunitionCount;
 		sounds.PlayAction(SOUND_BOAR);
 	}
@@ -174,22 +174,22 @@ void cGame::ProcessGameKeys()
 	if(keys['e']) {
 		Player.MoveRight();
 		CollidesBoars();
-		if(Scene.CollidesPhysics(Player.GetPosition(),Player.radius)) Player.MoveLeft();
+		if(Scene.CollidesPhysics(Player.GetPosition())) Player.MoveLeft();
 	}
 	if(keys['w']) {
 		Player.MoveForward();
 		CollidesBoars();
-		if(Scene.CollidesPhysics(Player.GetPosition(),Player.radius)) Player.MoveBackward();
+		if(Scene.CollidesPhysics(Player.GetPosition())) Player.MoveBackward();
 	}
 	if(keys['q']) {
 		Player.MoveLeft();
 		CollidesBoars();
-		if(Scene.CollidesPhysics(Player.GetPosition(),Player.radius)) Player.MoveRight();
+		if(Scene.CollidesPhysics(Player.GetPosition())) Player.MoveRight();
 	}
 	if(keys['s']) {
 		Player.MoveBackward();
 		CollidesBoars();
-		if(Scene.CollidesPhysics(Player.GetPosition(),Player.radius)) Player.MoveForward();
+		if(Scene.CollidesPhysics(Player.GetPosition())) Player.MoveForward();
 	}
 	if(keys['a']) Player.RotateLeft();
 	if(keys['d']) Player.RotateRight();

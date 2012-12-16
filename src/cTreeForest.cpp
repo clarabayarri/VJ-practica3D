@@ -8,12 +8,12 @@ cTreeForest::cTreeForest() {}
 
 cTreeForest::~cTreeForest() {}
 
-vector<vector<float> > cTreeForest::GetTrees() {
+std::vector<std::vector<float> > cTreeForest::GetTrees() {
 	return trees;
 }
 
-void cTreeForest::Init(const vector<vector<float> >& t, int tex) {
-	trees = vector<vector<float> >(t); 
+void cTreeForest::Init(const std::vector<std::vector<float> >& t, int tex) {
+	trees = std::vector<std::vector<float> >(t); 
 	texId = tex;
 
 	dlId = glGenLists(1);
@@ -92,13 +92,13 @@ void cTreeForest::RenderPhysical()
 	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 }
 
-bool cTreeForest::Collides(vector<float> PlayerPosition, float PlayerRadius)
+bool cTreeForest::Collides(std::vector<float> PlayerPosition)
 {
 	for (unsigned int j = 0; j < trees.size(); ++j) {
 		float diffx = PlayerPosition[0] - trees[j][0]*DILATATION;
 		float diffz = PlayerPosition[2] - trees[j][2]*DILATATION;
 		float distance = sqrt(diffx*diffx + diffz*diffz);
-		if (distance < PlayerRadius+ TREE_PHYSICAL_WIDTH/2) {
+		if (distance < PlayerPosition[PLAYER_RADIUS] + TREE_PHYSICAL_WIDTH/2) {
 			return true;
 		}
 	}
