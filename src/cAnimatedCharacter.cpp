@@ -4,7 +4,7 @@
 #define STEP_SIZE 0.1f
 #define ANGLE_STEP_SIZE 5.0f
 
-cAnimatedCharacter::cAnimatedCharacter(void):x(1.0f),z(1.0f),radius(0.1f),animation_frame(0.0f),life(100){
+cAnimatedCharacter::cAnimatedCharacter(void):x(1.0f),z(1.0f),radius(0.1f),animation_frame(0.0f),life(100),disappearing(0),dead(false){
 	state = -1;
 	SetState(ANIM_STAND);
 }
@@ -126,13 +126,14 @@ void cAnimatedCharacter::SetOrientation(float pitch) {
 bool cAnimatedCharacter::CollidesCharacter(float x0, float z0, float radius0) {
 	//if ((GetCurrentMaxX() > minx && GetCurrentMaxX() < maxx) || (GetCurrentMinX() > minx && GetCurrentMinX() < maxx) && 
 		//(GetCurrentMaxZ() > minz && GetCurrentMaxZ() < maxz) || (GetCurrentMinZ() > minz && GetCurrentMinZ() < maxz)) 
-	if (sqrt((x-x0)*(x-x0)+(z-z0)*(z-z0)) < (radius+radius0)) return true;
+	if (life > 0 && sqrt((x-x0)*(x-x0)+(z-z0)*(z-z0)) < (radius+radius0)) return true;
 	return false;
 }
 
 bool cAnimatedCharacter::CollidesBullet(std::vector<float> Position) {
-	if (Position[1] < model.GetMaxY() && sqrt((x-Position[0])*(x-Position[0])+(z-Position[2])*(z-Position[2])) < radius) {
+	if (life > 0 && Position[1] < model.GetMaxY() && sqrt((x-Position[0])*(x-Position[0])+(z-Position[2])*(z-Position[2])) < radius) {
 		DecreaseLife();
+		if (life <= 0) StartDisappearing();
 		return true;
 	}
 	return false;
@@ -140,4 +141,8 @@ bool cAnimatedCharacter::CollidesBullet(std::vector<float> Position) {
 
 void cAnimatedCharacter::DecreaseLife() {
 
+}
+
+void cAnimatedCharacter::StartDisappearing() {
+	disappearing = 1;
 }

@@ -23,7 +23,7 @@ void cEnemies::Init()
 
 void cEnemies::Draw(cScene *Scene)
 {
-	for (int i = 0; i < NUM_BAUULS; ++i) {
+	for (int i = 0; i < bauuls.size(); ++i) {
 		glPushMatrix();
 		glTranslatef(bauuls[i].x,-bauuls[i].GetMinY()+Scene->GetHeight(bauuls[i].x/DILATATION,bauuls[i].z/DILATATION),bauuls[i].z);
 		bauuls[i].Draw();
@@ -33,7 +33,7 @@ void cEnemies::Draw(cScene *Scene)
 
 void cEnemies::DrawPhysical(cScene *Scene)
 {
-	for (int i = 0; i < NUM_BAUULS; ++i) {
+	for (int i = 0; i < bauuls.size(); ++i) {
 		glPushMatrix();
 		glTranslatef(bauuls[i].x,-bauuls[i].GetMinY()+Scene->GetHeight(bauuls[i].x/DILATATION,bauuls[i].z/DILATATION),bauuls[i].z);
 		bauuls[i].DrawPhysical();
@@ -43,14 +43,20 @@ void cEnemies::DrawPhysical(cScene *Scene)
 
 void cEnemies::Logic()
 {
-	for (int i = 0; i < NUM_BAUULS; ++i) {
+	for (int i = 0; i < bauuls.size(); ++i) {
+		if (bauuls[i].dead) {
+			bauuls.erase(bauuls.begin()+i);
+			break;
+		}
+	}
+	for (int i = 0; i < bauuls.size(); ++i) {
 		bauuls[i].Logic(DILATATION,(TERRAIN_SIZE-1)*DILATATION);
 	}
 }
 
 bool cEnemies::Collides(std::vector<float> PlayerPosition)
 {
-	for (int i = 0; i < NUM_BAUULS; ++i) {
+	for (int i = 0; i < bauuls.size(); ++i) {
 		if (bauuls[i].CollidesCharacter(PlayerPosition[PLAYER_X],PlayerPosition[PLAYER_Z],PlayerPosition[PLAYER_RADIUS])) {
 			bauuls[i].Attack();
 			return true;
@@ -61,7 +67,7 @@ bool cEnemies::Collides(std::vector<float> PlayerPosition)
 
 bool cEnemies::CollidesBullet(std::vector<float> Position)
 {
-	for (int i = 0; i < NUM_BAUULS; ++i) {
+	for (int i = 0; i < bauuls.size(); ++i) {
 		if (bauuls[i].CollidesBullet(Position)) {
 			return true;
 		}

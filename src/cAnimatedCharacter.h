@@ -40,6 +40,8 @@ public:
 	float z;
 	float orientationAngle;
 	float radius;
+	int life;
+	bool dead;
 
 	cAnimatedCharacter(void);
 	~cAnimatedCharacter(void);
@@ -70,14 +72,17 @@ public:
 	bool CollidesCharacter(float x0, float z0, float radius0);
 	bool CollidesBullet(std::vector<float> Position);
 
+	void StartDisappearing();
+
 	std::vector<float> GetPosition();
 
 protected:
 	void SetState(int st);
 	int state;
-	int life;
 	cMD2Model model;
 	float animation_frame;
+
+	int disappearing;
 
 	virtual void DecreaseLife();
 };

@@ -167,8 +167,7 @@ void cGame::CollidesEnemies() {
 	for(int i = 0; i < Bullets.size(); ++i) {
 		if(Enemies.CollidesBullet(Bullets[i].GetPosition())) {
 			// TODO: Play sound
-			Bullets.erase(Bullets.begin() + i);
-			break;
+			Bullets[i].IsFinished = true;
 		}
 	}
 	if (Enemies.Collides(Player.GetPosition())) {

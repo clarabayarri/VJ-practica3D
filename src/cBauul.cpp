@@ -1,5 +1,6 @@
 #include "cBauul.h"
 
+#define DISAPPEAR_BLINK 40
 
 cBauul::cBauul():nextState(true),actionstate(0) {}
 
@@ -12,10 +13,16 @@ void cBauul::Init() {
 
 void cBauul::Draw() {
 	animation_frame += 0.4f;
-	int start_frame = animlist[state][0];
-	int modulo = animlist[state][1] - animlist[state][0] +1;
-	if ((int)animation_frame/20 > 1) nextState = true;
-	model.Render(0,0,0,90+orientationAngle,0, start_frame + (int)animation_frame%modulo,1,  1,1,  0,0,0);
+	if (disappearing % 5 == disappearing % 10) {
+		int start_frame = animlist[state][0];
+		int modulo = animlist[state][1] - animlist[state][0] +1;
+		if ((int)animation_frame/20 > 1) nextState = true;
+		model.Render(0,0,0,90+orientationAngle,0, start_frame + (int)animation_frame%modulo,1,  1,1,  0,0,0);
+	}
+	if (disappearing > 0) {
+		disappearing++;
+		if (disappearing == DISAPPEAR_BLINK) dead = true;
+	}
 }
 
 void cBauul::Logic(float min, float max) {
