@@ -4,7 +4,7 @@
 #include "cFloor.h"
 #include "cData.h"
 
-#define WALL_HEIGHT 1.5f
+#define WALL_HEIGHT 0.8f
 
 class cWall : public cVBO {
 public:

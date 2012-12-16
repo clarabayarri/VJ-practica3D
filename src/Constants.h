@@ -37,12 +37,12 @@
 #define NUM_ACTION_SOUNDS	2
 
 /*****  Ambient Sounds Identifiers  *****/
-#define AMBIENT1			0
-#define AMBIENT2			1
+#define SOUND_AMBIENT1		0
+#define SOUND_AMBIENT2		1
 
 /*****  Action Sounds Identifiers  *****/
-#define BOAR				0
-#define	ENEMY				1
+#define SOUND_BOAR			0
+#define	SOUND_ENEMY			1
 
 /*****  Terrain Constants  *****/
 #define TERRAIN_SIZE 		32
@@ -54,3 +54,6 @@
 #define SHADER_NONE			-1
 #define SHADER_CRT_DISPLAY	0
 #define SHADER_FLOOR		1
+
+/*****  Enemies  *****/
+#define NUM_BAUULS			3

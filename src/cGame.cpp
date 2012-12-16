@@ -8,11 +8,12 @@
 cGame::cGame(void) {}
 cGame::~cGame(void){}
 
-bool cGame::Init()
-{
+bool cGame::Init() {
 	glewInit();
 	bool res=true;
 	
+	srand((unsigned int) time(NULL));
+
 	//Positions initialization
 	mouseX = -1;
 	mouseY = -1;
@@ -20,7 +21,8 @@ bool cGame::Init()
 
 	//Sounds initialization
 	sounds.Init();
-	playing = false; 
+	playingAmbient = false; 
+	playingEnemy = false; 
 
 	//Graphics initialization
 	glClearColor(0.0f,0.0f,0.0f,0.0f);
@@ -35,6 +37,14 @@ bool cGame::Init()
 	//Scene initialization
 	res = Data.Init();
 	if (!res) return false;
+
+	//Enemies initialization
+	bauuls = std::vector<cBauul>(NUM_BAUULS);
+	for (int i = 0; i < NUM_BAUULS; ++i) {
+		bauuls[i].Init();
+		bauuls[i].SetXZ((rand()%(TERRAIN_SIZE-2)+1)*DILATATION,(rand()%(TERRAIN_SIZE-2)+1)*DILATATION);
+		bauuls[i].SetOrientation(rand()%360);
+	}
 
 	InitStartScreen();
 	return res;
@@ -71,7 +81,7 @@ void cGame::InitGame()
 	InitialZoomDistance = INITIAL_ZOOM_TOTAL_DISTANCE;
 
 	Player.SetXZ((float) TERRAIN_SIZE,(float) TERRAIN_SIZE);
-	Player.SetModel("knight");
+	Player.Init();
 
 	MunitionCount = 0;
 }
@@ -103,34 +113,43 @@ void cGame::ReadMouse(int button, int state, int x, int y)
 		mouseX = x;
 		mouseY = y;
 	} else {
-		//ballAngle += (mouseX - x)*360 / SCREEN_WIDTH;
-		//SetCursorPos(x,mouseY);
 		mouseX = x;
 	}
 }
 
 //Process
-bool cGame::Process()
-{
+bool cGame::Process() {
 	bool res=true;
 	
 	// Process Input
 	if(keys[27])	res=false;	
 	
-	if (!playing) {
-		sounds.PlayAmbient(AMBIENT1);
-		playing = true;
+	if (!playingAmbient) {
+		sounds.PlayAmbient(SOUND_AMBIENT1);
+		playingAmbient = true;
 	}
 
 	if(!Scene.IsInitialized) {
 		ProcessStartScreenKeys();
 	} else if (InitialZoomDistance == 0 && !Gameover) {
 		ProcessGameKeys();
-
+		for (int i = 0; i < NUM_BAUULS; ++i) {
+			bauuls[i].Logic(DILATATION,(TERRAIN_SIZE-1)*DILATATION);
+			if (bauuls[i].CollidesCharacter(Player.x,Player.z,Player.radius)) {
+				bauuls[i].Attack();
+				if(!playingEnemy) {
+					sounds.PlayAction(SOUND_ENEMY);
+					playingEnemy = true;
+				}
+				//Player.Die();
+			}
+		}
 	}
 
+
+
 	if(WireframeRendering) ProcessWireframeModeKeys();
-	
+
 	return res;
 }
 
@@ -141,27 +160,35 @@ void cGame::ProcessStartScreenKeys()
 	}
 }
 
+void cGame::CollidesBoars() {
+	if(Scene.CollidesBoars(Player.GetPosition(),Player.radius)) {
+		++MunitionCount;
+		sounds.PlayAction(SOUND_BOAR);
+	}
+}
+
 void cGame::ProcessGameKeys()
 {
+	Player.Stop();
 	// Player movement
 	if(keys['e']) {
 		Player.MoveRight();
-		if(Scene.CollidesBoars(Player.GetPosition(),Player.radius)) ++MunitionCount;
+		CollidesBoars();
 		if(Scene.CollidesPhysics(Player.GetPosition(),Player.radius)) Player.MoveLeft();
 	}
 	if(keys['w']) {
 		Player.MoveForward();
-		if(Scene.CollidesBoars(Player.GetPosition(),Player.radius)) ++MunitionCount;
+		CollidesBoars();
 		if(Scene.CollidesPhysics(Player.GetPosition(),Player.radius)) Player.MoveBackward();
 	}
 	if(keys['q']) {
 		Player.MoveLeft();
-		if(Scene.CollidesBoars(Player.GetPosition(),Player.radius)) ++MunitionCount;
+		CollidesBoars();
 		if(Scene.CollidesPhysics(Player.GetPosition(),Player.radius)) Player.MoveRight();
 	}
 	if(keys['s']) {
 		Player.MoveBackward();
-		if(Scene.CollidesBoars(Player.GetPosition(),Player.radius)) ++MunitionCount;
+		CollidesBoars();
 		if(Scene.CollidesPhysics(Player.GetPosition(),Player.radius)) Player.MoveForward();
 	}
 	if(keys['a']) Player.RotateLeft();
@@ -266,7 +293,7 @@ void cGame::DrawSky()
 {
 	// Dibuixar Skydome
 	glLoadIdentity();
-	glTranslatef(0.0f,-(float) SKY_SIZE/2+0.1f,0.0f);
+	glTranslatef(0.0f,-(float) SKY_SIZE/2,0.0f);
 	glRotatef(Player.orientationAngle,0,1,0);
 	skydome.Render(&Data);
 	glRotatef((float) (glutGet(GLUT_ELAPSED_TIME)%360000)/1000,0,1,0);
@@ -280,18 +307,24 @@ void cGame::DrawGame()
 
 	// Dibuixar personatge
 	glLoadIdentity();
-	glRotatef(-DEFAULT_CAMERA_ANGLE_TO_PLAYER, 1, 0, 0);
-	glTranslatef(0, 0, -TotalDistanceToPlayer);
-	glRotatef(InitialZoomAngle, 0, 1, 0);
+	glTranslatef(0.0f, (float) sin(-DEFAULT_CAMERA_ANGLE_TO_PLAYER*0.0174532925)*TotalDistanceToPlayer, -TotalDistanceToPlayer);
+	glRotatef(CameraAngle - DEFAULT_CAMERA_ANGLE_TO_PLAYER,1.0f,0.0f,0.0f);
+	glRotatef(InitialZoomAngle, 0, 1.0f, 0);
 	Player.Draw();
 
 	// Dibuixar escena
 	glLoadIdentity();
-	glTranslatef(0.0f, (float) sin(-DEFAULT_CAMERA_ANGLE_TO_PLAYER*0.0174532925)*TotalDistanceToPlayer-Scene.GetHeight(Player.x/DILATATION,Player.z/DILATATION), -TotalDistanceToPlayer);
+	glTranslatef(0.0f, (float) sin(-DEFAULT_CAMERA_ANGLE_TO_PLAYER*0.0174532925)*TotalDistanceToPlayer-Scene.GetHeight(Player.x/DILATATION,Player.z/DILATATION)+Player.GetMinY(), -TotalDistanceToPlayer);
 	glRotatef(CameraAngle - DEFAULT_CAMERA_ANGLE_TO_PLAYER,1.0f,0.0f,0.0f);
 	glRotatef(TotalRotationAngle, 0, 1, 0);
 	glTranslatef(-Player.x, 0, -Player.z);	
 	Scene.Draw(&Data, &shaderManager, TotalRotationAngle);
+	for (int i = 0; i < NUM_BAUULS; ++i) {
+		glPushMatrix();
+		glTranslatef(bauuls[i].x,-bauuls[i].GetMinY()+Scene.GetHeight(bauuls[i].x/DILATATION,bauuls[i].z/DILATATION),bauuls[i].z);
+		bauuls[i].Draw();
+		glPopMatrix();
+	}
 
 	// Only draw extras once the player has control
 	if (InitialZoomDistance == 0) {
@@ -317,11 +350,18 @@ void cGame::DrawWireframeGame() {
 
 	// Dibuixar escena
 	glLoadIdentity();
-	glTranslatef(0.0f,(float) sin(-DEFAULT_CAMERA_ANGLE_TO_PLAYER*0.0174532925)*TotalDistanceToPlayer-Scene.GetHeight(Player.x/DILATATION,Player.z/DILATATION), -TotalDistanceToPlayer);
+	glTranslatef(0.0f,(float) sin(-DEFAULT_CAMERA_ANGLE_TO_PLAYER*0.0174532925)*TotalDistanceToPlayer-Scene.GetHeight(Player.x/DILATATION,Player.z/DILATATION)+Player.GetMinY(), -TotalDistanceToPlayer);
 	glRotatef(CameraAngle - DEFAULT_CAMERA_ANGLE_TO_PLAYER,1.0f,0.0f,0.0f);
 	glRotatef(TotalRotationAngle, 0, 1, 0);
 	glTranslatef(-Player.x, 0, -Player.z);	
 	Scene.DrawPhysical(TotalRotationAngle);
+	for (int i = 0; i < NUM_BAUULS; ++i) {
+		glPushMatrix();
+		glTranslatef(bauuls[i].x,-bauuls[i].GetMinY()+Scene.GetHeight(bauuls[i].x/DILATATION,bauuls[i].z/DILATATION),bauuls[i].z);
+		bauuls[i].DrawPhysical();
+		glPopMatrix();
+	}
+
 }
 
 void cGame::DrawGameOver()
