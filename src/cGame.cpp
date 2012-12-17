@@ -160,7 +160,7 @@ void cGame::CollidesBoars() {
 void cGame::CollidesEnemies() {
 	for(unsigned int i = 0; i < Bullets.size(); ++i) {
 		if(Enemies.CollidesBullet(Bullets[i].GetPosition())) {
-			// TODO: Play sound
+			sounds.PlayAction(SOUND_HIT);
 			Bullets[i].IsFinished = true;
 			if (Enemies.EnemyCount() == 0) InitGame();
 		}
@@ -244,6 +244,7 @@ void cGame::Shoot() {
 		Bullet.Move();
 		Bullets.push_back(Bullet);
 		--MunitionCount;
+		sounds.PlayAction(SOUND_SHOOT);
 	}
 }
 
