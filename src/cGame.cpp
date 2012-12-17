@@ -171,6 +171,7 @@ void cGame::CollidesEnemies() {
 			playingEnemy = true;
 		}
 		Player.Kill();
+		FrameCounter = 0;
 		Gameover = true;
 	}
 }
