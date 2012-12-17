@@ -59,7 +59,8 @@ private:
 	int InitialZoomDistance;
 
 	bool WireframeRendering;
-	bool Gameover;
+	bool IsGameover;
+	bool IsLevelUp;
 
 	float CameraDist;
 	float CameraAngle;
@@ -87,6 +88,7 @@ private:
 	void DrawSky();
 	void DrawGame();
 	void DrawWireframeGame();
+	void DrawLevelUp();
 	void DrawGameOver();
 
 	void UpdateFrameVariables();
@@ -94,9 +96,14 @@ private:
 	void CollidesBoars();
 	void CollidesEnemies();
 
+	void Gameover();
+	void LevelUp();
+
 	cSoundLibrary sounds;
 	bool playingAmbient;
 	bool playingEnemy;
+
+	int numEnemies;
 
 	std::vector<cBullet> Bullets;
 };

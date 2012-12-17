@@ -10,7 +10,7 @@
 #define TREE_PLANES		2
 
 /*****  Number of Textures  *****/
-#define NUM_IMG		18
+#define NUM_IMG		19
 
 /*****  Texture Identifiers  *****/
 #define IMG_GRASS			0
@@ -31,6 +31,7 @@
 #define IMG_BOAR3			15
 #define	IMG_BOAR4			16
 #define IMG_START_SCREEN	17
+#define IMG_LEVEL_UP		18
 
 /*****  Number of Sounds  *****/
 #define NUM_AMBIENT_SOUNDS	2
@@ -56,9 +57,6 @@
 #define SHADER_NONE			-1
 #define SHADER_CRT_DISPLAY	0
 #define SHADER_FLOOR		1
-
-/*****  Enemies  *****/
-#define NUM_BAUULS			3
 
 /*****	Player	*****/
 #define PLAYER_X		0

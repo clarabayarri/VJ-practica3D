@@ -44,7 +44,8 @@ bool cGame::Init() {
 void cGame::InitStartScreen()
 {
 	// Set options to false in case we return from game
-	Gameover = false;
+	IsGameover = false;
+	IsLevelUp = false;
 	WireframeRendering = false;
 	Scene.IsInitialized = false;
 
@@ -52,6 +53,8 @@ void cGame::InitStartScreen()
 	skydome.SetTexId(IMG_SKY1);
 	clouds.Init();
 	clouds.SetTexId(IMG_SKY2);
+
+	numEnemies = 3;
 }
 
 void cGame::InitGame() {
@@ -68,10 +71,12 @@ void cGame::InitGame() {
 	Player.SetXZ((float) TERRAIN_SIZE,(float) TERRAIN_SIZE);
 	Player.Init();
 
-	Enemies.Init();
+	Enemies.Init(numEnemies);
 	playingEnemy = false; 
 
 	MunitionCount = 0;
+	IsGameover = false;
+	IsLevelUp = false;
 }
 
 bool cGame::Loop()
@@ -119,7 +124,7 @@ bool cGame::Process() {
 
 	if(!Scene.IsInitialized) {
 		ProcessStartScreenKeys();
-	} else if (InitialZoomDistance == 0 && !Gameover) {
+	} else if (InitialZoomDistance == 0 && !IsGameover && !IsLevelUp) {
 		ProcessGameKeys();
 		ProcessBullets();
 		Enemies.Logic(DILATATION,(TERRAIN_SIZE-2)*DILATATION);
@@ -162,7 +167,7 @@ void cGame::CollidesEnemies() {
 		if(Enemies.CollidesBullet(Bullets[i].GetPosition())) {
 			sounds.PlayAction(SOUND_HIT);
 			Bullets[i].IsFinished = true;
-			if (Enemies.EnemyCount() == 0) InitGame();
+			if (Enemies.EnemyCount() == 0) LevelUp();
 		}
 	}
 	if (Enemies.Collides(Player.GetPosition())) {
@@ -170,9 +175,7 @@ void cGame::CollidesEnemies() {
 			sounds.PlayAction(SOUND_ENEMY);
 			playingEnemy = true;
 		}
-		Player.Kill();
-		FrameCounter = 0;
-		Gameover = true;
+		Gameover();
 	}
 }
 
@@ -265,7 +268,8 @@ void cGame::Render() {
 		DrawGame();
 	}
 	if (WireframeRendering)		DrawWireframeGame();
-	if (Gameover)				DrawGameOver();
+	if (IsGameover)				DrawGameOver();
+	if (IsLevelUp)				DrawLevelUp();
 	
 	glutSwapBuffers();
 
@@ -383,6 +387,33 @@ void cGame::DrawWireframeGame() {
 	Enemies.DrawPhysical(&Scene);
 }
 
+void cGame::DrawLevelUp()
+{
+	GLuint left = SCREEN_WIDTH/2 - 200;
+	GLuint top = SCREEN_HEIGHT/2 - 200;
+	GLuint right = SCREEN_WIDTH/2 + 200;
+	GLuint bottom = SCREEN_HEIGHT/2 + 200;
+	glViewport(left, SCREEN_HEIGHT - bottom, right - left, bottom - top);
+
+	glMatrixMode(GL_PROJECTION);
+	glLoadIdentity();
+	gluOrtho2D(0.0, 1.0, 1.0, 0.0);
+
+	glMatrixMode(GL_MODELVIEW);
+	glLoadIdentity();
+	glTranslatef(0.0f,0.0f,-0.1f);
+	glEnable(GL_TEXTURE_2D);
+	glBindTexture(GL_TEXTURE_2D, Data.GetID(IMG_LEVEL_UP));
+	glBegin(GL_QUADS);
+		glTexCoord2f(1.0f, 0.0f);	glVertex2i(1,	0);
+		glTexCoord2f(0.0f, 0.0f);	glVertex2i(0,	0);
+		glTexCoord2f(0.0f, 1.0f);	glVertex2i(0,	1);
+		glTexCoord2f(1.0f, 1.0f);	glVertex2i(1,	1);
+	glEnd();
+	glDisable(GL_TEXTURE_2D);
+	glViewport(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
+}
+
 void cGame::DrawGameOver()
 {
 	GLuint left = SCREEN_WIDTH/2 - 200;
@@ -413,9 +444,8 @@ void cGame::DrawGameOver()
 void cGame::UpdateFrameVariables()
 {
 	// Game over?
-	if(Scene.IsInitialized && !Gameover && GetTimeRemainingForLevel() <= 0.0) {
-		Gameover = true;
-		FrameCounter = 0;
+	if(Scene.IsInitialized && !IsGameover && GetTimeRemainingForLevel() <= 0.0) {
+		Gameover();
 	}
 	
 	// Initial zoom
@@ -427,8 +457,10 @@ void cGame::UpdateFrameVariables()
 
 	// Frame counter
 	++FrameCounter;
-	if (Gameover && FrameCounter == BLINK_FRAMES*20) {
+	if (IsGameover && FrameCounter == BLINK_FRAMES*20) {
 		InitStartScreen();
+	} else if (IsLevelUp && FrameCounter == BLINK_FRAMES*10) {
+		InitGame();
 	}
 	if (FrameCounter == BLINK_FRAMES*20) FrameCounter = 0;
 }
@@ -437,4 +469,20 @@ double cGame::GetTimeRemainingForLevel()
 {
 	time_t CurrentTime = time(0);
 	return max(0.0, LevelTimeLimit - difftime(CurrentTime, StartTime));
+}
+
+void cGame::Gameover()
+{
+	if (!IsLevelUp) {
+		IsGameover = true;
+		FrameCounter = 0;
+		Player.Kill();
+	}
+}
+
+void cGame::LevelUp()
+{
+	IsLevelUp = true;
+	FrameCounter = 0;
+	numEnemies++;
 }

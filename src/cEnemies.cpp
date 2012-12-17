@@ -6,9 +6,9 @@ cEnemies::cEnemies(void) {}
 
 cEnemies::~cEnemies(void) {}
 
-void cEnemies::Init() {
-	bauuls = std::vector<cBauul>(NUM_BAUULS);
-	for (int i = 0; i < NUM_BAUULS; ++i) {
+void cEnemies::Init(int count) {
+	bauuls = std::vector<cBauul>(count);
+	for (int i = 0; i < count; ++i) {
 		bauuls[i].Init();
 		bauuls[i].SetXZ((rand()%(TERRAIN_SIZE-2)+1)*DILATATION,(rand()%(TERRAIN_SIZE-2)+1)*DILATATION);
 		bauuls[i].SetOrientation(rand()%360);

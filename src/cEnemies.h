@@ -9,7 +9,7 @@ public:
 	cEnemies(void);
 	~cEnemies(void);
 
-	void Init();
+	void Init(int count);
 
 	std::vector<std::vector<float> > GetEnemies();
 	int EnemyCount();
