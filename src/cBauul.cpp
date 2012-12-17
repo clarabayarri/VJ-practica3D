@@ -2,13 +2,17 @@
 #include "Constants.h"
 
 #define DISAPPEAR_BLINK 40
+#define MODEL1	"bauul"
+#define MODEL2	"ogro"
 
 cBauul::cBauul():nextState(true),actionstate(0) {}
 
 cBauul::~cBauul() {}
 
 void cBauul::Init() {
-	SetModel("bauul");
+	int model = rand()%2;
+	if (model == 0) SetModel(MODEL1);
+	else SetModel(MODEL2);
 	radius = 1.5f;
 }
 
