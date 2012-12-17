@@ -34,7 +34,7 @@
 
 /*****  Number of Sounds  *****/
 #define NUM_AMBIENT_SOUNDS	2
-#define NUM_ACTION_SOUNDS	2
+#define NUM_ACTION_SOUNDS	4
 
 /*****  Ambient Sounds Identifiers  *****/
 #define SOUND_AMBIENT1		0
@@ -43,6 +43,8 @@
 /*****  Action Sounds Identifiers  *****/
 #define SOUND_BOAR			0
 #define	SOUND_ENEMY			1
+#define	SOUND_SHOOT			2
+#define	SOUND_HIT			3
 
 /*****  Terrain Constants  *****/
 #define TERRAIN_SIZE 		32

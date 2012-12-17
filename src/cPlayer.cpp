@@ -24,7 +24,7 @@ void cPlayer::Draw() {
 void cPlayer::DrawPhysical(cScene *Scene) {
 	glPushMatrix();
 	glTranslatef(x,Scene->GetHeight(x/DILATATION,z/DILATATION),z);
-	glColor3f(0.13f, 0.267f, 0.722);
+	glColor3f(0.13f, 0.267f, 0.722f);
 	cAnimatedCharacter::DrawPhysical();
 	glColor3f(1.0f,1.0f,1.0f);
 	glPopMatrix();

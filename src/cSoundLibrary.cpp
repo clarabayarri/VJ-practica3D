@@ -15,6 +15,8 @@ void cSoundLibrary::Init() {
 	result = fmodSystem->createStream("sounds/ambient2.mp3", FMOD_SOFTWARE | FMOD_LOOP_NORMAL, 0, &ambientSound[SOUND_AMBIENT2]);
 	result = fmodSystem->createStream("sounds/boar.mp3", FMOD_SOFTWARE, 0, &actionSound[SOUND_BOAR]);
 	result = fmodSystem->createStream("sounds/enemy.mp3", FMOD_SOFTWARE, 0, &actionSound[SOUND_ENEMY]);
+	result = fmodSystem->createStream("sounds/shoot.mp3", FMOD_SOFTWARE, 0, &actionSound[SOUND_SHOOT]);
+	result = fmodSystem->createStream("sounds/hit.mp3", FMOD_SOFTWARE, 0, &actionSound[SOUND_HIT]);
 }
 
 void cSoundLibrary::PlayAmbient(int soundId) {
